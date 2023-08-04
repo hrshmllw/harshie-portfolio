@@ -3,7 +3,7 @@
 		<div
 			class="container max-w-xl p-6 mx-auto space-y-6 lg:space-y-12 lg:px-8 lg:max-w-7xl lg:h-screen"
 		>
-			<div>
+			<div class="lg:mt-32">
 				<h2
 					class="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50"
 				>

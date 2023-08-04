@@ -1,9 +1,9 @@
 <template>
 	<section>
-		<div class="lg:pb-44">
+		<div class="lg:pb-22">
 			<div class="container p-8 mx-auto text-center dark:text-gray-200">
-				<div class="pb-2">
-					<h2 class="text-4xl font-bold">Skills</h2>
+				<div class="pb-2 lg:mt-32">
+					<h2 class="text-3xl sm:text-5xl font-bold">Skills</h2>
 				</div>
 			</div>
 			<div

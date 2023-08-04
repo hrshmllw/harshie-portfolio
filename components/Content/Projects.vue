@@ -1,7 +1,7 @@
 <template>
 	<section class="lg:h-max">
 		<div class="container p-8 mx-auto text-center dark:text-gray-200">
-			<h2 class="text-4xl font-bold">Projects</h2>
+			<h2 class="text-4xl font-bold lg:mt-32">Projects</h2>
 		</div>
 		<div>
 			<div
