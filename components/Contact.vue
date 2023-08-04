@@ -1,7 +1,7 @@
 <template>
 	<section>
 		<div
-			class="grid max-w-6xl grid-cols-1 px-6 mx-auto mt-28 lg:px-8 md:grid-cols-2 md:divide-x dark:text-gray-200"
+			class="grid max-w-6xl grid-cols-1 px-6 mx-auto mt-28 pb-28 lg:px-8 md:grid-cols-2 md:divide-x dark:text-gray-200"
 		>
 			<div class="py-6 md:py-0 md:px-6">
 				<h1 class="text-4xl font-bold">Get in touch</h1>
