@@ -3,7 +3,7 @@
 		<div
 			class="grid max-w-6xl grid-cols-1 px-6 mx-auto mt-28 pb-28 lg:px-8 md:grid-cols-2 md:divide-x dark:text-gray-200"
 		>
-			<div class="py-6 md:py-0 md:px-6">
+			<div class="py-6 md:py-0 md:px-6 mt-20">
 				<h1 class="text-4xl font-bold">Get in touch</h1>
 				<p class="pt-2 pb-4">
 					Fill in the form to start a conversation
@@ -22,20 +22,7 @@
 								clip-rule="evenodd"
 							></path>
 						</svg>
-						<span>Fake address, 9999 City</span>
-					</p>
-					<p class="flex items-center">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 20 20"
-							fill="currentColor"
-							class="w-5 h-5 mr-2 sm:mr-6"
-						>
-							<path
-								d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z"
-							></path>
-						</svg>
-						<span>123456789</span>
+						<span>Las Piñas, Metro Manila, Philippines</span>
 					</p>
 					<p class="flex items-center">
 						<svg
@@ -51,7 +38,7 @@
 								d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"
 							></path>
 						</svg>
-						<span>contact@business.com</span>
+						<span>edceljmacawili@gmail.com</span>
 					</p>
 				</div>
 			</div>
@@ -60,28 +47,26 @@
 					<span class="mb-1">Full name</span>
 					<input
 						type="text"
-						placeholder="Leroy Jenkins"
-						class="block w-full rounded-md shadow-sm focus:ring focus:ri focus:ri dark:bg-gray-800"
+						class="block w-full rounded-md shadow-sm focus:ring dark:bg-gray-800"
 					/>
 				</label>
 				<label class="block">
 					<span class="mb-1">Email address</span>
 					<input
 						type="email"
-						placeholder="leroy@jenkins.com"
-						class="block w-full rounded-md shadow-sm focus:ring focus:ri focus:ri dark:bg-gray-800"
+						class="block w-full rounded-md shadow-sm focus:ring dark:bg-gray-800"
 					/>
 				</label>
 				<label class="block">
 					<span class="mb-1">Message</span>
 					<textarea
 						rows="3"
-						class="block w-full rounded-md focus:ring focus:ri focus:ri dark:bg-gray-800"
+						class="block w-full rounded-md focus:ring dark:bg-gray-800"
 					></textarea>
 				</label>
 				<button
 					type="button"
-					class="self-center px-8 py-3 text-lg rounded focus:ring hover:ring focus:ri dark:bg-violet-400 dark:text-gray-900 focus:ri hover:ri"
+					class="self-center px-8 py-3 text-lg rounded focus:ring hover:ring dark:bg-violet-400 dark:text-gray-900"
 				>
 					Submit
 				</button>

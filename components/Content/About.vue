@@ -3,9 +3,9 @@
 		<div
 			class="container max-w-xl p-6 mx-auto space-y-6 lg:space-y-12 lg:px-8 lg:max-w-7xl lg:h-screen"
 		>
-			<div class="lg:mt-32">
+			<div class="mt-20 lg:mt-32">
 				<h2
-					class="text-3xl font-bold tracki text-center sm:text-5xl dark:text-gray-50"
+					class="text-4xl font-bold text-center sm:text-5xl dark:text-gray-200"
 				>
 					About Me
 				</h2>
@@ -39,6 +39,8 @@
 					</p>
 					<div class="my-6">
 						<a
+							href="/resume.pdf"
+							download="Macawili, Edcel Jeremy - Resume"
 							class="hover:underline dark:text-violet-400 p-2 border"
 							>Download Resume</a
 						>
