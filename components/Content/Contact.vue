@@ -47,26 +47,26 @@
 					<span class="mb-1">Full name</span>
 					<input
 						type="text"
-						class="block w-full rounded-md shadow-sm focus:ring dark:bg-gray-800"
+						class="block w-full rounded-md shadow-sm border-accent focus:outline-0 focus:ring-0 focus:border-accent dark:bg-secondary"
 					/>
 				</label>
 				<label class="block">
 					<span class="mb-1">Email address</span>
 					<input
 						type="email"
-						class="block w-full rounded-md shadow-sm focus:ring dark:bg-gray-800"
+						class="block w-full rounded-md shadow-sm border-accent focus:outline-0 focus:ring-0 focus:border-accent dark:bg-secondary"
 					/>
 				</label>
 				<label class="block">
 					<span class="mb-1">Message</span>
 					<textarea
 						rows="3"
-						class="block w-full rounded-md focus:ring dark:bg-gray-800"
+						class="block w-full rounded-md shadow-sm border-accent focus:outline-0 focus:ring-0 focus:border-accent dark:bg-secondary"
 					></textarea>
 				</label>
 				<button
 					type="button"
-					class="self-center px-8 py-3 text-lg rounded focus:ring hover:ring dark:bg-violet-400 dark:text-gray-900"
+					class="self-center px-8 py-3 text-lg rounded focus:ring hover:ring ring-gray-200 dark:bg-primary dark:text-gray-200"
 				>
 					Submit
 				</button>

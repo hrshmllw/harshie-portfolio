@@ -12,11 +12,6 @@
 			</div>
 			<div class="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
 				<div class="lg:col-start-2">
-					<h3
-						class="text-2xl font-bold tracki sm:text-3xl dark:text-gray-50"
-					>
-						Eam nibh gloriatur ex
-					</h3>
 					<p class="mt-3 text-lg dark:text-gray-400">
 						Per odio fabellas consulatu cu. Utroque detracto mel ea,
 						quo te latine theophrastus. Ea his tale nibh dissentias,
@@ -37,11 +32,11 @@
 						quo te latine theophrastus. Ea his tale nibh dissentias,
 						mei exerci tamquam euripidis cu.
 					</p>
-					<div class="my-6">
+					<div class="my-12">
 						<a
 							href="/resume.pdf"
 							download="Macawili, Edcel Jeremy - Resume"
-							class="hover:underline dark:text-violet-400 p-2 border"
+							class="bg-primary text-white p-3 rounded-md focus:ring hover:ring ring-gray-200"
 							>Download Resume</a
 						>
 					</div>

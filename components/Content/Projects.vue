@@ -1,117 +1,129 @@
 <template>
 	<section class="lg:h-max">
+		<!-- Other content here -->
 		<div class="container p-8 mx-auto text-center dark:text-gray-200">
 			<h2 class="text-4xl font-bold sm:text-5xl mt-20 lg:mt-32">
 				Projects
 			</h2>
 		</div>
-		<div>
+
+		<!-- Iterating through projectItems using v-for -->
+		<div v-for="(project, index) in projectItems" :key="project.id">
 			<div
-				class="container max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-4xl px-10 py-6 mx-auto my-4 rounded-lg shadow-sm dark:bg-gray-700 dark:text-gray-200"
+				:class="[
+					'container',
+					'max-w-xs',
+					'sm:max-w-xl',
+					'md:max-w-2xl',
+					'lg:max-w-4xl',
+					'px-10',
+					'py-6',
+					'mx-auto',
+					'my-4',
+					'rounded-lg',
+					'shadow-sm',
+					index % 2 === 0 ? 'dark:bg-accent' : 'dark:bg-secondary',
+					index % 2 === 0 ? 'dark:text-black' : 'dark:text-gray-200',
+				]"
 			>
 				<div class="flex items-center justify-end">
+					<!-- Displaying languages used for the project -->
 					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="px-2 py-1 mx-1 font-bold rounded-full dark:bg-violet-400 dark:text-gray-900"
-						>HTML5</a
+						v-for="language in project.languages"
+						:key="language"
+						:class="[
+							'px-2',
+							'py-1',
+							'mx-1',
+							'font-bold',
+							'rounded-full',
+							index % 2 === 0
+								? 'dark:bg-secondary'
+								: 'dark:bg-accent',
+							index % 2 === 0
+								? 'dark:text-gray-200'
+								: 'dark:text-black',
+						]"
 					>
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="px-2 py-1 mx-1 font-bold rounded-full dark:bg-violet-400 dark:text-gray-900"
-						>CSS3</a
-					>
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="px-2 py-1 mx-1 font-bold rounded-full dark:bg-violet-400 dark:text-gray-900"
-						>Javascript</a
-					>
+						{{ language }}
+					</a>
 				</div>
 				<div class="mt-3">
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="text-2xl font-bold hover:underline"
-						>Nos creasse pendere crescit angelos etc</a
-					>
-					<p class="mt-2">
-						Tamquam ita veritas res equidem. Ea in ad expertus
-						paulatim poterunt. Imo volo aspi novi tur. Ferre hic
-						neque vulgo hae athei spero. Tantumdem naturales
-						excaecant notaverim etc cau perfacile occurrere. Loco
-						visa to du huic at in dixi aër.
-					</p>
+					<!-- Displaying project name and description -->
+					<a :href="project.demoUrl" class="text-2xl font-bold">{{
+						project.name
+					}}</a>
+					<p class="mt-2">{{ project.description }}</p>
 				</div>
 				<div class="flex items-center justify-end mt-4">
+					<!-- Displaying demo and GitHub links -->
 					<a
+						v-if="project.demoUrl"
+						:href="project.demoUrl"
+						target="_blank"
 						rel="noopener noreferrer"
-						href="#"
-						class="mx-1 bg-violet-700 border-violet-700 hover:underline dark:text-gray-200 p-2 border rounded-md"
-						>Video Demo</a
+						:class="[
+							'mx-1',
+							'bg-primary',
+							'hover:underline',
+							'text-gray-200',
+							'p-2',
+							'rounded-md',
+						]"
 					>
+						Video Demo
+					</a>
 					<a
+						:href="project.githubUrl"
+						target="_blank"
 						rel="noopener noreferrer"
-						href="#"
-						class="mx-1 hover:underline dark:text-violet-400 p-2 border rounded-md"
-						>GitHub</a
+						:class="[
+							'mx-1',
+							'bg-primary',
+							'hover:underline',
+							'text-gray-200',
+							'p-2',
+							'rounded-md',
+						]"
 					>
-				</div>
-			</div>
-			<div
-				class="container max-w-xs sm:max-w-xl md:max-w-2xl lg:max-w-4xl px-10 py-6 mx-auto my-4 rounded-lg shadow-sm dark:bg-gray-700 dark:text-gray-200"
-			>
-				<div class="flex items-center justify-end">
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="px-2 py-1 mx-1 font-bold rounded-full dark:bg-violet-400 dark:text-gray-900"
-						>HTML5</a
-					>
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="px-2 py-1 mx-1 font-bold rounded-full dark:bg-violet-400 dark:text-gray-900"
-						>CSS3</a
-					>
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="px-2 py-1 mx-1 font-bold rounded-full dark:bg-violet-400 dark:text-gray-900"
-						>Javascript</a
-					>
-				</div>
-				<div class="mt-3">
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="text-2xl font-bold hover:underline"
-						>Nos creasse pendere crescit angelos etc</a
-					>
-					<p class="mt-2">
-						Tamquam ita veritas res equidem. Ea in ad expertus
-						paulatim poterunt. Imo volo aspi novi tur. Ferre hic
-						neque vulgo hae athei spero. Tantumdem naturales
-						excaecant notaverim etc cau perfacile occurrere. Loco
-						visa to du huic at in dixi aër.
-					</p>
-				</div>
-				<div class="flex items-center justify-end mt-4">
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="mx-1 bg-violet-700 border-violet-700 hover:underline dark:text-gray-200 p-2 border rounded-md"
-						>Video Demo</a
-					>
-					<a
-						rel="noopener noreferrer"
-						href="#"
-						class="mx-1 hover:underline dark:text-violet-400 p-2 border rounded-md"
-						>GitHub</a
-					>
+						GitHub
+					</a>
 				</div>
 			</div>
 		</div>
 	</section>
 </template>
+
+<!-- Rest of the script remains the same -->
+
+<script>
+export default {
+	data() {
+		return {
+			projectItems: [
+				{
+					id: 1,
+					name: "Video Conference App",
+					description:
+						"A video conference web application created for our thesis project, proposed as an alternative app for online classes. With facial recognition using the face_recognition Python library, eye-tracking via MediaPipe for JavaScript, and attendance-taking functionalities. The video conferencing function was implemented through Agora SDK.",
+					languages: ["JavaScript", "Python"],
+					githubUrl:
+						"https://github.com/hrshmllw/video-conference-app",
+					liveDemoUrl: "",
+					videoDemoUrl: "",
+				},
+				{
+					id: 2,
+					name: "TaskMate",
+					description:
+						"A simple task management web application with to-do list, note-taking, and calendar functionalities. Currently planning on doing a revamp on this project using newly learned frameworks.",
+					languages: ["JavaScript", "PHP"],
+					githubUrl: "https://github.com/hrshmllw/task-mate",
+					liveDemoUrl: "",
+					videoDemoUrl: "",
+				},
+			],
+		};
+	},
+};
+</script>

@@ -1,7 +1,5 @@
 <template>
-	<nav
-		class="fixed w-full p-4 border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-	>
+	<nav class="fixed w-full p-4 bg-transparent">
 		<div class="flex flex-wrap items-center justify-between mx-auto p-4n">
 			<!-- Header logo -->
 			<div

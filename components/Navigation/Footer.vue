@@ -1,16 +1,16 @@
 <template>
-	<footer class="bg-white dark:bg-gray-900">
+	<footer class="bg-backblack dark:bg-gray-500">
 		<div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-6">
 			<div class="sm:flex sm:items-center sm:justify-between">
 				<span
-					class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-					>{{ new Date().getFullYear() }}
-					<a href="#" class="hover:underline">| EJMacawili</a>
+					class="text-md text-gray-200 sm:text-center dark:text-black font-light"
+					>{{ new Date().getFullYear() }} |
+					<a href="#" class="hover:underline">EJMacawili</a>
 				</span>
 				<div class="flex mt-4 space-x-5 sm:justify-center sm:mt-0">
 					<a
 						href="#"
-						class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						class="text-black hover:text-black dark:hover:text-gray-200"
 					>
 						<svg
 							class="w-4 h-4"
@@ -29,7 +29,7 @@
 					</a>
 					<a
 						href="#"
-						class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						class="text-black hover:text-black dark:hover:text-gray-200"
 					>
 						<svg
 							class="w-4 h-4"
@@ -46,7 +46,7 @@
 					</a>
 					<a
 						href="#"
-						class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						class="text-black hover:text-black dark:hover:text-gray-200"
 					>
 						<svg
 							class="w-4 h-4"
@@ -65,7 +65,7 @@
 					</a>
 					<a
 						href="#"
-						class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						class="text-black hover:text-black dark:hover:text-gray-200"
 					>
 						<svg
 							class="w-4 h-4"
@@ -84,7 +84,7 @@
 					</a>
 					<a
 						href="#"
-						class="text-gray-500 hover:text-gray-900 dark:hover:text-white"
+						class="text-black hover:text-black dark:hover:text-gray-200"
 					>
 						<svg
 							class="w-4 h-4"

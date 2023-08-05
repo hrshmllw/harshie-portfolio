@@ -8,7 +8,7 @@
 			>
 				<h1 class="text-5xl font-bold leadi sm:text-6xl lg:text-8xl">
 					Edcel
-					<span class="dark:text-violet-400">Jeremy</span> Macawili
+					<span class="text-primary">Jeremy</span> Macawili
 				</h1>
 				<p class="mt-6 mb-8 text-3xl sm:mb-6">
 					Front-end Web Developer
