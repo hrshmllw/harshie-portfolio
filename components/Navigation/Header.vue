@@ -3,7 +3,7 @@
 		<div class="flex flex-wrap items-center justify-between mx-auto p-4n">
 			<!-- Header logo -->
 			<div
-				class="self-center text-2xl font-semibold whitespace-nowrap mx-3 md:px-10 lg:px-24 dark:text-white"
+				class="self-center text-2xl font-semibold whitespace-nowrap mx-3 md:px-10 lg:px-24 dark:text-gray-200"
 			>
 				EJMacawili
 			</div>
@@ -27,7 +27,9 @@
 
 			<!-- Navbar -->
 			<div class="hidden md:block md:px-10 lg:px-24">
-				<ul class="flex space-x-8 text-lg font-semibold text-gray-200">
+				<ul
+					class="flex space-x-8 text-lg font-semibold text-black dark:text-gray-200"
+				>
 					<li v-for="item in navbarItems">
 						<a :href="item.url">{{ item.label }}</a>
 					</li>

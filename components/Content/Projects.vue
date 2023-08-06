@@ -22,8 +22,12 @@
 					'my-4',
 					'rounded-lg',
 					'shadow-sm',
-					index % 2 === 0 ? 'dark:bg-accent' : 'dark:bg-secondary',
-					index % 2 === 0 ? 'dark:text-black' : 'dark:text-gray-200',
+					index % 2 === 0
+						? 'bg-secondary dark:bg-accent'
+						: 'bg-accent dark:bg-secondary',
+					index % 2 === 0
+						? 'text-gray-200 dark:text-black'
+						: 'text-black dark:text-gray-200',
 				]"
 			>
 				<div class="flex items-center justify-end">
@@ -38,11 +42,11 @@
 							'font-bold',
 							'rounded-full',
 							index % 2 === 0
-								? 'dark:bg-secondary'
-								: 'dark:bg-accent',
+								? 'bg-accent dark:bg-secondary'
+								: 'bg-secondary dark:bg-accent',
 							index % 2 === 0
-								? 'dark:text-gray-200'
-								: 'dark:text-black',
+								? 'text-black dark:text-gray-200'
+								: 'text-gray-200 dark:text-black',
 						]"
 					>
 						{{ language }}
@@ -93,8 +97,6 @@
 		</div>
 	</section>
 </template>
-
-<!-- Rest of the script remains the same -->
 
 <script>
 export default {

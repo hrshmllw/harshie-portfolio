@@ -13,178 +13,194 @@
 			>
 				<!-- HTML5 -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 124 141.53199999999998"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
 							d="M10.383 126.894L0 0l124 .255-10.979 126.639-50.553 14.638z"
-							class="fill-black dark:fill-gray-200 group-hover:fill-html1"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-html1"
 						/>
 						<path
 							d="M62.468 129.277V12.085l51.064.17-9.106 104.851z"
-							class="fill-black dark:fill-gray-200 group-hover:fill-html2"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-html2"
 						/>
 						<path
 							d="M99.49 41.362l1.446-15.49H22.383l4.34 47.49h54.213L78.81 93.617l-17.362 4.68-17.617-5.106-.936-12.085H27.319l2.128 24.681 32 8.936 32.255-8.936 4.34-48.17H41.107L39.49 41.362z"
-							class="fill-white dark:fill-gray-700 group-hover:fill-white"
+							class="fill-white dark:fill-gray-700 transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">HTML5</p>
 				</div>
 				<!-- CSS3 -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 124 141.53"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
 							d="M10.383 126.892L0 0l124 .255-10.979 126.637-50.553 14.638z"
-							class="fill-black dark:fill-gray-200 group-hover:fill-css1"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-css1"
 						/>
 						<path
 							d="M62.468 129.275V12.085l51.064.17-9.106 104.85z"
-							class="fill-black dark:fill-gray-200 group-hover:fill-css2"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-css2"
 						/>
 						<path
 							d="M100.851 27.064H22.298l2.128 15.318h37.276l-36.68 15.745 2.127 14.808h54.043l-1.958 20.68-18.298 3.575-16.595-4.255-1.277-11.745H27.83l2.042 24.426 32.681 9.106 31.32-9.957 4-47.745H64.765l36.085-14.978z"
-							class="fill-white dark:fill-gray-700 group-hover:fill-white"
+							class="fill-white dark:fill-gray-700 transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">CSS3</p>
 				</div>
 				<!-- JavaScript -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 1052 1052"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
 							d="M0 0h1052v1052H0z"
-							class="fill-black dark:fill-gray-200 group-hover:fill-js1"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-js1"
 						/>
 						<path
 							d="M965.9 801.1c-7.7-48-39-88.3-131.7-125.9-32.2-14.8-68.1-25.399-78.8-49.8-3.8-14.2-4.3-22.2-1.9-30.8 6.9-27.9 40.2-36.6 66.6-28.6 17 5.7 33.1 18.801 42.8 39.7 45.4-29.399 45.3-29.2 77-49.399-11.6-18-17.8-26.301-25.4-34-27.3-30.5-64.5-46.2-124-45-10.3 1.3-20.699 2.699-31 4-29.699 7.5-58 23.1-74.6 44-49.8 56.5-35.6 155.399 25 196.1 59.7 44.8 147.4 55 158.6 96.9 10.9 51.3-37.699 67.899-86 62-35.6-7.4-55.399-25.5-76.8-58.4-39.399 22.8-39.399 22.8-79.899 46.1 9.6 21 19.699 30.5 35.8 48.7 76.2 77.3 266.899 73.5 301.1-43.5 1.399-4.001 10.6-30.801 3.199-72.101zm-394-317.6h-98.4c0 85-.399 169.4-.399 254.4 0 54.1 2.8 103.7-6 118.9-14.4 29.899-51.7 26.2-68.7 20.399-17.3-8.5-26.1-20.6-36.3-37.699-2.8-4.9-4.9-8.7-5.601-9-26.699 16.3-53.3 32.699-80 49 13.301 27.3 32.9 51 58 66.399 37.5 22.5 87.9 29.4 140.601 17.3 34.3-10 63.899-30.699 79.399-62.199 22.4-41.3 17.6-91.3 17.4-146.6.5-90.2 0-180.4 0-270.9z"
-							class="fill-white dark:fill-gray-700 group-hover:fill-js2"
+							class="fill-white dark:fill-gray-700 transition ease-in-out duration-300 group-hover:fill-js2"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">JavaScript</p>
 				</div>
 				<!-- TypeScript -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 512 512"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
-						<rect fill="#3178c6" height="512" rx="50" width="512" />
-						<rect fill="#3178c6" height="512" rx="50" width="512" />
+						<rect
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-ts1"
+							height="512"
+							rx="50"
+							width="512"
+						/>
+						<rect
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-ts1"
+							height="512"
+							rx="50"
+							width="512"
+						/>
 						<path
 							d="m316.939 407.424v50.061c8.138 4.172 17.763 7.3 28.875 9.386s22.823 3.129 35.135 3.129c11.999 0 23.397-1.147 34.196-3.442 10.799-2.294 20.268-6.075 28.406-11.342 8.138-5.266 14.581-12.15 19.328-20.65s7.121-19.007 7.121-31.522c0-9.074-1.356-17.026-4.069-23.857s-6.625-12.906-11.738-18.225c-5.112-5.319-11.242-10.091-18.389-14.315s-15.207-8.213-24.18-11.967c-6.573-2.712-12.468-5.345-17.685-7.9-5.217-2.556-9.651-5.163-13.303-7.822-3.652-2.66-6.469-5.476-8.451-8.448-1.982-2.973-2.974-6.336-2.974-10.091 0-3.441.887-6.544 2.661-9.308s4.278-5.136 7.512-7.118c3.235-1.981 7.199-3.52 11.894-4.615 4.696-1.095 9.912-1.642 15.651-1.642 4.173 0 8.581.313 13.224.938 4.643.626 9.312 1.591 14.008 2.894 4.695 1.304 9.259 2.947 13.694 4.928 4.434 1.982 8.529 4.276 12.285 6.884v-46.776c-7.616-2.92-15.937-5.084-24.962-6.492s-19.381-2.112-31.066-2.112c-11.895 0-23.163 1.278-33.805 3.833s-20.006 6.544-28.093 11.967c-8.086 5.424-14.476 12.333-19.171 20.729-4.695 8.395-7.043 18.433-7.043 30.114 0 14.914 4.304 27.638 12.912 38.172 8.607 10.533 21.675 19.45 39.204 26.751 6.886 2.816 13.303 5.579 19.25 8.291s11.086 5.528 15.415 8.448c4.33 2.92 7.747 6.101 10.252 9.543 2.504 3.441 3.756 7.352 3.756 11.733 0 3.233-.783 6.231-2.348 8.995s-3.939 5.162-7.121 7.196-7.147 3.624-11.894 4.771c-4.748 1.148-10.303 1.721-16.668 1.721-10.851 0-21.597-1.903-32.24-5.71-10.642-3.806-20.502-9.516-29.579-17.13zm-84.159-123.342h64.22v-41.082h-179v41.082h63.906v182.918h50.874z"
-							fill="#fff"
+							class="fill-white dark:fill-gray-700 transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">TypeScript</p>
 				</div>
 				<!-- Vue.js -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 2500 2165.1"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
 							d="m1538.7 0-288.7 500-288.7-500h-961.3l1250 2165.1 1250-2165.1z"
-							fill="#4dba87"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-vue1"
 						/>
 						<path
 							d="m1538.7 0-288.7 500-288.7-500h-461.3l750 1299 750-1299z"
-							fill="#435466"
+							class="fill-white dark:fill-gray-700 transition ease-in-out duration-300 group-hover:fill-vue2"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">Vue.js</p>
 				</div>
 				<!-- Quasar -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 1024 1024"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
 							id="path8860-5-4-8-2-7-1-8_21_"
 							d="M586.2 512a74.2 74.2 0 01-148.4 0 74.2 74.2 0 11148.4 0z"
-							fill="#fff"
+							class="fill-white dark:fill-gray-700 transition ease-in-out duration-300 group-hover:fill-black dark:transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 						<path
 							id="path8862-5-5-9-1-9-2-7_21_"
 							d="M841.3 321.8a378.5 378.5 0 00-58.3-76.2l-85.7 49.5a286 286 0 00-89.6-51.9 348.6 348.6 0 00-69.3 98.9c95.5-6.5 194.1 28 285.6 99.6l53.9-31.1c-8.3-31-20.7-60.9-36.6-88.8z"
-							fill="#fff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-black dark:transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 						<path
 							id="path8866-7-5-5-0-3-5-6_21_"
 							d="M512 892.3c32.1-.1 64-4.2 95.2-12.4v-99a284 284 0 0089.7-51.6 352.3 352.3 0 00-51-109.5c-42.1 86-121.3 154-229 197.6v62.3a382 382 0 0095.1 12.6z"
-							fill="#fff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-black dark:transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 						<path
 							id="path8870-5-3-9-3-0-0-9_21_"
 							d="M182.7 321.9a373.6 373.6 0 00-36.8 88.6l85.7 49.5a285.2 285.2 0 00-.2 103.4A350 350 0 00351.7 574c-53.4-79.4-72.8-182.1-56.6-297.1l-53.9-31.1a376.9 376.9 0 00-58.5 76.1z"
-							fill="#fff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-black dark:transition ease-in-out duration-300 group-hover:fill-white"
 						/>
 						<path
 							id="path8864-4-8-1-2-7-3-1_21_"
 							d="M841.3 702.1c16-27.8 28.4-57.6 36.8-88.6L792.5 564c6.4-34.5 6.4-69.6.2-103.4-40.3-10.6-80.6-14.1-120.3-10.6 53.4 79.4 72.8 182.1 56.6 297.1l53.9 31.1a375.6 375.6 0 0058.4-76.1z"
-							fill="#00b4ff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-quasar1"
 						/>
 						<path
 							id="path8868-6-7-4-7-5-7-1_21_"
 							d="M182.7 702.1a378.5 378.5 0 0058.3 76.2l85.7-49.5a286 286 0 0089.6 51.9 348.6 348.6 0 0069.3-98.9c-95.5 6.5-194.1-28-285.6-99.6l-54 31.1c8.4 31.1 20.8 61 36.7 88.8z"
-							fill="#00b4ff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-quasar1"
 						/>
 						<path
 							id="path8872-6-3-2-1-4-2-1_21_"
 							d="M512 131.7c-32.1.1-64 4.2-95.2 12.4v99a284 284 0 00-89.7 51.6c11 40.2 28.2 76.9 51 109.5 42.1-86 121.3-154 229-197.6v-62.3c-30.9-8.2-63-12.4-95.1-12.6z"
-							fill="#00b4ff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-quasar1"
 						/>
 						<path
 							d="M512 66.4c245.7 0 445.6 199.9 445.6 445.6S757.7 957.6 512 957.6 66.4 757.7 66.4 512 266.3 66.4 512 66.4M512 1a511 511 0 100 1022A511 511 0 00512 1z"
-							fill="#00b4ff"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-quasar1"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">Quasar</p>
 				</div>
 				<!-- Nuxt.js -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 900 900"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
 							d="M504.908 750H839.476C850.103 750.001 860.542 747.229 869.745 741.963C878.948 736.696 886.589 729.121 891.9 719.999C897.211 710.876 900.005 700.529 900 689.997C899.995 679.465 897.193 669.12 891.873 660.002L667.187 274.289C661.876 265.169 654.237 257.595 645.036 252.329C635.835 247.064 625.398 244.291 614.773 244.291C604.149 244.291 593.711 247.064 584.511 252.329C575.31 257.595 567.67 265.169 562.36 274.289L504.908 372.979L392.581 179.993C387.266 170.874 379.623 163.301 370.42 158.036C361.216 152.772 350.777 150 340.151 150C329.525 150 319.086 152.772 309.883 158.036C300.679 163.301 293.036 170.874 287.721 179.993L8.12649 660.002C2.80743 669.12 0.00462935 679.465 5.72978e-06 689.997C-0.00461789 700.529 2.78909 710.876 8.10015 719.999C13.4112 729.121 21.0523 736.696 30.255 741.963C39.4576 747.229 49.8973 750.001 60.524 750H270.538C353.748 750 415.112 713.775 457.336 643.101L559.849 467.145L614.757 372.979L779.547 655.834H559.849L504.908 750ZM267.114 655.737L120.551 655.704L340.249 278.586L449.87 467.145L376.474 593.175C348.433 639.03 316.577 655.737 267.114 655.737Z"
-							fill="#00DC82"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-nuxt1"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">Nuxt.js</p>
 				</div>
 				<!-- Tailwind CSS -->
 				<div
-					class="flex justify-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
+					class="flex flex-col items-center w-1/2 p-6 align-middle md:w-1/3 xl:w-1/4"
 				>
 					<svg
 						viewBox="0 0 54 33"
-						class="fill-current w-14 h-14 group hover:scale-150"
+						class="fill-current w-14 h-14 group transition ease-in-out duration-300 hover:scale-150"
 					>
 						<path
-							fill="#38bdf8"
-							fill-rule="evenodd"
 							d="M27 0c-7.2 0-11.7 3.6-13.5 10.8 2.7-3.6 5.85-4.95 9.45-4.05 2.054.513 3.522 2.004 5.147 3.653C30.744 13.09 33.808 16.2 40.5 16.2c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C36.756 3.11 33.692 0 27 0zM13.5 16.2C6.3 16.2 1.8 19.8 0 27c2.7-3.6 5.85-4.95 9.45-4.05 2.054.514 3.522 2.004 5.147 3.653C17.244 29.29 20.308 32.4 27 32.4c7.2 0 11.7-3.6 13.5-10.8-2.7 3.6-5.85 4.95-9.45 4.05-2.054-.513-3.522-2.004-5.147-3.653C23.256 19.31 20.192 16.2 13.5 16.2z"
-							clip-rule="evenodd"
+							class="fill-black dark:fill-gray-200 transition ease-in-out duration-300 group-hover:fill-tailwind1"
 						/>
 					</svg>
+					<p class="py-3 text-black dark:text-gray-200">Tailwind</p>
 				</div>
 			</div>
 		</div>

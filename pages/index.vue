@@ -1,5 +1,5 @@
 <template>
-	<section class="font-inter bg-gray-300 dark:bg-[#050607]">
+	<section class="font-inter bg-backlight dark:bg-backblack">
 		<section id="introduction">
 			<ContentIntro />
 		</section>

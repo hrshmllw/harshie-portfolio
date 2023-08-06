@@ -20,7 +20,7 @@
 						href="https://github.com/hrshmllw"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="flex items-center justify-center w-10 h-10 rounded border-2 text-gray-50 border-gray-700 dark:text-gray-50 dark:border-gray-200 hover:scale-110"
+						class="flex items-center justify-center w-10 h-10 rounded border-2 text-gray-50 border-gray-700 dark:text-gray-50 dark:border-gray-200 transition ease-in-out hover:scale-110 duration-300 hover:animate-pulse"
 					>
 						<svg
 							width="28"
@@ -38,7 +38,7 @@
 						href="https://www.linkedin.com/in/edceljmacawili/"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="flex items-center justify-center w-10 h-10 rounded border-2 text-gray-50 border-gray-700 dark:text-gray-50 dark:border-gray-200 hover:scale-110"
+						class="flex items-center justify-center w-10 h-10 rounded border-2 text-gray-50 border-gray-700 dark:text-gray-50 dark:border-gray-200 transition ease-in-out hover:scale-110 duration-300 hover:animate-pulse"
 					>
 						<svg
 							width="28"
@@ -54,15 +54,6 @@
 					</a>
 				</div>
 			</div>
-			<!-- <div
-				class="p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128"
-			>
-				<img
-					src="~/assets/img/gradpic.png"
-					alt=""
-					class="object-contain h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128"
-				/>
-			</div> -->
 		</div>
 	</section>
 </template>
