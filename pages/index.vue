@@ -19,3 +19,9 @@
 		</section>
 	</section>
 </template>
+
+<script setup>
+useHead({
+	title: "EJMacawili | Portfolio",
+});
+</script>

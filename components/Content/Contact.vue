@@ -193,6 +193,9 @@ export default {
 			const result = await response.json();
 			if (result.success) {
 				console.log(result);
+				this.name = "";
+				this.email = "";
+				this.message = "";
 			}
 		},
 		validateField(fieldName) {
