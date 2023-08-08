@@ -2,10 +2,14 @@
 	<nav class="fixed w-full p-4 bg-transparent">
 		<div class="flex flex-wrap items-center justify-between mx-auto p-4n">
 			<!-- Header logo -->
-			<div
-				class="self-center text-2xl font-semibold whitespace-nowrap mx-3 md:px-10 lg:px-24 dark:text-gray-200"
-			>
-				EJMacawili
+			<div class="flex items-center">
+				<div
+					class="self-center text-2xl font-semibold whitespace-nowrap mx-3 md:px-10 lg:pl-24 dark:text-gray-200"
+				>
+					EJMacawili
+				</div>
+
+				<ThemeDarkMode />
 			</div>
 
 			<!-- Mobile toggle -->
@@ -60,7 +64,7 @@
 
 			<!-- Drawer Menu -->
 			<aside
-				class="p-5 transform top-0 left-0 w-full bg-gray-200 dark:bg-gray-800 fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30"
+				class="p-5 transform top-0 left-0 w-full bg-backlight dark:bg-backblack fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 opacity-95"
 				:class="isOpen ? 'translate-x-0' : '-translate-x-full'"
 			>
 				<div class="close">

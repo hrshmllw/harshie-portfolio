@@ -68,36 +68,159 @@
 					</p>
 				</div>
 			</div>
-			<form class="flex flex-col py-6 space-y-6 md:py-0 md:px-6">
+			<form
+				class="flex flex-col py-6 md:py-0 md:px-6"
+				@submit.prevent="submitForm"
+			>
 				<label class="block">
 					<span class="mb-1">Full name</span>
 					<input
+						v-model="name"
 						type="text"
-						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-accent bg-accent dark:bg-secondary"
+						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-secondary dark:focus:border-accent bg-accent dark:bg-secondary"
+						required
+						@blur="validateField('name')"
+						:class="{ 'border-red-500': nameError }"
 					/>
 				</label>
+				<span
+					class="text-red-500 text-sm mt-none"
+					:style="{ visibility: nameError ? 'visible' : 'hidden' }"
+				>
+					Please enter your full name.
+				</span>
+
 				<label class="block">
 					<span class="mb-1">Email address</span>
 					<input
+						v-model="email"
 						type="email"
-						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-accent bg-accent dark:bg-secondary"
+						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-secondary dark:focus:border-accent bg-accent dark:bg-secondary"
+						required
+						:pattern="emailPattern"
+						@blur="validateField('email')"
+						:class="{ 'border-red-500': emailError }"
 					/>
+					<!-- Show error message for email -->
+					<span
+						class="text-red-500 text-sm mt-none"
+						:style="{
+							visibility: emailError ? 'visible' : 'hidden',
+						}"
+					>
+						Invalid email format.
+					</span>
 				</label>
+
 				<label class="block">
 					<span class="mb-1">Message</span>
 					<textarea
+						v-model="message"
 						rows="3"
-						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-accent bg-accent dark:bg-secondary"
+						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-secondary dark:focus:border-accent bg-accent dark:bg-secondary"
+						required
+						@blur="validateField('message')"
+						:class="{ 'border-red-500': messageError }"
 					></textarea>
+					<!-- Show error message for message -->
+					<span
+						class="text-red-500 text-sm mt-none"
+						:style="{
+							visibility: messageError ? 'visible' : 'hidden',
+						}"
+					>
+						Message is required.
+					</span>
 				</label>
-				<button
-					type="button"
-					disabled
-					class="self-center px-8 py-3 text-lg rounded transition ease-in-out duration-300 enabled:hover:ring enabled:hover:animate-pulse ring-gray-200 bg-primary text-gray-200 disabled:opacity-75 disabled:cursor-not-allowed"
-				>
-					Submit
-				</button>
+
+				<div class="flex justify-center">
+					<button
+						type="submit"
+						class="px-8 py-3 mx-2 text-lg rounded transition ease-in-out duration-300 enabled:hover:ring enabled:hover:animate-pulse ring-gray-200 bg-primary text-black dark:text-gray-200 disabled:bg-gray-200 disabled:dark:bg-gray-700 disabled:cursor-not-allowed"
+						:disabled="!isValid"
+					>
+						Submit
+					</button>
+					<button
+						type="button"
+						class="px-4 py-2 mx-2 text-lg rounded transition ease-in-out duration-300 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-800"
+						@click="resetForm"
+					>
+						<svg
+							viewBox="0 0 25 25"
+							class="w-12 h-12 fill-black dark:fill-gray-200"
+						>
+							<path
+								d="M4.56189 13.5L4.14285 13.9294L4.5724 14.3486L4.99144 13.9189L4.56189 13.5ZM9.92427 15.9243L15.9243 9.92427L15.0757 9.07574L9.07574 15.0757L9.92427 15.9243ZM9.07574 9.92426L15.0757 15.9243L15.9243 15.0757L9.92426 9.07574L9.07574 9.92426ZM19.9 12.5C19.9 16.5869 16.5869 19.9 12.5 19.9V21.1C17.2496 21.1 21.1 17.2496 21.1 12.5H19.9ZM5.1 12.5C5.1 8.41309 8.41309 5.1 12.5 5.1V3.9C7.75035 3.9 3.9 7.75035 3.9 12.5H5.1ZM12.5 5.1C16.5869 5.1 19.9 8.41309 19.9 12.5H21.1C21.1 7.75035 17.2496 3.9 12.5 3.9V5.1ZM5.15728 13.4258C5.1195 13.1227 5.1 12.8138 5.1 12.5H3.9C3.9 12.8635 3.92259 13.2221 3.9665 13.5742L5.15728 13.4258ZM12.5 19.9C9.9571 19.9 7.71347 18.6179 6.38048 16.6621L5.38888 17.3379C6.93584 19.6076 9.54355 21.1 12.5 21.1V19.9ZM4.99144 13.9189L7.42955 11.4189L6.57045 10.5811L4.13235 13.0811L4.99144 13.9189ZM4.98094 13.0706L2.41905 10.5706L1.58095 11.4294L4.14285 13.9294L4.98094 13.0706Z"
+							/>
+						</svg>
+					</button>
+				</div>
 			</form>
 		</div>
 	</section>
 </template>
+
+<script>
+const WEB3FORMS_ACCESS_KEY = "d9364708-16df-4e99-9c7d-6f7b8e263b40";
+
+export default {
+	data() {
+		return {
+			name: "",
+			email: "",
+			message: "",
+			nameError: false,
+			emailError: false,
+			messageError: false,
+		};
+	},
+	methods: {
+		async submitForm() {
+			const response = await fetch("https://api.web3forms.com/submit", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					Accept: "application/json",
+				},
+				body: JSON.stringify({
+					access_key: WEB3FORMS_ACCESS_KEY,
+					name: this.name,
+					email: this.email,
+					message: this.message,
+				}),
+			});
+			const result = await response.json();
+			if (result.success) {
+				console.log(result);
+			}
+		},
+		validateField(fieldName) {
+			if (fieldName === "name") {
+				this.nameError = this.name === "";
+			} else if (fieldName === "email") {
+				this.emailError = !this.isValidEmail;
+			} else if (fieldName === "message") {
+				this.messageError = this.message === "";
+			}
+		},
+		resetForm() {
+			this.name = "";
+			this.email = "";
+			this.message = "";
+			this.nameError = false;
+			this.emailError = false;
+			this.messageError = false;
+		},
+	},
+	computed: {
+		isValid() {
+			return this.name && this.email && this.message && this.isValidEmail;
+		},
+		isValidEmail() {
+			const emailRules = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			return emailRules.test(this.email);
+		},
+	},
+};
+</script>
