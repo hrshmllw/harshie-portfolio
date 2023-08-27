@@ -97,7 +97,6 @@
 						type="email"
 						class="block w-full rounded-md shadow-sm border-secondary dark:border-accent focus:outline-0 focus:ring-0 focus:border-secondary dark:focus:border-accent bg-accent dark:bg-secondary"
 						required
-						:pattern="emailPattern"
 						@blur="validateField('email')"
 						:class="{ 'border-red-500': emailError }"
 					/>

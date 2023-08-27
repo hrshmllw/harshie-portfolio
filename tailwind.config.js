@@ -26,6 +26,7 @@ module.exports = {
 				ts1: "#3178c6",
 				vue1: "#4dba87",
 				vue2: "#435466",
+				react1: "#61dafb",
 				quasar1: "#00b4ff",
 				nuxt1: "#00DC82",
 				tailwind1: "#38bdf8",

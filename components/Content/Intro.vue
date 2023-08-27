@@ -10,9 +10,7 @@
 					Edcel
 					<span class="text-primary">Jeremy</span> Macawili
 				</h1>
-				<p class="mt-6 mb-8 text-3xl sm:mb-6">
-					Front-end Web Developer
-				</p>
+				<p class="mt-6 mb-8 text-3xl sm:mb-6">Junior Web Developer</p>
 				<div
 					class="flex flex-wrap justify-center lg:justify-start gap-2"
 				>
