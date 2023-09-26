@@ -1,13 +1,11 @@
 <template>
-  <section>
-    <div class="lg:pb-22">
-      <div class="container p-8 mx-auto text-center dark:text-gray-200">
-        <div class="pb-2 mt-20 lg:mt-32">
-          <h2 class="text-4xl font-bold text-center sm:text-5xl">Skills</h2>
-        </div>
+  <section class="h-max p-6 py-24">
+    <div class="space-y-8">
+      <div class="mx-auto text-center dark:text-gray-200">
+        <h2 class="text-4xl font-bold text-center sm:text-5xl">Skills</h2>
       </div>
       <div
-        class="container flex flex-wrap justify-center mx-auto xl:px-52 text-gray-200"
+        class="container flex flex-wrap justify-center mx-auto xl:px-52 text-gray-200 font-poppins"
       >
         <!-- HTML5 -->
         <div

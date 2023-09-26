@@ -1,8 +1,8 @@
 <template>
-  <section class="lg:h-max px-4">
+  <section class="h-max px-4 py-24">
     <!-- Other content here -->
     <div class="container p-8 mx-auto text-center dark:text-gray-200">
-      <h2 class="text-4xl font-bold sm:text-5xl mt-20 lg:mt-32">Projects</h2>
+      <h2 class="text-4xl font-bold sm:text-5xl">Projects</h2>
     </div>
 
     <!-- Iterating through projectItems using v-for -->
@@ -10,10 +10,8 @@
       <div
         :class="[
           'container',
-          'max-w-xs',
-          'sm:max-w-xl',
-          'md:max-w-2xl',
-          'lg:max-w-4xl',
+          'max-w-4xl',
+
           'px-10',
           'py-6',
           'mx-auto',
@@ -37,7 +35,7 @@
               'px-2',
               'py-1',
               'mx-1',
-              'font-bold',
+              'font-poppins',
               'rounded-full',
               index % 2 === 0
                 ? 'bg-accent dark:bg-secondary'
@@ -55,9 +53,9 @@
           <a :href="project.demoUrl" class="text-2xl font-bold">{{
             project.name
           }}</a>
-          <p class="mt-2">{{ project.description }}</p>
+          <p class="mt-2 font-poppins">{{ project.description }}</p>
         </div>
-        <div class="flex items-center justify-end mt-4">
+        <div class="flex items-center justify-end mt-4 font-poppins">
           <!-- Displaying demo and GitHub links -->
           <a
             v-if="project.demoUrl"

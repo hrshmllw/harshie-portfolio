@@ -1,6 +1,7 @@
 <template>
   <div>
     <div
+      v-if="showCircles"
       v-for="(circle, index) in circles"
       :key="index"
       class="fixed w-[24px] h-[24px] rounded-full bg-black dark:bg-white top-0 left-0 pointer-events-none z-[99999] transition-colors duration-500 ease-in-out"
@@ -15,11 +16,14 @@ export default {
     return {
       coords: { x: 0, y: 0 },
       circles: [],
+      showCircles: true,
     };
   },
   mounted() {
     this.initializeCircles();
+    this.checkScreenSize();
     window.addEventListener("mousemove", this.updateCoords);
+    window.addEventListener("resize", this.checkScreenSize);
     this.animateCircles();
   },
   methods: {
@@ -41,7 +45,7 @@ export default {
     },
     animateCircles() {
       const self = this;
-      const edgeThreshold = 10;
+      const edgeThreshold = 13;
 
       function animate() {
         let x = self.coords.x;
@@ -85,6 +89,14 @@ export default {
       }
 
       animate();
+    },
+
+    checkScreenSize() {
+      if (window.innerWidth < 1024) {
+        this.showCircles = false;
+      } else {
+        this.showCircles = true;
+      }
     },
   },
 };

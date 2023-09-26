@@ -1,5 +1,7 @@
 <template>
-  <nav class="fixed w-full p-4 bg-transparent z-50">
+  <nav
+    class="fixed w-full p-4 bg-backlight dark:bg-backblack border-b-2 border-black dark:border-white z-50"
+  >
     <div class="flex flex-wrap items-center justify-between mx-auto p-4n">
       <!-- Header logo -->
       <div class="flex items-center">
@@ -40,32 +42,10 @@
         </ul>
       </div>
 
-      <!-- Dark Background Transition -->
-      <transition
-        enter-class="opacity-0"
-        enter-active-class="ease-out transition-medium"
-        enter-to-class="opacity-100"
-        leave-class="opacity-100"
-        leave-active-class="ease-out transition-medium"
-        leave-to-class="opacity-0"
-      >
-        <div
-          @keydown.esc="isOpen = false"
-          v-show="isOpen"
-          class="z-10 fixed inset-0 transition-opacity"
-        >
-          <div
-            @click="isOpen = false"
-            class="absolute inset-0 bg-black opacity-50"
-            tabindex="0"
-          ></div>
-        </div>
-      </transition>
-
       <!-- Drawer Menu -->
       <aside
-        class="p-5 transform top-0 left-0 w-full bg-backlight dark:bg-backblack fixed h-full overflow-auto ease-in-out transition-all duration-300 z-30 opacity-95"
-        :class="isOpen ? 'translate-x-0' : '-translate-x-full'"
+        class="p-5 transform top-0 left-0 w-full bg-backlight dark:bg-backblack fixed h-full overflow-auto ease-in-out transition-all duration-700 z-30 opacity-95"
+        :class="isOpen ? 'translate-x-0' : 'translate-x-full'"
       >
         <div class="close">
           <button

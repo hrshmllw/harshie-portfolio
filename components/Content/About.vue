@@ -1,17 +1,16 @@
 <template>
-  <section>
+  <section class="h-max py-24">
     <div
-      class="container max-w-xl p-6 mx-auto space-y-6 lg:space-y-12 lg:px-8 lg:max-w-7xl lg:h-screen"
+      class="container max-w-xl px-6 m-auto space-y-6 lg:space-y-12 lg:max-w-7xl"
     >
-      <div class="mt-20 lg:mt-32">
-        <h2
-          class="text-4xl font-bold text-center sm:text-5xl dark:text-gray-200"
-        >
-          About Me
-        </h2>
-      </div>
+      <h2 class="text-4xl font-bold text-center sm:text-5xl dark:text-gray-200">
+        About Me
+      </h2>
       <div class="grid lg:gap-8 lg:grid-cols-2 lg:items-center">
-        <div v-motion-slide-visible-once-right class="lg:col-start-2">
+        <div
+          v-motion-slide-visible-once-right
+          class="lg:col-start-2 font-poppins"
+        >
           <p class="mt-3 text-lg dark:text-gray-200">
             Hello! I'm Edcel Jeremy Macawili, a fresh graduate of BS Computer
             Science from Colegio de San Juan de Letran - Calamba, and I am

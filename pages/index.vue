@@ -5,7 +5,6 @@ useHead({
 </script>
 
 <template>
-  <ThemeCursor />
   <section
     class="font-inter bg-backlight dark:bg-backblack transition ease-in-out duration-300"
   >
