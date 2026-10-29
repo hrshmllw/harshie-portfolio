@@ -1,27 +1,18 @@
-<script setup>
-useHead({
-  title: "EJMacawili | Portfolio",
+<script setup lang="ts">
+const { site } = useAppConfig();
+
+useSeoMeta({
+  title: `${site.name} | Portfolio`,
+  description: site.tagline,
 });
 </script>
 
 <template>
-  <section
-    class="font-inter bg-backlight dark:bg-backblack transition ease-in-out duration-300"
-  >
-    <section id="introduction">
-      <ContentIntro />
-    </section>
-    <section id="about">
-      <ContentAbout />
-    </section>
-    <section id="skills">
-      <ContentSkills />
-    </section>
-    <section id="projects">
-      <ContentProjects />
-    </section>
-    <section id="contact">
-      <ContentContact />
-    </section>
-  </section>
+  <div>
+    <SectionsHeroSection />
+    <SectionsAboutSection />
+    <SectionsSkillsSection />
+    <SectionsProjectsSection />
+    <SectionsContactSection />
+  </div>
 </template>

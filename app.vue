@@ -1,13 +1,18 @@
 <template>
-	<NuxtLayout>
-		<NuxtPage />
-	</NuxtLayout>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
-<script setup>
-import { initFlowbite } from "flowbite";
+<script setup lang="ts">
+const { site } = useAppConfig();
 
-onMounted(() => {
-	initFlowbite();
+useSeoMeta({
+  title: `${site.name} | Portfolio`,
+  description: site.tagline,
+  ogTitle: `${site.fullName} | ${site.role}`,
+  ogDescription: site.tagline,
+  ogType: "website",
+  twitterCard: "summary_large_image",
 });
 </script>
