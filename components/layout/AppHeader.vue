@@ -83,10 +83,11 @@ onUnmounted(() => {
     >
       <button
         type="button"
-        class="font-display text-sm font-semibold tracking-tight transition-opacity hover:opacity-70"
+        class="text-fg transition-opacity hover:opacity-70"
+        :aria-label="`${site.fullName}, back to top`"
         @click="handleNavClick('#introduction')"
       >
-        {{ site.name }}
+        <LayoutAppLogo class="block h-6 w-6" />
       </button>
 
       <nav class="hidden items-center gap-7 lg:flex" aria-label="Primary">
