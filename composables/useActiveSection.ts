@@ -1,8 +1,9 @@
 const SECTION_IDS = [
   "introduction",
   "about",
-  "skills",
-  "projects",
+  "expertise",
+  "experience",
+  "work",
   "contact",
 ] as const;
 
@@ -30,7 +31,7 @@ export function useActiveSection() {
         }
       },
       {
-        rootMargin: "-40% 0px -45% 0px",
+        rootMargin: "-35% 0px -50% 0px",
         threshold: [0, 0.25, 0.5, 0.75, 1],
       },
     );

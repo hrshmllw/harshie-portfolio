@@ -17,103 +17,116 @@ const displayedProjects = computed(() =>
 const hasMoreProjects = computed(
   () => (projects.value?.length ?? 0) > featuredProjects.value.length,
 );
+
+const formatIndex = (index: number) =>
+  String(index + 1).padStart(2, "0");
 </script>
 
 <template>
-  <section id="projects" class="section-container border-t border-border">
-    <div
-      v-motion
-      :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
-      :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-      :transition="{ duration: 500 }"
-    >
-      <p class="section-eyebrow">Projects</p>
-      <h2 class="section-title">Selected work.</h2>
-      <p class="mt-4 max-w-2xl text-muted">
-        Featured projects across client work and personal builds. Some details
-        are anonymized under confidentiality agreements.
-      </p>
-    </div>
-
-    <div class="mt-12 grid gap-6">
-      <article
-        v-for="(project, index) in displayedProjects"
-        :key="project.id"
+  <section id="work" class="border-t border-border">
+    <div class="container-x section-pad">
+      <div
         v-motion
-        :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
+        :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
         :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-        :transition="{ duration: 450, delay: index * 60 }"
-        class="rounded-xl border border-border bg-surface p-6 md:p-8"
+        :transition="{ duration: 500 }"
+        class="max-w-2xl"
       >
-        <div class="flex flex-wrap items-start justify-between gap-4">
-          <div class="max-w-3xl">
-            <div class="flex items-center gap-2">
-              <h3 class="text-xl font-semibold tracking-tight">
+        <p class="eyebrow">Work</p>
+        <h2 class="section-title mt-4">Selected work</h2>
+        <p class="mt-4 text-muted">
+          Featured projects across client engagements and personal builds.
+          Confidential client work is listed without public links.
+        </p>
+      </div>
+
+      <div class="mt-14 border-t border-border">
+        <article
+          v-for="(project, index) in displayedProjects"
+          :key="project.id"
+          v-motion
+          :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
+          :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
+          :transition="{ duration: 450, delay: index * 50 }"
+          class="grid gap-4 border-b border-border py-8 md:grid-cols-[4rem_1fr_auto] md:gap-8 md:py-10"
+        >
+          <p
+            class="font-display text-sm tabular-nums text-muted"
+            aria-hidden="true"
+          >
+            {{ formatIndex(index) }}
+          </p>
+
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+              <h3 class="font-display text-xl font-semibold tracking-tight md:text-2xl">
                 {{ project.title }}
               </h3>
-              <span
-                v-if="project.confidential"
-                class="font-mono text-xs text-accent"
-                title="Confidential project"
+              <p
+                v-if="project.year"
+                class="text-xs uppercase tracking-[0.18em] text-muted"
               >
-                *
-              </span>
+                {{ project.year }}
+              </p>
             </div>
-            <p class="mt-3 text-sm leading-relaxed text-muted md:text-base">
+
+            <p class="mt-3 max-w-2xl text-sm leading-relaxed text-muted md:text-base">
               {{ project.description }}
             </p>
+
+            <ul class="mt-4 flex flex-wrap gap-x-3 gap-y-2" aria-label="Technologies">
+              <li
+                v-for="tag in project.tags"
+                :key="tag"
+                class="text-xs text-muted"
+              >
+                <span class="text-border" aria-hidden="true">/</span>
+                {{ tag }}
+              </li>
+            </ul>
+
+            <p
+              v-if="project.confidential"
+              class="mt-4 text-xs uppercase tracking-[0.16em] text-accent-bright/80"
+            >
+              Client work under NDA — no public links
+            </p>
+
+            <div
+              v-else-if="project.liveUrl || project.githubUrl"
+              class="mt-5 flex flex-wrap gap-3"
+            >
+              <a
+                v-if="project.liveUrl"
+                :href="project.liveUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-ghost text-xs"
+              >
+                Live site
+              </a>
+              <a
+                v-if="project.githubUrl"
+                :href="project.githubUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-ghost text-xs"
+              >
+                Repository
+              </a>
+            </div>
           </div>
-          <p
-            v-if="project.year"
-            class="font-mono text-xs uppercase tracking-[0.2em] text-muted"
-          >
-            {{ project.year }}
-          </p>
-        </div>
+        </article>
+      </div>
 
-        <div class="mt-5 flex flex-wrap gap-2">
-          <span
-            v-for="tag in project.tags"
-            :key="tag"
-            class="rounded-full border border-border px-3 py-1 text-xs text-muted"
-          >
-            {{ tag }}
-          </span>
-        </div>
-
-        <div
-          v-if="!project.confidential && (project.liveUrl || project.githubUrl)"
-          class="mt-6 flex flex-wrap gap-3"
-        >
-          <a
-            v-if="project.liveUrl"
-            :href="project.liveUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-ghost text-xs"
-          >
-            Live site
-          </a>
-          <a
-            v-if="project.githubUrl"
-            :href="project.githubUrl"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-ghost text-xs"
-          >
-            Repository
-          </a>
-        </div>
-      </article>
+      <button
+        v-if="hasMoreProjects"
+        type="button"
+        class="btn-ghost mt-10"
+        @click="showAll = !showAll"
+      >
+        {{ showAll ? "Show featured only" : "Show all projects" }}
+      </button>
     </div>
-
-    <button
-      v-if="hasMoreProjects"
-      type="button"
-      class="btn-ghost mt-8"
-      @click="showAll = !showAll"
-    >
-      {{ showAll ? "Show featured only" : "Show all projects" }}
-    </button>
   </section>
 </template>

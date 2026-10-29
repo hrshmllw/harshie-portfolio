@@ -6,7 +6,6 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxt/content",
-    "@nuxtjs/color-mode",
     "@nuxt/image",
     "@nuxt/icon",
     "@nuxt/fonts",
@@ -18,16 +17,10 @@ export default defineNuxtConfig({
     cssPath: "~/assets/css/main.css",
   },
 
-  colorMode: {
-    classSuffix: "",
-    preference: "dark",
-    fallback: "dark",
-  },
-
   fonts: {
     families: [
-      { name: "Inter", provider: "google" },
-      { name: "JetBrains Mono", provider: "google" },
+      { name: "Archivo", provider: "google", weights: [400, 500, 600, 700] },
+      { name: "Inter", provider: "google", weights: [400, 500, 600] },
     ],
   },
 
@@ -41,6 +34,9 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: { lang: "en" },
       link: [{ rel: "icon", href: "/favicon.ico" }],
+      bodyAttrs: {
+        class: "bg-bg text-fg",
+      },
     },
   },
 });

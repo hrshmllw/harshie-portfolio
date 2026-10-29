@@ -7,70 +7,102 @@ const { scrollToSection } = useActiveSection();
 <template>
   <section
     id="introduction"
-    class="section-container flex min-h-screen flex-col justify-center pt-24"
+    class="relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
   >
-    <p class="section-eyebrow">Portfolio</p>
-    <h1
-      v-motion
-      :initial="shouldAnimate ? { opacity: 0, y: 24 } : false"
-      :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-      :transition="{ duration: 500 }"
-      class="mt-4 max-w-3xl text-4xl font-semibold tracking-tight md:text-6xl lg:text-7xl"
-    >
-      {{ site.fullName }}
-    </h1>
-    <p
-      v-motion
-      :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
-      :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-      :transition="{ duration: 500, delay: 100 }"
-      class="mt-4 text-lg text-muted md:text-xl"
-    >
-      {{ site.role }}
-    </p>
-    <p
-      v-motion
-      :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
-      :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-      :transition="{ duration: 500, delay: 200 }"
-      class="mt-6 max-w-2xl text-base leading-relaxed text-muted"
-    >
-      {{ site.tagline }}
-    </p>
-
+    <CanvasHeroGrid class="absolute inset-0" />
     <div
-      v-motion
-      :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
-      :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-      :transition="{ duration: 500, delay: 300 }"
-      class="mt-8 flex flex-wrap items-center gap-3"
-    >
-      <button type="button" class="btn-primary" @click="scrollToSection('#projects')">
-        View work
-      </button>
-      <button type="button" class="btn-ghost" @click="scrollToSection('#contact')">
-        Get in touch
-      </button>
-    </div>
+      class="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg/40 via-bg/25 to-bg/90"
+      aria-hidden="true"
+    />
 
-    <div
-      v-motion
-      :initial="shouldAnimate ? { opacity: 0 } : false"
-      :enter="shouldAnimate ? { opacity: 1 } : false"
-      :transition="{ duration: 500, delay: 400 }"
-      class="mt-10 flex items-center gap-4"
-    >
-      <a
-        v-for="social in site.socials"
-        :key="social.url"
-        :href="social.url"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-muted transition-colors hover:border-fg hover:text-fg"
-        :aria-label="social.label"
+    <div class="container-x relative z-10 pt-24 pb-16">
+      <p
+        v-motion
+        :initial="shouldAnimate ? { opacity: 0, y: 12 } : false"
+        :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
+        :transition="{ duration: 500 }"
+        class="eyebrow"
       >
-        <Icon :name="social.icon" class="h-5 w-5" />
-      </a>
+        {{ site.role }}
+      </p>
+
+      <h1
+        v-motion
+        :initial="shouldAnimate ? { opacity: 0, y: 24 } : false"
+        :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
+        :transition="{ duration: 600, delay: 80 }"
+        class="display mt-5 max-w-4xl"
+      >
+        Bringing your designs to life.
+      </h1>
+
+      <ul
+        v-motion
+        :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
+        :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
+        :transition="{ duration: 500, delay: 160 }"
+        class="mt-8 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted"
+        aria-label="Expertise areas"
+      >
+        <li
+          v-for="(tag, index) in site.expertiseTags"
+          :key="tag"
+          class="flex items-center gap-4"
+        >
+          <span
+            v-if="index > 0"
+            class="hidden h-3 w-px bg-border sm:block"
+            aria-hidden="true"
+          />
+          <span>{{ tag }}</span>
+        </li>
+      </ul>
+
+      <p
+        v-motion
+        :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
+        :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
+        :transition="{ duration: 500, delay: 220 }"
+        class="mt-8 max-w-xl text-base leading-relaxed text-muted md:text-lg"
+      >
+        {{ site.tagline }}
+      </p>
+
+      <div
+        v-motion
+        :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
+        :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
+        :transition="{ duration: 500, delay: 300 }"
+        class="mt-10 flex flex-wrap items-center gap-3"
+      >
+        <button
+          type="button"
+          class="btn-primary"
+          @click="scrollToSection('#work')"
+        >
+          Explore my work
+        </button>
+        <button
+          type="button"
+          class="btn-ghost"
+          @click="scrollToSection('#contact')"
+        >
+          Get in touch
+        </button>
+      </div>
     </div>
+
+    <button
+      type="button"
+      class="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-2 text-muted transition-colors hover:text-fg"
+      aria-label="Scroll to about"
+      @click="scrollToSection('#about')"
+    >
+      <span class="text-[10px] uppercase tracking-[0.22em]">Scroll</span>
+      <span
+        class="block h-8 w-px origin-top bg-border motion-safe:animate-pulse"
+        aria-hidden="true"
+      />
+    </button>
   </section>
 </template>

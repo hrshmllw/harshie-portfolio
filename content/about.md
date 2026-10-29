@@ -3,8 +3,6 @@ title: About
 location: Calamba, Laguna, Philippines
 ---
 
-I'm Edcel Jeremy Macawili, a frontend developer focused on building web applications that feel fast, responsive, and polished — without compromising SEO or performance.
+As a frontend developer, I turn thoughtful designs into engaging, accessible, and responsive web experiences.
 
-I work across React/Next.js, Vue/Nuxt, WordPress, and Shopify, shipping interfaces that hold up across devices and use cases. I care about clean implementation, thoughtful motion, and maintainable code.
-
-If you'd like to connect, reach out via the contact form or email.
+I combine an eye for detail with clean, maintainable code to build interfaces that look great, work seamlessly, and perform across devices.

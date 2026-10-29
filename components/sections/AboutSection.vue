@@ -5,70 +5,53 @@ const { shouldAnimate } = useMotionPreference();
 const { data: about } = await useAsyncData("about", () =>
   queryCollection("about").first(),
 );
-
-const experienceYears = computed(
-  () => new Date().getFullYear() - site.experienceStartYear,
-);
 </script>
 
 <template>
-  <section id="about" class="section-container border-t border-border">
-    <div class="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr]">
+  <section id="about" class="border-t border-border">
+    <div class="container-x section-pad">
       <div
         v-motion
         :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
         :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
         :transition="{ duration: 500 }"
+        class="max-w-3xl"
       >
-        <p class="section-eyebrow">About</p>
-        <h2 class="section-title">Building interfaces that feel intentional.</h2>
+        <p class="eyebrow">About</p>
+        <h2 class="section-title mt-4">
+          Frontend Development: Purpose &amp; Performance
+        </h2>
 
         <div
           v-if="about"
-          class="prose prose-neutral mt-6 max-w-none text-base leading-relaxed text-muted dark:prose-invert"
+          class="mt-6 space-y-4 text-base leading-relaxed text-muted md:text-lg"
         >
           <ContentRenderer :value="about" />
         </div>
 
-        <dl class="mt-8 grid gap-4 sm:grid-cols-2">
-          <div>
-            <dt class="font-mono text-xs uppercase tracking-[0.2em] text-muted">
-              Location
-            </dt>
-            <dd class="mt-1 text-sm">{{ site.location }}</dd>
-          </div>
-          <div>
-            <dt class="font-mono text-xs uppercase tracking-[0.2em] text-muted">
-              Experience
-            </dt>
-            <dd class="mt-1 text-sm">{{ experienceYears }}+ years</dd>
-          </div>
-        </dl>
-
-        <a
-          :href="site.resumePath"
-          download
-          class="btn-primary mt-8"
-        >
+        <a :href="site.resumePath" download class="btn-ghost mt-8">
           Download resume
         </a>
       </div>
 
-      <div
-        v-motion
-        :initial="shouldAnimate ? { opacity: 0, scale: 0.98 } : false"
-        :visibleOnce="shouldAnimate ? { opacity: 1, scale: 1 } : false"
-        :transition="{ duration: 500, delay: 100 }"
-        class="relative"
-      >
-        <NuxtImg
-          src="~/assets/img/gradpic.png"
-          alt="Edcel Jeremy Macawili"
-          width="640"
-          height="800"
-          class="aspect-[4/5] w-full rounded-xl border border-border object-cover"
-          loading="lazy"
-        />
+      <div class="mt-16 grid gap-0 border-t border-border md:grid-cols-3">
+        <article
+          v-for="(principle, index) in site.principles"
+          :key="principle.title"
+          v-motion
+          :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
+          :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
+          :transition="{ duration: 450, delay: index * 80 }"
+          class="border-border py-8 md:border-r md:px-8 md:py-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+        >
+          <p class="eyebrow">0{{ index + 1 }}</p>
+          <h3 class="mt-3 font-display text-xl font-semibold tracking-tight">
+            {{ principle.title }}
+          </h3>
+          <p class="mt-3 text-sm leading-relaxed text-muted">
+            {{ principle.description }}
+          </p>
+        </article>
       </div>
     </div>
   </section>
