@@ -13,7 +13,7 @@ const { shouldAnimate } = useMotionPreference();
         :transition="{ duration: 500 }"
         class="max-w-2xl"
       >
-        <p class="eyebrow">Experience</p>
+        <p class="eyebrow eyebrow-marker">Experience</p>
         <h2 class="section-title mt-4">Professional Experience</h2>
         <p class="mt-4 text-muted">
           Roles focused on frontend implementation, delivery, and quality across
@@ -36,7 +36,8 @@ const { shouldAnimate } = useMotionPreference();
             aria-hidden="true"
           >
             <span
-              class="block h-3 w-3 rounded-full border border-accent-soft bg-bg"
+              class="block h-3 w-3 rounded-full border border-accent-soft"
+              :class="entry.end === null ? 'bg-accent-bright' : 'bg-bg'"
             />
           </span>
 
@@ -48,7 +49,8 @@ const { shouldAnimate } = useMotionPreference();
               <p class="mt-1 text-sm text-muted">{{ entry.company }}</p>
             </div>
             <time
-              class="shrink-0 text-xs uppercase tracking-[0.18em] text-muted"
+              class="shrink-0 text-xs uppercase tracking-[0.18em]"
+              :class="entry.end === null ? 'text-accent-bright' : 'text-muted'"
               :datetime="entry.start"
             >
               {{ entry.dateLabel }}

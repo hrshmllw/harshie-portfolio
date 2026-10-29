@@ -110,7 +110,7 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <section id="contact" class="border-t border-border">
+  <section id="contact" class="bg-accent">
     <div class="container-x section-pad">
       <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
         <div
@@ -119,22 +119,22 @@ const submitForm = async () => {
           :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
           :transition="{ duration: 500 }"
         >
-          <p class="eyebrow">Contact</p>
+          <p class="eyebrow eyebrow-marker text-fg/75 before:bg-fg">Contact</p>
           <h2 class="section-title mt-4">Interested? Get in touch.</h2>
-          <p class="mt-4 max-w-md text-muted">
+          <p class="mt-4 max-w-md text-fg/75">
             Have a project in mind, a role to discuss, or a question about my
             work? Send a message and I'll get back to you.
           </p>
 
           <ul class="mt-8 space-y-4 text-sm">
-            <li class="flex items-center gap-3 text-muted">
+            <li class="flex items-center gap-3 text-fg/75">
               <Icon name="lucide:map-pin" class="h-4 w-4 shrink-0" />
               <span>{{ site.location }}</span>
             </li>
             <li>
               <a
                 :href="`mailto:${site.email}`"
-                class="flex items-center gap-3 text-muted transition-colors hover:text-fg"
+                class="flex items-center gap-3 text-fg/75 transition-colors hover:text-fg"
               >
                 <Icon name="lucide:mail" class="h-4 w-4 shrink-0" />
                 <span>{{ site.email }}</span>
@@ -145,7 +145,7 @@ const submitForm = async () => {
                 :href="social.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="flex items-center gap-3 text-muted transition-colors hover:text-fg"
+                class="flex items-center gap-3 text-fg/75 transition-colors hover:text-fg"
               >
                 <Icon :name="social.icon" class="h-4 w-4 shrink-0" />
                 <span>{{ social.label }}</span>
@@ -159,7 +159,7 @@ const submitForm = async () => {
           :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
           :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
           :transition="{ duration: 500, delay: 100 }"
-          class="relative border border-border bg-surface/40 p-6 md:p-8"
+          class="relative border border-fg/15 bg-black/20 p-6 md:p-8"
           novalidate
           @submit.prevent="submitForm"
         >
@@ -191,10 +191,15 @@ const submitForm = async () => {
               <p
                 v-if="errors.name"
                 id="name-error"
-                class="mt-1.5 text-xs text-accent-bright"
+                class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
                 role="alert"
               >
-                {{ errors.name }}
+                <Icon
+                  name="lucide:circle-alert"
+                  class="mt-px h-3.5 w-3.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{{ errors.name }}</span>
               </p>
             </div>
 
@@ -214,10 +219,15 @@ const submitForm = async () => {
               <p
                 v-if="errors.email"
                 id="email-error"
-                class="mt-1.5 text-xs text-accent-bright"
+                class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
                 role="alert"
               >
-                {{ errors.email }}
+                <Icon
+                  name="lucide:circle-alert"
+                  class="mt-px h-3.5 w-3.5 shrink-0"
+                  aria-hidden="true"
+                />
+                <span>{{ errors.email }}</span>
               </p>
             </div>
           </div>
@@ -237,10 +247,15 @@ const submitForm = async () => {
             <p
               v-if="errors.subject"
               id="subject-error"
-              class="mt-1.5 text-xs text-accent-bright"
+              class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
               role="alert"
             >
-              {{ errors.subject }}
+              <Icon
+                name="lucide:circle-alert"
+                class="mt-px h-3.5 w-3.5 shrink-0"
+                aria-hidden="true"
+              />
+              <span>{{ errors.subject }}</span>
             </p>
           </div>
 
@@ -259,22 +274,31 @@ const submitForm = async () => {
             <p
               v-if="errors.message"
               id="message-error"
-              class="mt-1.5 text-xs text-accent-bright"
+              class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
               role="alert"
             >
-              {{ errors.message }}
+              <Icon
+                name="lucide:circle-alert"
+                class="mt-px h-3.5 w-3.5 shrink-0"
+                aria-hidden="true"
+              />
+              <span>{{ errors.message }}</span>
             </p>
           </div>
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
             <button
               type="submit"
-              class="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+              class="btn-inverse disabled:cursor-not-allowed disabled:opacity-50"
               :disabled="isSubmitting"
             >
               {{ isSubmitting ? "Sending..." : "Send message" }}
             </button>
-            <button type="button" class="btn-ghost" @click="resetForm">
+            <button
+              type="button"
+              class="btn-ghost border-fg/30 hover:border-fg/60 hover:bg-black/20"
+              @click="resetForm"
+            >
               Reset
             </button>
           </div>
@@ -288,9 +312,17 @@ const submitForm = async () => {
             </p>
             <p
               v-if="submitStatus === 'error'"
-              class="text-sm text-accent-bright"
+              class="flex items-start gap-1.5 text-sm text-fg"
             >
-              Something went wrong. Please try again or email me directly.
+              <Icon
+                name="lucide:circle-alert"
+                class="mt-0.5 h-4 w-4 shrink-0"
+                aria-hidden="true"
+              />
+              <span
+                >Something went wrong. Please try again or email me
+                directly.</span
+              >
             </p>
           </div>
         </form>

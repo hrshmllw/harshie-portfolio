@@ -13,7 +13,7 @@ const { shouldAnimate } = useMotionPreference();
         :transition="{ duration: 500 }"
         class="max-w-2xl"
       >
-        <p class="eyebrow">Expertise</p>
+        <p class="eyebrow eyebrow-marker">Expertise</p>
         <h2 class="section-title mt-4">Technologies &amp; Tools</h2>
         <p class="mt-4 text-muted">
           A structured set of languages, frameworks, and tooling I use to ship
@@ -32,7 +32,10 @@ const { shouldAnimate } = useMotionPreference();
         >
           <div class="flex items-center gap-4">
             <h3 class="eyebrow shrink-0">{{ group.category }}</h3>
-            <span class="rule" aria-hidden="true" />
+            <span class="flex h-px min-w-0 flex-1" aria-hidden="true">
+              <span class="h-px w-8 shrink-0 bg-accent-soft" />
+              <span class="rule" />
+            </span>
           </div>
 
           <ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">

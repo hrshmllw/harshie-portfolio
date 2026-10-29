@@ -22,7 +22,7 @@ export default {
         },
       },
       maxWidth: {
-        content: "72rem",
+        content: "90rem",
       },
     },
   },

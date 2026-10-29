@@ -17,7 +17,7 @@ const { data: about } = await useAsyncData("about", () =>
         :transition="{ duration: 500 }"
         class="max-w-3xl"
       >
-        <p class="eyebrow">About</p>
+        <p class="eyebrow eyebrow-marker">About</p>
         <h2 class="section-title mt-4">
           Frontend Development: Purpose &amp; Performance
         </h2>
@@ -44,7 +44,7 @@ const { data: about } = await useAsyncData("about", () =>
           :transition="{ duration: 450, delay: index * 80 }"
           class="border-border py-8 md:border-r md:px-8 md:py-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
         >
-          <p class="eyebrow">0{{ index + 1 }}</p>
+          <p class="eyebrow text-accent-bright">0{{ index + 1 }}</p>
           <h3 class="mt-3 font-display text-xl font-semibold tracking-tight">
             {{ principle.title }}
           </h3>

@@ -32,7 +32,7 @@ const formatIndex = (index: number) =>
         :transition="{ duration: 500 }"
         class="max-w-2xl"
       >
-        <p class="eyebrow">Work</p>
+        <p class="eyebrow eyebrow-marker">Work</p>
         <h2 class="section-title mt-4">Selected work</h2>
         <p class="mt-4 text-muted">
           Featured projects across client engagements and personal builds.
@@ -48,10 +48,10 @@ const formatIndex = (index: number) =>
           :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
           :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
           :transition="{ duration: 450, delay: index * 50 }"
-          class="grid gap-4 border-b border-border py-8 md:grid-cols-[4rem_1fr_auto] md:gap-8 md:py-10"
+          class="group grid gap-4 border-b border-border py-8 md:grid-cols-[4rem_1fr_auto] md:gap-8 md:py-10"
         >
           <p
-            class="font-display text-sm tabular-nums text-muted"
+            class="font-display text-sm tabular-nums text-accent-soft transition-colors group-hover:text-accent-bright"
             aria-hidden="true"
           >
             {{ formatIndex(index) }}
@@ -59,7 +59,9 @@ const formatIndex = (index: number) =>
 
           <div class="min-w-0">
             <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-              <h3 class="font-display text-xl font-semibold tracking-tight md:text-2xl">
+              <h3
+                class="font-display text-xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 md:text-2xl"
+              >
                 {{ project.title }}
               </h3>
               <p

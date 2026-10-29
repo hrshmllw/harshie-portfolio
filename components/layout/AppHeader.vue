@@ -1,10 +1,19 @@
 <script setup lang="ts">
 const { site } = useAppConfig();
 const { activeSection, scrollToSection } = useActiveSection();
+const { setNavItemPointer, setNavItemFocus, resetNavItemHovered } =
+  useNavItemHover();
 
 const isMenuOpen = ref(false);
+const { y: scrollY } = useWindowScroll();
+const isScrolled = computed(() => scrollY.value > 8);
+const isElevated = computed(() => isScrolled.value || isMenuOpen.value);
 const menuRef = ref<HTMLElement | null>(null);
 const menuButtonRef = ref<HTMLButtonElement | null>(null);
+const tracerRef = ref<{
+  start: (itemEl: HTMLElement, clientX: number, clientY: number) => void;
+  stop: () => void;
+} | null>(null);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -23,6 +32,39 @@ const isActive = (href: string) => {
   const id = href.replace("#", "");
   if (href === "#") return activeSection.value === "introduction";
   return activeSection.value === id;
+};
+
+const onNavPointerEnter = (event: PointerEvent) => {
+  setNavItemPointer(true);
+  const target = event.currentTarget;
+  if (target instanceof HTMLElement) {
+    tracerRef.value?.start(target, event.clientX, event.clientY);
+  }
+};
+
+const onNavPointerLeave = () => {
+  setNavItemPointer(false);
+  tracerRef.value?.stop();
+};
+
+const onNavFocusIn = (event: FocusEvent) => {
+  const target = event.target;
+  requestAnimationFrame(() => {
+    if (target instanceof Element && target.matches(":focus-visible")) {
+      setNavItemFocus(true);
+    }
+  });
+};
+
+const onNavFocusOut = (event: FocusEvent) => {
+  const next = event.relatedTarget;
+  if (
+    next instanceof Element &&
+    next.closest(".nav-link, .nav-cta")
+  ) {
+    return;
+  }
+  setNavItemFocus(false);
 };
 
 const focusableSelector =
@@ -71,15 +113,23 @@ onUnmounted(() => {
   if (!import.meta.client) return;
   document.body.style.overflow = "";
   document.removeEventListener("keydown", onKeydown);
+  resetNavItemHovered();
 });
 </script>
 
 <template>
   <header
-    class="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-bg/85 backdrop-blur-md"
+    class="fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300"
+    :class="[
+      isElevated
+        ? 'border-border/60 backdrop-blur-md'
+        : 'border-transparent bg-transparent',
+      isMenuOpen ? 'bg-bg/95' : isScrolled && 'bg-bg/70',
+    ]"
   >
+    <LayoutNavTracer ref="tracerRef" />
     <div
-      class="container-x flex h-16 items-center justify-between gap-4"
+      class="container-x relative z-10 flex h-16 items-center justify-between gap-4"
     >
       <button
         type="button"
@@ -90,26 +140,55 @@ onUnmounted(() => {
         <LayoutAppLogo class="block h-6 w-6" />
       </button>
 
-      <nav class="hidden items-center gap-7 lg:flex" aria-label="Primary">
+      <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">
         <button
           v-for="item in site.nav"
           :key="item.href"
           type="button"
-          class="text-sm transition-colors"
-          :class="
-            isActive(item.href) ? 'text-fg' : 'text-muted hover:text-fg'
-          "
+          class="nav-link"
+          :class="{ 'is-active': isActive(item.href) }"
           :aria-current="isActive(item.href) ? 'true' : undefined"
           @click="handleNavClick(item.href)"
+          @pointerenter="onNavPointerEnter"
+          @pointerleave="onNavPointerLeave"
+          @focusin="onNavFocusIn"
+          @focusout="onNavFocusOut"
         >
-          {{ item.label }}
+          <span class="nav-link-inner">
+            {{ item.label }}
+            <svg
+              class="nav-link-frame"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <rect pathLength="100" x="0.5" y="0.5" width="99" height="99" />
+            </svg>
+          </span>
+          <span class="nav-link-marker" aria-hidden="true" />
         </button>
+        <span class="h-4 w-px bg-border" aria-hidden="true" />
         <button
           type="button"
-          class="btn-primary"
+          class="nav-cta group"
           @click="handleNavClick('#contact')"
+          @pointerenter="onNavPointerEnter"
+          @pointerleave="onNavPointerLeave"
+          @focusin="onNavFocusIn"
+          @focusout="onNavFocusOut"
         >
-          Get in touch
+          <span class="nav-link-inner">
+            get in touch
+            <Icon name="lucide:arrow-up-right" class="nav-cta-icon" />
+            <svg
+              class="nav-link-frame"
+              viewBox="0 0 100 100"
+              preserveAspectRatio="none"
+              aria-hidden="true"
+            >
+              <rect pathLength="100" x="0.5" y="0.5" width="99" height="99" />
+            </svg>
+          </span>
         </button>
       </nav>
 
@@ -133,26 +212,28 @@ onUnmounted(() => {
       v-if="isMenuOpen"
       id="mobile-nav"
       ref="menuRef"
-      class="border-t border-border bg-bg px-6 py-5 lg:hidden"
+      class="border-t border-border/60 px-6 py-6 lg:hidden"
     >
-      <nav class="flex flex-col gap-4" aria-label="Mobile">
+      <nav class="flex flex-col items-start gap-4" aria-label="Mobile">
         <button
           v-for="item in site.nav"
           :key="item.href"
           type="button"
-          class="text-left text-base"
-          :class="isActive(item.href) ? 'text-fg' : 'text-muted'"
+          class="nav-link text-lg"
+          :class="{ 'is-active': isActive(item.href) }"
           :aria-current="isActive(item.href) ? 'true' : undefined"
           @click="handleNavClick(item.href)"
         >
           {{ item.label }}
+          <span class="nav-link-marker" aria-hidden="true" />
         </button>
         <button
           type="button"
-          class="btn-primary mt-2 w-full"
+          class="nav-cta group mt-3 text-lg"
           @click="handleNavClick('#contact')"
         >
-          Get in touch
+          get in touch
+          <Icon name="lucide:arrow-up-right" class="nav-cta-icon" />
         </button>
       </nav>
     </div>
