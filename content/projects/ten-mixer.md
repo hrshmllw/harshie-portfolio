@@ -10,4 +10,5 @@ featured: true
 confidential: false
 order: 3
 year: 2024
+image: /images/projects/ten-mixer.jpg
 ---

@@ -19,6 +19,7 @@ export default defineContentConfig({
         featured: z.boolean().optional(),
         order: z.number(),
         year: z.number().optional(),
+        image: z.string().optional(),
       }),
     }),
   },

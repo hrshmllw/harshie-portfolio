@@ -9,4 +9,5 @@ featured: false
 confidential: true
 order: 7
 year: 2024
+image: /images/projects/media-production-directory.jpg
 ---

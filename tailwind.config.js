@@ -8,6 +8,7 @@ export default {
       fontFamily: {
         display: ["Archivo", "system-ui", "sans-serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
+        mono: ["JetBrains Mono", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       colors: {
         bg: "#2A2E31",

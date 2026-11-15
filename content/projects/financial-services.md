@@ -9,4 +9,5 @@ featured: false
 confidential: true
 order: 11
 year: 2023
+image: /images/projects/financial-services.jpg
 ---

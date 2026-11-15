@@ -8,4 +8,5 @@ featured: false
 confidential: true
 order: 9
 year: 2024
+image: /images/projects/networking-ecommerce.jpg
 ---

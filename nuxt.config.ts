@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     families: [
       { name: "Archivo", provider: "google", weights: [400, 500, 600, 700] },
       { name: "Inter", provider: "google", weights: [400, 500, 600] },
+      { name: "JetBrains Mono", provider: "google", weights: [400, 500] },
     ],
   },
 

@@ -9,4 +9,5 @@ featured: true
 confidential: false
 order: 5
 year: 2024
+image: /images/projects/casino-consult-pro.jpg
 ---

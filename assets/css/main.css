@@ -11,6 +11,21 @@
     @apply bg-bg font-sans text-fg;
   }
 
+  /* No orphans: balance headings, avoid a lone last word in body copy */
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+
+  p,
+  li,
+  dd,
+  blockquote {
+    text-wrap: pretty;
+  }
+
   ::selection {
     @apply bg-accent-soft/40 text-fg;
   }
@@ -126,6 +141,40 @@
 
   .nav-tracer-dot {
     @apply absolute left-0 top-0 h-[5px] w-[5px] bg-accent-bright will-change-transform;
+  }
+
+  /* Flat underline fields (lab contact variants) */
+  .lab-field {
+    @apply mt-6;
+  }
+
+  .lab-label {
+    @apply mb-1 block font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted;
+  }
+
+  .lab-input {
+    @apply block w-full border-0 border-b border-border bg-transparent px-0 py-2.5 text-base text-fg placeholder:text-muted/60 focus:border-accent-bright focus:ring-0;
+  }
+
+  .lab-input[aria-invalid="true"] {
+    @apply border-accent-bright;
+  }
+
+  .lab-error {
+    @apply mt-2 flex items-center gap-2 text-xs text-fg before:inline-block before:h-1.5 before:w-1.5 before:shrink-0 before:bg-accent-bright before:content-[''];
+  }
+
+  /* Lab form fields on the maroon contact panels */
+  .form-on-maroon .lab-input {
+    @apply border-fg/30 focus:border-fg;
+  }
+
+  .form-on-maroon .lab-label {
+    @apply text-fg/70;
+  }
+
+  .form-on-maroon .lab-error {
+    @apply before:bg-fg;
   }
 
   .field-input {
