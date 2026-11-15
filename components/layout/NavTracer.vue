@@ -7,6 +7,8 @@ type TracerState =
   | "traveling"
   | "tracing"
   | "framed"
+  | "absorbed"
+  | "emerging"
   | "unwinding"
   | "returning"
   | "blooming"
@@ -19,9 +21,17 @@ const UNWIND_MS = 220;
 const RETURN_MS = 160;
 const BLOOM_MS = 320;
 const HOP_FADE_MS = 120;
-const HOP_MOVE_MS = 180;
+/** Overlaps logo halo expand so the traveling core melts into the mark glow. */
+const MERGE_MS = 280;
+const EMERGE_MS = 80;
 const STOP_DEBOUNCE_MS = 70;
 const CROSSFADE_START = 0.85;
+const HOP_MS_MIN = 180;
+const HOP_MS_MAX = 380;
+
+const emit = defineEmits<{
+  "absorb-change": [absorbed: boolean];
+}>();
 
 const rootRef = ref<HTMLElement | null>(null);
 const pathRef = ref<SVGPathElement | null>(null);
@@ -43,15 +53,29 @@ let stopTimer = 0;
 let runId = 0;
 
 let liveClient: Pt = { x: 0, y: 0 };
+/** Recent pointer samples so absorb/bloom can start from the approach path, not the already-hovered target. */
+const pointerTrail: { t: number; x: number; y: number }[] = [];
+const TRAIL_MS = 180;
+const APPROACH_MIN_DIST = 40;
 let pathLength = 0;
 let framedStart: Pt = { x: 0, y: 0 };
+let absorbTarget: Pt = { x: 0, y: 0 };
 let currentItem: HTMLElement | null = null;
+let absorbEl: Element | null = null;
+let absorbHost: Element | null = null;
 
 const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
 const easeInOutCubic = (t: number) =>
   t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2;
 const clamp01 = (t: number) => Math.max(0, Math.min(1, t));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+const clamp = (n: number, min: number, max: number) =>
+  Math.max(min, Math.min(max, n));
+
+const hopDuration = (from: Pt, to: Pt) => {
+  const dist = Math.hypot(to.x - from.x, to.y - from.y);
+  return clamp(dist / 2.5, HOP_MS_MIN, HOP_MS_MAX);
+};
 
 const prefersReducedMotion = () =>
   import.meta.client &&
@@ -82,6 +106,10 @@ const clearPath = () => {
   pathLength = 0;
 };
 
+const setAbsorbed = (value: boolean) => {
+  emit("absorb-change", value);
+};
+
 const getHeader = () => {
   const overlay = rootRef.value;
   if (!overlay) return null;
@@ -98,6 +126,66 @@ const toHeaderLocal = (clientX: number, clientY: number): Pt | null => {
   return {
     x: clientX - rect.left,
     y: clientY - rect.top,
+  };
+};
+
+const toClient = (local: Pt): Pt | null => {
+  const header = getHeader();
+  if (!header) return null;
+  const rect = header.getBoundingClientRect();
+  return {
+    x: local.x + rect.left,
+    y: local.y + rect.top,
+  };
+};
+
+const pushTrail = (x: number, y: number) => {
+  const now = performance.now();
+  pointerTrail.push({ t: now, x, y });
+  while (
+    pointerTrail.length > 1 &&
+    now - pointerTrail[0].t > TRAIL_MS
+  ) {
+    pointerTrail.shift();
+  }
+};
+
+/** Prefer a recent point along the approach path, not the hover target itself. */
+const resolveApproachClient = (enterX: number, enterY: number): Pt => {
+  for (const p of pointerTrail) {
+    if (Math.hypot(p.x - enterX, p.y - enterY) >= APPROACH_MIN_DIST) {
+      return { x: p.x, y: p.y };
+    }
+  }
+  if (pointerTrail.length > 0) {
+    return { x: pointerTrail[0].x, y: pointerTrail[0].y };
+  }
+  return { x: enterX, y: enterY };
+};
+
+/**
+ * The logo pixel node can be replaced while hovering (AppLogo re-keys it to
+ * restart the blink), so resolve it live from the host button instead of
+ * trusting a stored reference.
+ */
+const resolveAbsorbEl = (): Element | null => {
+  if (absorbEl && absorbEl.isConnected) return absorbEl;
+  const fresh = absorbHost?.querySelector(".logo-cursor") ?? null;
+  if (fresh) absorbEl = fresh;
+  return fresh;
+};
+
+const elementCenterLocal = (el: Element | null): Pt | null => {
+  if (!el || !el.isConnected) return null;
+  const header = getHeader();
+  if (!header) return null;
+  const headerRect = header.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  // A detached or hidden node reports an empty rect at (0, 0) — never use it.
+  if (r.width === 0 && r.height === 0) return null;
+  return {
+    x: r.left + r.width / 2 - headerRect.left,
+    y: r.top + r.height / 2 - headerRect.top,
   };
 };
 
@@ -246,7 +334,6 @@ const updateCoreFromLive = () => {
   setCorePos(liveClient.x, liveClient.y);
 };
 
-/** DOM-dot opacity during morph crossfade near the handoff. */
 const dotFromMorph = (m: number) => {
   if (m < CROSSFADE_START) return 0;
   return clamp01((m - CROSSFADE_START) / (1 - CROSSFADE_START));
@@ -254,16 +341,15 @@ const dotFromMorph = (m: number) => {
 
 const onPointerMove = (event: PointerEvent) => {
   liveClient = { x: event.clientX, y: event.clientY };
-  if (
-    state === "collapsing" ||
-    state === "blooming" ||
-    state === "returning"
-  ) {
+  pushTrail(event.clientX, event.clientY);
+  if (state === "blooming") {
     updateCoreFromLive();
   }
 };
 
 const runReducedStart = (itemEl: HTMLElement, local: Pt) => {
+  setAbsorbed(false);
+  absorbEl = null;
   const startPt = preparePath(itemEl, local);
   if (!startPt) return;
   nextTick(() => {
@@ -278,25 +364,100 @@ const runReducedStart = (itemEl: HTMLElement, local: Pt) => {
   });
 };
 
+const runReducedAbsorb = (targetEl: Element) => {
+  clearPath();
+  hideDot();
+  setMorph(1);
+  updateCoreFromLive();
+  absorbEl = targetEl;
+  const center = elementCenterLocal(targetEl);
+  if (center) absorbTarget = center;
+  currentItem = null;
+  state = "absorbed";
+  setAbsorbed(true);
+};
+
 const runReducedStop = () => {
+  setAbsorbed(false);
   clearPath();
   hideDot();
   setMorph(0);
   state = "idle";
   currentItem = null;
+  absorbEl = null;
+};
+
+const animateCollapsePhase = (
+  id: number,
+  onDone: (fromLocal: Pt) => void,
+  /** When set, collapse stays pinned here instead of chasing the live cursor. */
+  frozenClient?: Pt,
+) => {
+  const useGlow = glowAvailable.value;
+  state = "collapsing";
+
+  const originClient = frozenClient
+    ? { ...frozenClient }
+    : { ...liveClient };
+  setCorePos(originClient.x, originClient.y);
+
+  const morphStart = morph.value;
+  const collapseDuration = Math.max(40, COLLAPSE_MS * (1 - morphStart));
+  const t0 = performance.now();
+
+  const tick = (now: number) => {
+    if (id !== runId) return;
+    const elapsed = now - t0;
+
+    const clientNow = frozenClient
+      ? originClient
+      : { ...liveClient };
+    if (!frozenClient) {
+      setCorePos(clientNow.x, clientNow.y);
+    } else {
+      setCorePos(originClient.x, originClient.y);
+    }
+
+    if (elapsed < collapseDuration) {
+      const u = easeInOutCubic(elapsed / collapseDuration);
+      const m = lerp(morphStart, 1, u);
+      setMorph(m);
+
+      const localNow =
+        toHeaderLocal(clientNow.x, clientNow.y) ?? {
+          x: dotX.value,
+          y: dotY.value,
+        };
+      if (useGlow) {
+        const o = dotFromMorph(m);
+        setDotAt(localNow, o, o);
+      } else {
+        setDotAt(localNow, u, u);
+      }
+      rafId = requestAnimationFrame(tick);
+      return;
+    }
+
+    setMorph(1);
+    const localNow =
+      toHeaderLocal(clientNow.x, clientNow.y) ?? {
+        x: dotX.value,
+        y: dotY.value,
+      };
+    setDotAt(localNow, 1, 1);
+    onDone(localNow);
+  };
+
+  rafId = requestAnimationFrame(tick);
 };
 
 const animateCollapseThenTravelTrace = (
   itemEl: HTMLElement,
   id: number,
 ) => {
-  const useGlow = glowAvailable.value;
-  state = "collapsing";
-  updateCoreFromLive();
-
-  const morphStart = morph.value;
-  const collapseDuration = Math.max(40, COLLAPSE_MS * (1 - morphStart));
-  const t0 = performance.now();
+  currentItem = itemEl;
+  absorbEl = null;
+  setAbsorbed(false);
 
   // Seed path early so length is ready after collapse; keep dash hidden.
   const local = toHeaderLocal(liveClient.x, liveClient.y);
@@ -304,153 +465,210 @@ const animateCollapseThenTravelTrace = (
   const startPt = preparePath(itemEl, local);
   if (!startPt) return;
   framedStart = startPt;
-  currentItem = itemEl;
   dashOffset.value = 1e6;
   pathOpacity.value = 0;
 
-  let travelFrom: Pt | null = null;
-  let travelTarget = startPt;
-  let collapseDoneAt = 0;
-
   nextTick(() => {
     if (id !== runId) return;
     const length = syncPathLength();
     dashOffset.value = length;
     pathOpacity.value = 0;
 
-    const tick = (now: number) => {
+    animateCollapsePhase(id, (fromLocal) => {
       if (id !== runId) return;
-      const elapsed = now - t0;
 
-      if (elapsed < collapseDuration) {
-        state = "collapsing";
-        const u = easeInOutCubic(elapsed / collapseDuration);
-        const m = lerp(morphStart, 1, u);
-        setMorph(m);
-        updateCoreFromLive();
-
-        const localNow = toHeaderLocal(liveClient.x, liveClient.y);
-        if (localNow) {
-          if (useGlow) {
-            // Crossfade in near morph 0.85
-            const o = dotFromMorph(m);
-            setDotAt(localNow, o, o);
-          } else {
-            setDotAt(localNow, u, u);
-          }
-        }
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-
-      // Collapse done — capture travel endpoints once, rebuild path from live cursor
-      if (!travelFrom) {
-        collapseDoneAt = now;
-        setMorph(1);
-        const localNow =
-          toHeaderLocal(liveClient.x, liveClient.y) ?? {
-            x: dotX.value,
-            y: dotY.value,
-          };
-        travelFrom = { ...localNow };
-        const rebuilt = preparePath(itemEl, localNow);
-        if (rebuilt) travelTarget = rebuilt;
-        framedStart = travelTarget;
-        nextTick(() => {
-          if (id !== runId) return;
-          syncPathLength();
-          dashOffset.value = pathLength;
-          pathOpacity.value = 1;
-        });
-        pathOpacity.value = 1;
-        dashOffset.value = length;
-        setDotAt(travelFrom, 1, 1);
-      }
-
-      const travelElapsed = now - collapseDoneAt;
-      if (travelElapsed < TRAVEL_MS) {
-        state = "traveling";
-        const u = easeOutCubic(travelElapsed / TRAVEL_MS);
-        const from = travelFrom ?? travelTarget;
-        setDotAt(
-          {
-            x: lerp(from.x, travelTarget.x, u),
-            y: lerp(from.y, travelTarget.y, u),
-          },
-          1,
-          1,
-        );
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-
-      // Trace
-      const traceElapsed = travelElapsed - TRAVEL_MS;
-      const len = pathLength || length;
-      if (traceElapsed < TRACE_MS) {
-        state = "tracing";
-        const pathEl = pathRef.value;
-        const u = easeOutCubic(clamp01(traceElapsed / TRACE_MS));
-        const dist = len * u;
-        dashOffset.value = len - dist;
-        if (pathEl) {
-          const pt = pathEl.getPointAtLength(Math.min(dist, len));
-          setDotAt(pt, 1, 1);
-        }
-        rafId = requestAnimationFrame(tick);
-        return;
-      }
-
-      // Framed — keep dot parked at start for unwind
-      dashOffset.value = 0;
-      setDotAt(travelTarget, 1, 1);
+      let travelTarget = startPt;
+      const rebuilt = preparePath(itemEl, fromLocal);
+      if (rebuilt) travelTarget = rebuilt;
       framedStart = travelTarget;
-      state = "framed";
-      rafId = 0;
-    };
+      pathOpacity.value = 1;
+      nextTick(() => {
+        if (id !== runId) return;
+        syncPathLength();
+        dashOffset.value = pathLength;
+      });
 
-    rafId = requestAnimationFrame(tick);
+      const travelFrom = { ...fromLocal };
+      const tTravel = performance.now();
+
+      const tick = (now: number) => {
+        if (id !== runId) return;
+        const travelElapsed = now - tTravel;
+        const len = pathLength || length;
+
+        if (travelElapsed < TRAVEL_MS) {
+          state = "traveling";
+          const u = easeOutCubic(travelElapsed / TRAVEL_MS);
+          setDotAt(
+            {
+              x: lerp(travelFrom.x, travelTarget.x, u),
+              y: lerp(travelFrom.y, travelTarget.y, u),
+            },
+            1,
+            1,
+          );
+          rafId = requestAnimationFrame(tick);
+          return;
+        }
+
+        const traceElapsed = travelElapsed - TRAVEL_MS;
+        if (traceElapsed < TRACE_MS) {
+          state = "tracing";
+          const pathEl = pathRef.value;
+          const u = easeOutCubic(clamp01(traceElapsed / TRACE_MS));
+          const dist = len * u;
+          dashOffset.value = len - dist;
+          if (pathEl) {
+            const pt = pathEl.getPointAtLength(Math.min(dist, len));
+            setDotAt(pt, 1, 1);
+          }
+          rafId = requestAnimationFrame(tick);
+          return;
+        }
+
+        dashOffset.value = 0;
+        setDotAt(travelTarget, 1, 1);
+        framedStart = travelTarget;
+        state = "framed";
+        rafId = 0;
+      };
+
+      rafId = requestAnimationFrame(tick);
+    });
   });
 };
 
-const animateHop = (itemEl: HTMLElement, id: number) => {
-  state = "hopping";
-  const fromDot = { x: dotX.value, y: dotY.value };
-  const t0 = performance.now();
+const animateCollapseThenAbsorb = (
+  targetEl: Element,
+  id: number,
+  approachClient: Pt,
+) => {
+  currentItem = null;
+  absorbEl = targetEl;
+  clearPath();
 
-  const local = toHeaderLocal(liveClient.x, liveClient.y) ?? fromDot;
+  // Pin collapse to the approach point so the glow shrinks from where the
+  // cursor came from (usually the hero), then travels into the logo pixel.
+  animateCollapsePhase(
+    id,
+    (fromLocal) => {
+      if (id !== runId) return;
+
+      const target = elementCenterLocal(targetEl) ?? fromLocal;
+      absorbTarget = target;
+      const travelFrom = { ...fromLocal };
+      const moveMs = Math.max(
+        TRAVEL_MS,
+        hopDuration(travelFrom, target),
+      );
+      const tTravel = performance.now();
+      let mergeStarted = false;
+
+      const tick = (now: number) => {
+        if (id !== runId) return;
+        const elapsed = now - tTravel;
+
+        if (elapsed < moveMs) {
+          state = "traveling";
+          const u = easeOutCubic(elapsed / moveMs);
+          const pos = {
+            x: lerp(travelFrom.x, target.x, u),
+            y: lerp(travelFrom.y, target.y, u),
+          };
+          // Keep canvas core on the traveling dot so the handoff stays continuous
+          const client = toClient(pos);
+          if (client) setCorePos(client.x, client.y);
+
+          const mergeStart = Math.max(0, moveMs - MERGE_MS);
+          let opacity = 1;
+          let scale = 1;
+          if (elapsed >= mergeStart) {
+            // Logo glow expands from the j-dot while the tracer core dissolves into it.
+            if (!mergeStarted) {
+              mergeStarted = true;
+              setAbsorbed(true);
+            }
+            const mu = clamp01((elapsed - mergeStart) / MERGE_MS);
+            opacity = 1 - mu;
+            scale = 1 - mu * 0.55;
+          }
+          setDotAt(pos, scale, opacity);
+          rafId = requestAnimationFrame(tick);
+          return;
+        }
+
+        hideDot();
+        const endClient = toClient(target);
+        if (endClient) setCorePos(endClient.x, endClient.y);
+        framedStart = { ...target };
+        absorbTarget = target;
+        state = "absorbed";
+        if (!mergeStarted) setAbsorbed(true);
+        rafId = 0;
+      };
+
+      rafId = requestAnimationFrame(tick);
+    },
+    approachClient,
+  );
+};
+
+const animateHopToFrame = (itemEl: HTMLElement, id: number) => {
+  const wasAbsorbed = state === "absorbed" || state === "emerging";
+  const startFrom = wasAbsorbed
+    ? { ...absorbTarget }
+    : { x: dotX.value, y: dotY.value };
+
+  state = "hopping";
+  setAbsorbed(false);
+
+  if (wasAbsorbed) {
+    setDotAt(absorbTarget, 0, 0);
+  }
+
+  const local = toHeaderLocal(liveClient.x, liveClient.y) ?? startFrom;
   const nextStart = preparePath(itemEl, local);
   if (!nextStart) return;
   currentItem = itemEl;
+  absorbEl = null;
+
+  const moveMs = hopDuration(startFrom, nextStart);
+  const t0 = performance.now();
 
   nextTick(() => {
     if (id !== runId) return;
     const length = syncPathLength();
     dashOffset.value = length;
-    // Keep old visual: we already replaced pathD — fade new path in after move.
-    // For hop: fade old path out first while keeping previous visual.
-    // Since pathD was replaced, fade the new path from 0 while moving the dot.
     pathOpacity.value = 0;
 
     const tick = (now: number) => {
       if (id !== runId) return;
       const elapsed = now - t0;
 
-      if (elapsed < HOP_FADE_MS) {
-        // Brief beat while the previous path fades; path already swapped.
-        pathOpacity.value = 0;
-        setDotAt(fromDot, 1, 1);
+      // Brief emerge if coming from absorbed
+      const emergeMs = wasAbsorbed ? EMERGE_MS : 0;
+      if (elapsed < emergeMs) {
+        const u = easeOutCubic(elapsed / emergeMs);
+        setDotAt(absorbTarget, u, u);
         rafId = requestAnimationFrame(tick);
         return;
       }
 
-      const moveElapsed = elapsed - HOP_FADE_MS;
-      if (moveElapsed < HOP_MOVE_MS) {
-        const u = easeOutCubic(moveElapsed / HOP_MOVE_MS);
+      const afterEmerge = elapsed - emergeMs;
+      if (afterEmerge < HOP_FADE_MS) {
+        pathOpacity.value = 0;
+        setDotAt(startFrom, 1, 1);
+        rafId = requestAnimationFrame(tick);
+        return;
+      }
+
+      const moveElapsed = afterEmerge - HOP_FADE_MS;
+      if (moveElapsed < moveMs) {
+        const u = easeOutCubic(moveElapsed / moveMs);
         setDotAt(
           {
-            x: lerp(fromDot.x, nextStart.x, u),
-            y: lerp(fromDot.y, nextStart.y, u),
+            x: lerp(startFrom.x, nextStart.x, u),
+            y: lerp(startFrom.y, nextStart.y, u),
           },
           1,
           1,
@@ -461,9 +679,8 @@ const animateHop = (itemEl: HTMLElement, id: number) => {
         return;
       }
 
-      // Trace new frame
       pathOpacity.value = 1;
-      const traceElapsed = moveElapsed - HOP_MOVE_MS;
+      const traceElapsed = moveElapsed - moveMs;
       if (traceElapsed < TRACE_MS) {
         state = "tracing";
         const pathEl = pathRef.value;
@@ -489,21 +706,89 @@ const animateHop = (itemEl: HTMLElement, id: number) => {
   });
 };
 
-const animateLeave = (id: number) => {
-  const useGlow = glowAvailable.value || morph.value > 0.01;
-  const length = pathLength || dashArray.value;
-  const pathEl = pathRef.value;
-  const t0 = performance.now();
+const animateHopToAbsorb = (targetEl: Element, id: number) => {
+  state = "hopping";
+  currentItem = null;
+  absorbEl = targetEl;
 
-  // Start unwind from current dash progress
-  const startOffset = dashOffset.value;
-  const drawn = length > 0 ? length - startOffset : 0;
+  const fromDot = { x: dotX.value, y: dotY.value };
+  const target = elementCenterLocal(targetEl) ?? fromDot;
+  absorbTarget = target;
+  const moveMs = hopDuration(fromDot, target);
+  const t0 = performance.now();
+  let mergeStarted = false;
+
+  // Fade path out while hopping
+  pathOpacity.value = Math.min(pathOpacity.value, 1);
 
   const tick = (now: number) => {
     if (id !== runId) return;
     const elapsed = now - t0;
 
-    // Unwind
+    if (elapsed < HOP_FADE_MS) {
+      const u = elapsed / HOP_FADE_MS;
+      pathOpacity.value = Math.max(0, pathOpacity.value) * (1 - u);
+      setDotAt(fromDot, 1, 1);
+      rafId = requestAnimationFrame(tick);
+      return;
+    }
+
+    clearPath();
+    const moveElapsed = elapsed - HOP_FADE_MS;
+    if (moveElapsed < moveMs) {
+      const u = easeOutCubic(moveElapsed / moveMs);
+      const mergeStart = Math.max(0, moveMs - MERGE_MS);
+      let opacity = 1;
+      let scale = 1;
+      if (moveElapsed >= mergeStart) {
+        if (!mergeStarted) {
+          mergeStarted = true;
+          setAbsorbed(true);
+        }
+        const mu = clamp01((moveElapsed - mergeStart) / MERGE_MS);
+        opacity = 1 - mu;
+        scale = 1 - mu * 0.55;
+      }
+      setDotAt(
+        {
+          x: lerp(fromDot.x, target.x, u),
+          y: lerp(fromDot.y, target.y, u),
+        },
+        scale,
+        opacity,
+      );
+      rafId = requestAnimationFrame(tick);
+      return;
+    }
+
+    hideDot();
+    framedStart = { ...target };
+    absorbTarget = target;
+    state = "absorbed";
+    if (!mergeStarted) setAbsorbed(true);
+    rafId = 0;
+  };
+
+  rafId = requestAnimationFrame(tick);
+};
+
+const animateLeaveFromFrame = (id: number) => {
+  const useGlow = glowAvailable.value || morph.value > 0.01;
+  const length = pathLength || dashArray.value;
+  const pathEl = pathRef.value;
+  const t0 = performance.now();
+
+  const startOffset = dashOffset.value;
+  const drawn = length > 0 ? length - startOffset : 0;
+
+  if (length <= 0 || pathOpacity.value <= 0) {
+    framedStart = { x: dotX.value, y: dotY.value };
+  }
+
+  const tick = (now: number) => {
+    if (id !== runId) return;
+    const elapsed = now - t0;
+
     if (elapsed < UNWIND_MS && length > 0 && pathOpacity.value > 0) {
       state = "unwinding";
       const u = easeInOutCubic(elapsed / UNWIND_MS);
@@ -520,7 +805,6 @@ const animateLeave = (id: number) => {
       return;
     }
 
-    // Ensure unwound
     if (pathOpacity.value > 0) {
       dashOffset.value = length;
       pathOpacity.value = 0;
@@ -528,32 +812,44 @@ const animateLeave = (id: number) => {
     clearPath();
 
     const afterUnwind = Math.max(0, elapsed - UNWIND_MS);
+    runReturnAndBloom(id, afterUnwind, useGlow, now - afterUnwind);
+  };
 
-    // Return to live cursor
-    if (afterUnwind < RETURN_MS) {
+  rafId = requestAnimationFrame(tick);
+};
+
+const runReturnAndBloom = (
+  id: number,
+  initialElapsed: number,
+  useGlow: boolean,
+  t0: number,
+) => {
+  // Aim at where the pointer is when the return starts, then keep re-targeting
+  // so the exit path reads as "back toward the cursor" rather than a sideways drift.
+  const tick = (now: number) => {
+    if (id !== runId) return;
+    const elapsed = now - t0 + initialElapsed;
+
+    if (elapsed < RETURN_MS) {
       state = "returning";
-      const u = easeOutCubic(afterUnwind / RETURN_MS);
+      const u = easeOutCubic(elapsed / RETURN_MS);
       const target = toHeaderLocal(liveClient.x, liveClient.y);
-      updateCoreFromLive();
       if (target) {
         const from = framedStart;
-        // Re-target: blend from framedStart toward live cursor each frame
-        // by easing from the frozen start toward current live position.
-        setDotAt(
-          {
-            x: lerp(from.x, target.x, u),
-            y: lerp(from.y, target.y, u),
-          },
-          1,
-          1,
-        );
+        const pos = {
+          x: lerp(from.x, target.x, u),
+          y: lerp(from.y, target.y, u),
+        };
+        setDotAt(pos, 1, 1);
+        // Core rides the traveling dot so bloom starts from that path, not the logo.
+        const client = toClient(pos);
+        if (client) setCorePos(client.x, client.y);
       }
       rafId = requestAnimationFrame(tick);
       return;
     }
 
-    // Bloom
-    const afterReturn = afterUnwind - RETURN_MS;
+    const afterReturn = elapsed - RETURN_MS;
     if (afterReturn < BLOOM_MS) {
       state = "blooming";
       const u = easeInOutCubic(afterReturn / BLOOM_MS);
@@ -580,15 +876,45 @@ const animateLeave = (id: number) => {
     clearPath();
     state = "idle";
     currentItem = null;
+    absorbEl = null;
     rafId = 0;
   };
 
-  // If there was nothing to unwind (already empty), skip straight to return/bloom
-  if (length <= 0 || pathOpacity.value <= 0) {
-    // Jump timeline past unwind by adjusting — call tick with synthetic offset
-    // Simpler: just start return from current dot position
-    framedStart = { x: dotX.value, y: dotY.value };
-  }
+  rafId = requestAnimationFrame(tick);
+};
+
+const animateLeaveFromAbsorbed = (id: number) => {
+  const useGlow = glowAvailable.value || morph.value > 0.01;
+  setAbsorbed(false);
+  state = "emerging";
+
+  // Refresh absorb target from live element if possible
+  const liveCenter = elementCenterLocal(resolveAbsorbEl());
+  if (liveCenter) absorbTarget = liveCenter;
+
+  const emergeFrom = { ...absorbTarget };
+  framedStart = { ...emergeFrom };
+  const emergeClient = toClient(emergeFrom);
+  if (emergeClient) setCorePos(emergeClient.x, emergeClient.y);
+  const t0 = performance.now();
+
+  const tick = (now: number) => {
+    if (id !== runId) return;
+    const elapsed = now - t0;
+
+    if (elapsed < EMERGE_MS) {
+      const u = easeOutCubic(elapsed / EMERGE_MS);
+      setDotAt(emergeFrom, u, u);
+      if (emergeClient) setCorePos(emergeClient.x, emergeClient.y);
+      rafId = requestAnimationFrame(tick);
+      return;
+    }
+
+    setDotAt(emergeFrom, 1, 1);
+    absorbEl = null;
+    // Continue with return + bloom (no unwind)
+    runReturnAndBloom(id, 0, useGlow, performance.now());
+  };
 
   rafId = requestAnimationFrame(tick);
 };
@@ -604,6 +930,7 @@ const start = (itemEl: HTMLElement, clientX: number, clientY: number) => {
     return;
   }
 
+  const fromAbsorbed = state === "absorbed" || state === "emerging";
   const hopStates: TracerState[] = [
     "framed",
     "tracing",
@@ -611,18 +938,62 @@ const start = (itemEl: HTMLElement, clientX: number, clientY: number) => {
     "traveling",
     "hopping",
   ];
-  const shouldHop = hopStates.includes(state) && currentItem !== itemEl;
+  const shouldHop =
+    fromAbsorbed || (hopStates.includes(state) && currentItem !== itemEl);
 
   cancelRaf();
   const id = ++runId;
 
   if (shouldHop) {
-    animateHop(itemEl, id);
+    animateHopToFrame(itemEl, id);
     return;
   }
 
-  // From idle / collapsing / blooming / returning / same-item restart
   animateCollapseThenTravelTrace(itemEl, id);
+};
+
+const startAbsorb = (
+  targetEl: Element,
+  clientX: number,
+  clientY: number,
+) => {
+  liveClient = { x: clientX, y: clientY };
+  pushTrail(clientX, clientY);
+  clearStopTimer();
+
+  if (prefersReducedMotion()) {
+    cancelRaf();
+    runId += 1;
+    runReducedAbsorb(targetEl);
+    return;
+  }
+
+  absorbHost = targetEl.closest("button") ?? targetEl.parentElement;
+
+  // Already absorbed into the logo cursor — stay
+  if (state === "absorbed" && absorbEl && absorbEl.isConnected) {
+    return;
+  }
+
+  const fromFrame: TracerState[] = [
+    "framed",
+    "tracing",
+    "unwinding",
+    "traveling",
+    "hopping",
+  ];
+  const shouldHop = fromFrame.includes(state);
+
+  cancelRaf();
+  const id = ++runId;
+
+  if (shouldHop) {
+    animateHopToAbsorb(targetEl, id);
+    return;
+  }
+
+  const approach = resolveApproachClient(clientX, clientY);
+  animateCollapseThenAbsorb(targetEl, id, approach);
 };
 
 const stop = () => {
@@ -635,12 +1006,17 @@ const stop = () => {
     return;
   }
 
-  // Debounce so a quick hop to an adjacent item can cancel the leave.
   stopTimer = window.setTimeout(() => {
     stopTimer = 0;
     cancelRaf();
     const id = ++runId;
-    animateLeave(id);
+
+    if (state === "absorbed" || state === "emerging") {
+      animateLeaveFromAbsorbed(id);
+      return;
+    }
+
+    animateLeaveFromFrame(id);
   }, STOP_DEBOUNCE_MS);
 };
 
@@ -654,9 +1030,10 @@ onUnmounted(() => {
   cancelRaf();
   runId += 1;
   setMorph(0);
+  setAbsorbed(false);
 });
 
-defineExpose({ start, stop });
+defineExpose({ start, startAbsorb, stop });
 </script>
 
 <template>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { site } = useAppConfig();
+const nuxtApp = useNuxtApp();
 const { activeSection, scrollToSection } = useActiveSection();
 const { setNavItemPointer, setNavItemFocus, resetNavItemHovered } =
   useNavItemHover();
@@ -12,8 +13,18 @@ const menuRef = ref<HTMLElement | null>(null);
 const menuButtonRef = ref<HTMLButtonElement | null>(null);
 const tracerRef = ref<{
   start: (itemEl: HTMLElement, clientX: number, clientY: number) => void;
+  startAbsorb: (
+    targetEl: Element,
+    clientX: number,
+    clientY: number,
+  ) => void;
   stop: () => void;
 } | null>(null);
+const isLogoAbsorbed = ref(false);
+const isLogoFocused = ref(false);
+const isLogoGlowing = computed(
+  () => isLogoAbsorbed.value || isLogoFocused.value,
+);
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
@@ -47,6 +58,34 @@ const onNavPointerLeave = () => {
   tracerRef.value?.stop();
 };
 
+const onLogoPointerEnter = (event: PointerEvent) => {
+  setNavItemPointer(true);
+  const target = event.currentTarget;
+  if (!(target instanceof HTMLElement)) return;
+  const cursor = target.querySelector(".logo-cursor");
+  if (cursor instanceof Element) {
+    tracerRef.value?.startAbsorb(cursor, event.clientX, event.clientY);
+  }
+};
+
+const onLogoPointerLeave = () => {
+  setNavItemPointer(false);
+  tracerRef.value?.stop();
+};
+
+const onLogoFocusIn = (event: FocusEvent) => {
+  const target = event.target;
+  requestAnimationFrame(() => {
+    if (target instanceof Element && target.matches(":focus-visible")) {
+      isLogoFocused.value = true;
+    }
+  });
+};
+
+const onLogoFocusOut = () => {
+  isLogoFocused.value = false;
+};
+
 const onNavFocusIn = (event: FocusEvent) => {
   const target = event.target;
   requestAnimationFrame(() => {
@@ -65,6 +104,10 @@ const onNavFocusOut = (event: FocusEvent) => {
     return;
   }
   setNavItemFocus(false);
+};
+
+const onAbsorbChange = (absorbed: boolean) => {
+  isLogoAbsorbed.value = absorbed;
 };
 
 const focusableSelector =
@@ -103,6 +146,10 @@ const onKeydown = (event: KeyboardEvent) => {
 watch(isMenuOpen, (open) => {
   if (!import.meta.client) return;
   document.body.style.overflow = open ? "hidden" : "";
+  // Lenis scrolls programmatically, so it needs pausing for the menu lock
+  const lenis = nuxtApp.$lenis.current;
+  if (open) lenis?.stop();
+  else lenis?.start();
 });
 
 onMounted(() => {
@@ -112,6 +159,7 @@ onMounted(() => {
 onUnmounted(() => {
   if (!import.meta.client) return;
   document.body.style.overflow = "";
+  nuxtApp.$lenis.current?.start();
   document.removeEventListener("keydown", onKeydown);
   resetNavItemHovered();
 });
@@ -127,17 +175,21 @@ onUnmounted(() => {
       isMenuOpen ? 'bg-bg/95' : isScrolled && 'bg-bg/70',
     ]"
   >
-    <LayoutNavTracer ref="tracerRef" />
+    <LayoutNavTracer ref="tracerRef" @absorb-change="onAbsorbChange" />
     <div
       class="container-x relative z-10 flex h-16 items-center justify-between gap-4"
     >
       <button
         type="button"
-        class="text-fg transition-opacity hover:opacity-70"
+        class="text-fg"
         :aria-label="`${site.fullName}, back to top`"
         @click="handleNavClick('#introduction')"
+        @pointerenter="onLogoPointerEnter"
+        @pointerleave="onLogoPointerLeave"
+        @focusin="onLogoFocusIn"
+        @focusout="onLogoFocusOut"
       >
-        <LayoutAppLogo class="block h-6 w-6" />
+        <LayoutAppLogo class="block h-6 w-6" :glowing="isLogoGlowing" />
       </button>
 
       <nav class="hidden items-center gap-8 lg:flex" aria-label="Primary">

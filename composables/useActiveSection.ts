@@ -10,6 +10,7 @@ const SECTION_IDS = [
 let observerInitialized = false;
 
 export function useActiveSection() {
+  const nuxtApp = useNuxtApp();
   const activeSection = useState<string>(
     "active-section",
     () => SECTION_IDS[0],
@@ -57,14 +58,18 @@ export function useActiveSection() {
     const id = href.replace("#", "");
     const element = document.getElementById(id);
 
+    const lenis = nuxtApp.$lenis.current;
+
     if (element) {
-      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (lenis) lenis.scrollTo(element, { offset: 0 });
+      else element.scrollIntoView({ behavior: "smooth", block: "start" });
       activeSection.value = id;
       return;
     }
 
     if (href === "#" || href === "") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (lenis) lenis.scrollTo(0);
+      else window.scrollTo({ top: 0, behavior: "smooth" });
       activeSection.value = SECTION_IDS[0];
     }
   };
