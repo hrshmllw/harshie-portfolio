@@ -27,6 +27,9 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      // Absolute base for og:url / og:image (crawlers need full URLs).
+      // Override per environment with NUXT_PUBLIC_SITE_URL.
+      siteUrl: "https://edceljmacawili.netlify.app",
       web3formsAccessKey: "",
     },
   },

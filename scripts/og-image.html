@@ -1,0 +1,74 @@
+<!doctype html>
+<!--
+  Source for public/og-image.png (1200×630), the link-preview image.
+  Regenerate after editing (Windows, from the repo root):
+    "C:\Program Files\Google\Chrome\Application\chrome.exe" --headless=new --hide-scrollbars ^
+      --window-size=1200,630 --virtual-time-budget=8000 ^
+      --screenshot="%CD%\public\og-image.png" "file:///%CD:\=/%/scripts/og-image.html"
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Inter:wght@500&family=JetBrains+Mono:wght@500&display=block" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #2a2e31;
+    --fg: #f4f1ec;
+    --muted: #a7a7a7;
+    --accent: #c4454a;
+    --accent-soft: #8b2a32;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; background: var(--bg); }
+  body {
+    position: relative;
+    font-family: Inter, sans-serif;
+    color: var(--fg);
+    /* The hero's grid, faded towards the bottom like the site. */
+    background:
+      linear-gradient(180deg, rgba(42, 46, 49, 0.05) 0%, rgba(42, 46, 49, 0.35) 55%, rgba(42, 46, 49, 0.92) 100%),
+      repeating-linear-gradient(90deg, rgba(196, 69, 74, 0.22) 0 1px, transparent 1px 96px),
+      repeating-linear-gradient(0deg, rgba(196, 69, 74, 0.22) 0 1px, transparent 1px 96px),
+      var(--bg);
+  }
+  .frame { position: absolute; inset: 64px 72px; display: flex; flex-direction: column; }
+  .top { display: flex; align-items: center; justify-content: space-between; }
+  .logo { width: 64px; height: 64px; display: block; }
+  .eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font: 500 18px/1 "JetBrains Mono", monospace; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted);
+  }
+  .eyebrow::before { content: ""; width: 10px; height: 10px; background: var(--accent); }
+  h1 {
+    margin-top: auto;
+    font: 700 104px/0.92 Archivo, sans-serif; letter-spacing: -0.02em; text-transform: uppercase;
+  }
+  .cursor { display: inline-block; width: 0.42em; height: 0.12em; margin-left: 0.08em; background: var(--accent); vertical-align: baseline; }
+  .bottom { margin-top: 44px; display: flex; align-items: flex-end; justify-content: space-between; gap: 32px; }
+  .name { font: 600 34px/1.1 Archivo, sans-serif; letter-spacing: -0.01em; }
+  .tags { display: flex; gap: 22px; font: 500 16px/1 "JetBrains Mono", monospace; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+  .tags span::before { content: "|"; color: var(--accent-soft); margin-right: 12px; }
+</style>
+</head>
+<body>
+  <div class="frame">
+    <div class="top">
+      <!-- Same mark as public/favicon.svg, without its rounded plate. -->
+      <svg class="logo" viewBox="0 0 64 64" shape-rendering="crispEdges" aria-hidden="true">
+        <path fill="#F4F1EC" d="M8 16h24v8H8zM8 24h8v8H8zM24 24h8v8h-8zM8 32h24v8H8zM8 40h8v8H8zM8 48h24v8H8zM48 24h8v24h-8zM40 48h16v8H40z" />
+        <path fill="#C4454A" d="M48 8h8v8h-8z" />
+      </svg>
+      <p class="eyebrow">Frontend Developer</p>
+    </div>
+
+    <h1>Bringing<br />your designs<br />to life<span class="cursor"></span></h1>
+
+    <div class="bottom">
+      <p class="name">Edcel Jeremy Macawili</p>
+      <p class="tags"><span>UI Implementation</span><span>Accessibility</span><span>Web Performance</span></p>
+    </div>
+  </div>
+</body>
+</html>
