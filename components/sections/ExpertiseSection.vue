@@ -1,63 +1,71 @@
 <script setup lang="ts">
+/** Ticker rows: one slow, draggable ticker per category; icons take their brand colour on hover. */
 const { site } = useAppConfig();
-const { shouldAnimate } = useMotionPreference();
+
+// Brand colours, adjusted where the official one disappears on the dark background.
+const BRAND: Record<string, string> = {
+  "simple-icons:html5": "#E34F26",
+  "simple-icons:css": "#8E5CD9",
+  "simple-icons:javascript": "#F7DF1E",
+  "simple-icons:typescript": "#3178C6",
+  "simple-icons:sass": "#CC6699",
+  "simple-icons:tailwindcss": "#06B6D4",
+  "simple-icons:react": "#61DAFB",
+  "simple-icons:nextdotjs": "#F4F1EC",
+  "simple-icons:vuedotjs": "#4FC08D",
+  "simple-icons:nuxt": "#00DC82",
+  "simple-icons:wordpress": "#3E8EC6",
+  "simple-icons:php": "#777BB4",
+  "simple-icons:woocommerce": "#A46497",
+  "simple-icons:shopify": "#7AB55C",
+  "simple-icons:greensock": "#88CE02",
+  "simple-icons:jquery": "#2A8FD6",
+  "simple-icons:axios": "#7B4DF0",
+  "simple-icons:webpack": "#8DD6F9",
+  "simple-icons:npm": "#CB3837",
+  "simple-icons:git": "#F05032",
+  "simple-icons:figma": "#F24E1E",
+  "simple-icons:eslint": "#7C6BE0",
+  "simple-icons:prettier": "#F7B93E",
+  "simple-icons:jest": "#C21325",
+  "simple-icons:mocha": "#A47B5C",
+};
+
+const rows = computed(() =>
+  site.technologies.map((group) => ({
+    category: group.category,
+    items: group.items.map((item) => ({
+      ...item,
+      brand: BRAND[item.icon] ?? "#C4454A",
+    })),
+  })),
+);
 </script>
 
 <template>
-  <section id="expertise" class="border-t border-border">
-    <div class="container-x section-pad">
-      <div
-        v-motion
-        :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
-        :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-        :transition="{ duration: 500 }"
-        class="max-w-2xl"
-      >
-        <p class="eyebrow eyebrow-marker">Expertise</p>
-        <h2 class="section-title mt-4">Technologies &amp; Tools</h2>
-        <p class="mt-4 text-muted">
-          A structured set of languages, frameworks, and tooling I use to ship
-          polished frontends.
+  <section id="expertise" class="border-t border-border" aria-labelledby="expertise-title">
+    <div class="container-x section-pad pb-0 md:pb-0">
+      <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+        <div class="max-w-2xl">
+          <p class="eyebrow eyebrow-marker">Expertise</p>
+          <h2 id="expertise-title" class="section-title mt-4">
+            Technologies &amp;&nbsp;Tools
+          </h2>
+        </div>
+        <p class="hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted md:block">
+          Drag to scroll
         </p>
       </div>
+    </div>
 
-      <div class="mt-14 grid gap-12 lg:grid-cols-2">
-        <div
-          v-for="(group, groupIndex) in site.technologies"
-          :key="group.category"
-          v-motion
-          :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
-          :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-          :transition="{ duration: 450, delay: groupIndex * 70 }"
-        >
-          <div class="flex items-center gap-4">
-            <h3 class="eyebrow shrink-0">{{ group.category }}</h3>
-            <span class="flex h-px min-w-0 flex-1" aria-hidden="true">
-              <span class="h-px w-8 shrink-0 bg-accent-soft" />
-              <span class="rule" />
-            </span>
-          </div>
-
-          <ul class="mt-6 grid grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-3">
-            <li
-              v-for="item in group.items"
-              :key="item.name"
-              class="group flex items-center gap-3 text-sm text-fg transition-colors"
-            >
-              <Icon
-                :name="item.icon"
-                class="h-6 w-6 shrink-0 text-muted transition-colors group-hover:text-accent-bright"
-                aria-hidden="true"
-              />
-              <span
-                class="border-b border-transparent transition-colors group-hover:border-muted"
-              >
-                {{ item.name }}
-              </span>
-            </li>
-          </ul>
-        </div>
-      </div>
+    <div class="mt-14 border-t border-border pb-20 md:pb-28">
+      <UiTickerRow
+        v-for="(row, index) in rows"
+        :key="row.category"
+        :category="row.category"
+        :items="row.items"
+        :reverse="index % 2 === 1"
+      />
     </div>
   </section>
 </template>

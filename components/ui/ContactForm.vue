@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/** Flat contact form used by the /lab contact variants. */
+/** Flat underline contact form used in the contact section. */
 const { fields, errors, isSubmitting, status, validate, reset, submit } =
   useContactForm();
 
@@ -20,55 +20,55 @@ const id = (field: string) => `${uid}-${field}`;
     />
 
     <div class="grid gap-x-6 sm:grid-cols-2">
-      <div v-for="field in (['name', 'email'] as const)" :key="field" class="lab-field">
-        <label :for="id(field)" class="lab-label">{{ field }}</label>
+      <div v-for="field in (['name', 'email'] as const)" :key="field" class="line-field">
+        <label :for="id(field)" class="line-label">{{ field }}</label>
         <input
           :id="id(field)"
           v-model="fields[field]"
           :type="field === 'email' ? 'email' : 'text'"
           :name="field"
           :autocomplete="field"
-          class="lab-input"
+          class="line-input"
           :aria-invalid="!!errors[field]"
           :aria-describedby="errors[field] ? id(`${field}-error`) : undefined"
           @blur="validate(field)"
         />
-        <p v-if="errors[field]" :id="id(`${field}-error`)" class="lab-error" role="alert">
+        <p v-if="errors[field]" :id="id(`${field}-error`)" class="line-error" role="alert">
           {{ errors[field] }}
         </p>
       </div>
     </div>
 
-    <div class="lab-field">
-      <label :for="id('subject')" class="lab-label">subject</label>
+    <div class="line-field">
+      <label :for="id('subject')" class="line-label">subject</label>
       <input
         :id="id('subject')"
         v-model="fields.subject"
         type="text"
         name="subject"
-        class="lab-input"
+        class="line-input"
         :aria-invalid="!!errors.subject"
         :aria-describedby="errors.subject ? id('subject-error') : undefined"
         @blur="validate('subject')"
       />
-      <p v-if="errors.subject" :id="id('subject-error')" class="lab-error" role="alert">
+      <p v-if="errors.subject" :id="id('subject-error')" class="line-error" role="alert">
         {{ errors.subject }}
       </p>
     </div>
 
-    <div class="lab-field">
-      <label :for="id('message')" class="lab-label">message</label>
+    <div class="line-field">
+      <label :for="id('message')" class="line-label">message</label>
       <textarea
         :id="id('message')"
         v-model="fields.message"
         name="message"
         rows="4"
-        class="lab-input resize-y"
+        class="line-input resize-y"
         :aria-invalid="!!errors.message"
         :aria-describedby="errors.message ? id('message-error') : undefined"
         @blur="validate('message')"
       />
-      <p v-if="errors.message" :id="id('message-error')" class="lab-error" role="alert">
+      <p v-if="errors.message" :id="id('message-error')" class="line-error" role="alert">
         {{ errors.message }}
       </p>
     </div>

@@ -157,37 +157,37 @@
     @apply absolute left-0 top-0 h-[5px] w-[5px] bg-accent-bright will-change-transform;
   }
 
-  /* Flat underline fields (lab contact variants) */
-  .lab-field {
+  /* Flat underline form fields */
+  .line-field {
     @apply mt-6;
   }
 
-  .lab-label {
+  .line-label {
     @apply mb-1 block font-mono text-[0.7rem] uppercase tracking-[0.2em] text-muted;
   }
 
-  .lab-input {
+  .line-input {
     @apply block w-full border-0 border-b border-border bg-transparent px-0 py-2.5 text-base text-fg placeholder:text-muted/60 focus:border-accent-bright focus:ring-0;
   }
 
-  .lab-input[aria-invalid="true"] {
+  .line-input[aria-invalid="true"] {
     @apply border-accent-bright;
   }
 
-  .lab-error {
+  .line-error {
     @apply mt-2 flex items-center gap-2 text-xs text-fg before:inline-block before:h-1.5 before:w-1.5 before:shrink-0 before:bg-accent-bright before:content-[''];
   }
 
-  /* Lab form fields on the maroon contact panels */
-  .form-on-maroon .lab-input {
+  /* Form fields on the maroon contact panel */
+  .form-on-maroon .line-input {
     @apply border-fg/30 focus:border-fg;
   }
 
-  .form-on-maroon .lab-label {
+  .form-on-maroon .line-label {
     @apply text-fg/70;
   }
 
-  .form-on-maroon .lab-error {
+  .form-on-maroon .line-error {
     @apply before:bg-fg;
   }
 

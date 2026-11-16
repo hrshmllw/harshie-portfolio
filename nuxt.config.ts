@@ -42,6 +42,14 @@ export default defineNuxtConfig({
       bodyAttrs: {
         class: "bg-bg text-fg",
       },
+      // Reveal effects scope their hidden "before" state to :root.js, so
+      // content stays visible without JS. Runs in <head>, before first paint.
+      script: [
+        {
+          innerHTML: "document.documentElement.classList.add('js')",
+          tagPosition: "head",
+        },
+      ],
     },
   },
 });

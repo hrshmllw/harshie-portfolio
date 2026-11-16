@@ -1,332 +1,92 @@
 <script setup lang="ts">
+/** Big CTA, form visible: headline + copy-email across the top, details and form below. */
 const { site } = useAppConfig();
 const { shouldAnimate } = useMotionPreference();
-const config = useRuntimeConfig();
-
-const name = ref("");
-const email = ref("");
-const subject = ref("");
-const message = ref("");
-const botcheck = ref("");
-
-const errors = reactive({
-  name: "",
-  email: "",
-  subject: "",
-  message: "",
-});
-
-const isSubmitting = ref(false);
-const submitStatus = ref<"idle" | "success" | "error">("idle");
-
-const isValidEmail = (value: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-
-const validateField = (field: keyof typeof errors) => {
-  if (field === "name") {
-    errors.name = name.value.trim() ? "" : "Please enter your name.";
-  }
-  if (field === "email") {
-    if (!email.value.trim()) errors.email = "Please enter your email.";
-    else if (!isValidEmail(email.value))
-      errors.email = "Please enter a valid email address.";
-    else errors.email = "";
-  }
-  if (field === "subject") {
-    errors.subject = subject.value.trim() ? "" : "Please enter a subject.";
-  }
-  if (field === "message") {
-    errors.message = message.value.trim() ? "" : "Please enter a message.";
-  }
-};
-
-const validateAll = () => {
-  validateField("name");
-  validateField("email");
-  validateField("subject");
-  validateField("message");
-  return !errors.name && !errors.email && !errors.subject && !errors.message;
-};
-
-const resetForm = () => {
-  name.value = "";
-  email.value = "";
-  subject.value = "";
-  message.value = "";
-  botcheck.value = "";
-  errors.name = "";
-  errors.email = "";
-  errors.subject = "";
-  errors.message = "";
-  submitStatus.value = "idle";
-};
-
-const submitForm = async () => {
-  submitStatus.value = "idle";
-  if (!validateAll()) return;
-  if (botcheck.value) return;
-
-  isSubmitting.value = true;
-
-  try {
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        access_key: config.public.web3formsAccessKey,
-        name: name.value.trim(),
-        email: email.value.trim(),
-        subject: subject.value.trim(),
-        message: message.value.trim(),
-        botcheck: botcheck.value,
-      }),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      name.value = "";
-      email.value = "";
-      subject.value = "";
-      message.value = "";
-      botcheck.value = "";
-      errors.name = "";
-      errors.email = "";
-      errors.subject = "";
-      errors.message = "";
-      submitStatus.value = "success";
-    } else {
-      submitStatus.value = "error";
-    }
-  } catch {
-    submitStatus.value = "error";
-  } finally {
-    isSubmitting.value = false;
-  }
-};
+const { copied, copy } = useCopyEmail();
+const localTime = useLocalClock();
 </script>
 
 <template>
-  <section id="contact" class="bg-accent">
+  <section id="contact" class="bg-accent" aria-labelledby="contact-title">
     <div class="container-x section-pad">
-      <div class="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
-        <div
-          v-motion
-          :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
-          :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-          :transition="{ duration: 500 }"
+      <p class="eyebrow eyebrow-marker text-fg/75 before:bg-fg">Contact</p>
+
+      <h2
+        id="contact-title"
+        v-motion
+        :initial="shouldAnimate ? { opacity: 0, y: 24 } : false"
+        :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
+        :transition="{ duration: 600 }"
+        class="hero-display mt-8"
+      >
+        Let's&nbsp;talk<span class="hero-cursor !bg-fg" aria-hidden="true" />
+      </h2>
+
+      <div class="mt-12 border-y border-fg/20">
+        <button
+          type="button"
+          class="email-line group flex w-full items-center justify-between gap-6 py-6 text-left md:py-8"
+          @click="copy"
         >
-          <p class="eyebrow eyebrow-marker text-fg/75 before:bg-fg">Contact</p>
-          <h2 class="section-title mt-4">Interested? Get in touch.</h2>
-          <p class="mt-4 max-w-md text-fg/75">
+          <span class="relative min-w-0 font-display text-[clamp(1.1rem,4.4vw,4.25rem)] font-semibold tracking-[-0.02em] [overflow-wrap:anywhere]">
+            {{ site.email }}
+            <span class="email-underline absolute -bottom-1 left-0 h-[3px] w-full bg-fg" aria-hidden="true" />
+          </span>
+          <span class="flex shrink-0 items-center gap-2 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fg/75">
+            <Icon :name="copied ? 'lucide:check' : 'lucide:copy'" class="h-4 w-4" aria-hidden="true" />
+            <span class="hidden sm:inline">{{ copied ? "Copied" : "Copy" }}</span>
+          </span>
+        </button>
+      </div>
+      <p class="sr-only" aria-live="polite">{{ copied ? "Email address copied to clipboard" : "" }}</p>
+
+      <div class="mt-14 grid gap-14 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-20">
+        <div>
+          <p class="max-w-sm text-lg text-fg/80">
             Have a project in mind, a role to discuss, or a question about my
-            work? Send a message and I'll get back to you.
+            work? Send a message and I'll get back to&nbsp;you.
           </p>
 
-          <ul class="mt-8 space-y-4 text-sm">
-            <li class="flex items-center gap-3 text-fg/75">
-              <Icon name="lucide:map-pin" class="h-4 w-4 shrink-0" />
-              <span>{{ site.location }}</span>
-            </li>
-            <li>
-              <a
-                :href="`mailto:${site.email}`"
-                class="flex items-center gap-3 text-fg/75 transition-colors hover:text-fg"
-              >
-                <Icon name="lucide:mail" class="h-4 w-4 shrink-0" />
-                <span>{{ site.email }}</span>
-              </a>
-            </li>
-            <li v-for="social in site.socials" :key="social.url">
-              <a
-                :href="social.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-3 text-fg/75 transition-colors hover:text-fg"
-              >
-                <Icon :name="social.icon" class="h-4 w-4 shrink-0" />
-                <span>{{ social.label }}</span>
-              </a>
-            </li>
-          </ul>
+          <dl class="mt-10 border-t border-fg/20 text-sm">
+            <div class="flex items-center justify-between gap-4 border-b border-fg/20 py-4">
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fg/60">Based in</dt>
+              <dd>{{ site.location.split(",").slice(0, 2).join(",") }}</dd>
+            </div>
+            <div class="flex items-center justify-between gap-4 border-b border-fg/20 py-4">
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fg/60">Local time</dt>
+              <dd class="tabular-nums">{{ localTime }} <span class="text-fg/60">GMT+8</span></dd>
+            </div>
+            <div v-for="social in site.socials" :key="social.url" class="flex items-center justify-between gap-4 border-b border-fg/20 py-4">
+              <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fg/60">{{ social.label }}</dt>
+              <dd>
+                <a :href="social.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:underline">
+                  <Icon :name="social.icon" class="h-4 w-4" aria-hidden="true" />
+                  {{ social.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") }}
+                </a>
+              </dd>
+            </div>
+          </dl>
         </div>
 
-        <form
-          v-motion
-          :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
-          :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-          :transition="{ duration: 500, delay: 100 }"
-          class="relative border border-fg/15 bg-black/20 p-6 md:p-8"
-          novalidate
-          @submit.prevent="submitForm"
-        >
-          <!-- Honeypot — visually and accessibly hidden -->
-          <input
-            v-model="botcheck"
-            type="text"
-            name="botcheck"
-            tabindex="-1"
-            autocomplete="off"
-            class="pointer-events-none absolute left-0 top-0 h-px w-px -translate-x-full opacity-0"
-            aria-hidden="true"
-          />
-
-          <div class="grid gap-5 sm:grid-cols-2">
-            <div>
-              <label for="contact-name" class="mb-2 block text-sm">Name</label>
-              <input
-                id="contact-name"
-                v-model="name"
-                type="text"
-                name="name"
-                autocomplete="name"
-                class="field-input"
-                :aria-invalid="!!errors.name"
-                :aria-describedby="errors.name ? 'name-error' : undefined"
-                @blur="validateField('name')"
-              />
-              <p
-                v-if="errors.name"
-                id="name-error"
-                class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
-                role="alert"
-              >
-                <Icon
-                  name="lucide:circle-alert"
-                  class="mt-px h-3.5 w-3.5 shrink-0"
-                  aria-hidden="true"
-                />
-                <span>{{ errors.name }}</span>
-              </p>
-            </div>
-
-            <div>
-              <label for="contact-email" class="mb-2 block text-sm">Email</label>
-              <input
-                id="contact-email"
-                v-model="email"
-                type="email"
-                name="email"
-                autocomplete="email"
-                class="field-input"
-                :aria-invalid="!!errors.email"
-                :aria-describedby="errors.email ? 'email-error' : undefined"
-                @blur="validateField('email')"
-              />
-              <p
-                v-if="errors.email"
-                id="email-error"
-                class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
-                role="alert"
-              >
-                <Icon
-                  name="lucide:circle-alert"
-                  class="mt-px h-3.5 w-3.5 shrink-0"
-                  aria-hidden="true"
-                />
-                <span>{{ errors.email }}</span>
-              </p>
-            </div>
-          </div>
-
-          <div class="mt-5">
-            <label for="contact-subject" class="mb-2 block text-sm">Subject</label>
-            <input
-              id="contact-subject"
-              v-model="subject"
-              type="text"
-              name="subject"
-              class="field-input"
-              :aria-invalid="!!errors.subject"
-              :aria-describedby="errors.subject ? 'subject-error' : undefined"
-              @blur="validateField('subject')"
-            />
-            <p
-              v-if="errors.subject"
-              id="subject-error"
-              class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
-              role="alert"
-            >
-              <Icon
-                name="lucide:circle-alert"
-                class="mt-px h-3.5 w-3.5 shrink-0"
-                aria-hidden="true"
-              />
-              <span>{{ errors.subject }}</span>
-            </p>
-          </div>
-
-          <div class="mt-5">
-            <label for="contact-message" class="mb-2 block text-sm">Message</label>
-            <textarea
-              id="contact-message"
-              v-model="message"
-              name="message"
-              rows="5"
-              class="field-input resize-y"
-              :aria-invalid="!!errors.message"
-              :aria-describedby="errors.message ? 'message-error' : undefined"
-              @blur="validateField('message')"
-            />
-            <p
-              v-if="errors.message"
-              id="message-error"
-              class="mt-1.5 flex items-start gap-1.5 text-xs text-fg"
-              role="alert"
-            >
-              <Icon
-                name="lucide:circle-alert"
-                class="mt-px h-3.5 w-3.5 shrink-0"
-                aria-hidden="true"
-              />
-              <span>{{ errors.message }}</span>
-            </p>
-          </div>
-
-          <div class="mt-6 flex flex-wrap items-center gap-3">
-            <button
-              type="submit"
-              class="btn-inverse disabled:cursor-not-allowed disabled:opacity-50"
-              :disabled="isSubmitting"
-            >
-              {{ isSubmitting ? "Sending..." : "Send message" }}
-            </button>
-            <button
-              type="button"
-              class="btn-ghost border-fg/30 hover:border-fg/60 hover:bg-black/20"
-              @click="resetForm"
-            >
-              Reset
-            </button>
-          </div>
-
-          <div class="mt-4 min-h-[1.25rem]" aria-live="polite" role="status">
-            <p
-              v-if="submitStatus === 'success'"
-              class="text-sm text-fg"
-            >
-              Message sent successfully. I'll be in touch soon.
-            </p>
-            <p
-              v-if="submitStatus === 'error'"
-              class="flex items-start gap-1.5 text-sm text-fg"
-            >
-              <Icon
-                name="lucide:circle-alert"
-                class="mt-0.5 h-4 w-4 shrink-0"
-                aria-hidden="true"
-              />
-              <span
-                >Something went wrong. Please try again or email me
-                directly.</span
-              >
-            </p>
-          </div>
-        </form>
+        <div>
+          <p class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fg/60">Or send a message</p>
+          <UiContactForm class="form-on-maroon" />
+        </div>
       </div>
     </div>
   </section>
 </template>
+
+<style scoped>
+.email-underline {
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.email-line:hover .email-underline,
+.email-line:focus-visible .email-underline {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+</style>

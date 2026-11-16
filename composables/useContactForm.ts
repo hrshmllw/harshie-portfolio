@@ -2,10 +2,7 @@ type ContactField = "name" | "email" | "subject" | "message";
 
 const isValidEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-/**
- * Validation + Web3Forms submit for the contact form, shared by the /lab
- * contact variants. Same rules and payload as `ContactSection.vue`.
- */
+/** Validation + Web3Forms submit for the contact form (`components/ui/ContactForm.vue`). */
 export function useContactForm() {
   const config = useRuntimeConfig();
 
