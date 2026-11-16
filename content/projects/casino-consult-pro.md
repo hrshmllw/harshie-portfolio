@@ -4,6 +4,7 @@ description: Online casino gaming consultancy site offering payment integration,
 tags:
   - Next.js
   - Tailwind
+  - Calendly
 liveUrl: https://casinoconsult.pro
 featured: true
 confidential: false
