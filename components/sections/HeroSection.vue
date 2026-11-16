@@ -1,5 +1,24 @@
 <script setup lang="ts">
 const { site } = useAppConfig();
+
+// The tags read as one row, or, as soon as they'd wrap, one per line (a
+// bullet list). CSS can't detect wrapping, so compare the tags' combined
+// width with the space available.
+const tagList = ref<HTMLElement | null>(null);
+const stackTags = ref(false);
+
+const measureTags = () => {
+  const el = tagList.value;
+  if (!el) return;
+  const items = Array.from(el.children) as HTMLElement[];
+  const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
+  const total =
+    items.reduce((sum, item) => sum + item.offsetWidth, 0) + gap * (items.length - 1);
+  stackTags.value = total > el.clientWidth;
+};
+
+useResizeObserver(tagList, measureTags);
+onMounted(() => document.fonts?.ready.then(measureTags));
 </script>
 
 <template>
@@ -32,8 +51,10 @@ const { site } = useAppConfig();
         </h1>
 
         <ul
+          ref="tagList"
           data-reveal-item
           class="hero-tags mt-8"
+          :class="{ 'flex-col items-start': stackTags }"
           aria-label="Expertise areas"
         >
           <li

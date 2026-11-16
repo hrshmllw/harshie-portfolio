@@ -12,10 +12,6 @@ const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?:
 // NDA work never links out.
 const link = (project: { confidential?: boolean; liveUrl?: string; githubUrl?: string }) =>
   project.confidential ? undefined : project.liveUrl || project.githubUrl || undefined;
-
-// The last word and the new-tab icon stay together so the icon never wraps alone.
-const titleHead = (title: string) => title.slice(0, title.lastIndexOf(" ") + 1);
-const titleTail = (title: string) => title.slice(title.lastIndexOf(" ") + 1);
 </script>
 
 <template>
@@ -77,7 +73,7 @@ const titleTail = (title: string) => title.slice(title.lastIndexOf(" ") + 1);
                   rel="noopener noreferrer"
                   class="decoration-accent-bright decoration-2 underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
                 >
-                  {{ titleHead(project.title) }}<span class="whitespace-nowrap">{{ titleTail(project.title) }}<Icon
+                  {{ splitLastWord(project.title)[0] }}<span class="whitespace-nowrap">{{ splitLastWord(project.title)[1] }}<Icon
                     name="lucide:arrow-up-right"
                     class="ml-1.5 inline-block h-[0.7em] w-[0.7em] align-baseline text-accent-bright md:hidden"
                     aria-hidden="true"

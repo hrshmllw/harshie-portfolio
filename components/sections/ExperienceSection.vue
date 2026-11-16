@@ -62,14 +62,14 @@ const current = computed(() => site.experience[active.value]);
                   :href="current.url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="company-link tap-target group mt-3 inline-flex items-center gap-2 text-lg text-muted transition-colors hover:text-fg focus-visible:text-fg"
+                  class="company-link tap-target group mt-3 block w-fit max-w-full text-lg text-muted transition-colors hover:text-fg focus-visible:text-fg"
                 >
-                  <span class="company-name">{{ current.company }}</span>
-                  <Icon
+                  <!-- Last word + icon stay together so the icon follows the text when it wraps. -->
+                  <span class="company-name">{{ splitLastWord(current.company)[0] }}</span><span class="whitespace-nowrap"><span class="company-name">{{ splitLastWord(current.company)[1] }}</span><Icon
                     name="lucide:arrow-up-right"
-                    class="h-5 w-5 text-accent-bright transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    class="ml-2 inline-block h-5 w-5 align-[-0.2em] text-accent-bright transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                     aria-hidden="true"
-                  />
+                  /></span>
                   <span class="sr-only">(opens in a new tab)</span>
                 </a>
                 <p aria-hidden="true" class="mt-1 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted/70">
@@ -100,14 +100,13 @@ const current = computed(() => site.experience[active.value]);
                 :href="entry.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="tap-target group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg focus-visible:text-fg lg:hidden"
+                class="tap-target group text-muted transition-colors hover:text-fg focus-visible:text-fg lg:hidden"
               >
-                {{ entry.company }}
-                <Icon
+                {{ splitLastWord(entry.company)[0] }}<span class="whitespace-nowrap">{{ splitLastWord(entry.company)[1] }}<Icon
                   name="lucide:arrow-up-right"
-                  class="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  class="ml-1.5 inline-block h-4 w-4 align-[-0.15em] transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                   aria-hidden="true"
-                />
+                /></span>
                 <span class="sr-only">(opens in a new tab)</span>
               </a>
             </p>

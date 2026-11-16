@@ -93,20 +93,33 @@ onBeforeUnmount(stop);
 
 // Touch screens have no hover, so a row lights up (full-colour logos) while
 // it crosses a thin band at the middle of the viewport.
+// Reactive, so it also kicks in when DevTools device mode is toggled after load.
 const row = ref<HTMLElement | null>(null);
 const isLit = ref(false);
+const noHover = useMediaQuery("(hover: none)");
 let centerObserver: IntersectionObserver | null = null;
 
-onMounted(() => {
-  if (!row.value || !window.matchMedia("(hover: none)").matches) return;
-  centerObserver = new IntersectionObserver(
-    ([entry]) => (isLit.value = entry.isIntersecting),
-    { rootMargin: "-49% 0px -49% 0px" },
-  );
-  centerObserver.observe(row.value);
-});
+const stopCenterWatch = () => {
+  centerObserver?.disconnect();
+  centerObserver = null;
+  isLit.value = false;
+};
 
-onBeforeUnmount(() => centerObserver?.disconnect());
+watch(
+  [noHover, row],
+  ([touch, el]) => {
+    stopCenterWatch();
+    if (!touch || !el) return;
+    centerObserver = new IntersectionObserver(
+      ([entry]) => (isLit.value = entry.isIntersecting),
+      { rootMargin: "-49% 0px -49% 0px" },
+    );
+    centerObserver.observe(el);
+  },
+  { immediate: true },
+);
+
+onBeforeUnmount(stopCenterWatch);
 
 const onPointerDown = (event: PointerEvent) => {
   if (event.button !== 0 || !viewport.value) return;
