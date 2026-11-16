@@ -107,29 +107,47 @@ export default defineAppConfig({
       {
         role: "Frontend Web Developer",
         company: "DottyStyle Creative Inc.",
+        url: "https://dottystylecreative.com/",
         start: "2024-03",
         end: null,
         dateLabel: "March 2024–Present",
         summary:
-          "WordPress development, frontend implementation, integrations, maintenance, and QA across client projects.",
+          "Building and maintaining client websites for an Australian creative agency, from Figma handoff to launch and ongoing support.",
+        highlights: [
+          "Custom WordPress themes with ACF-driven page builders, plus WooCommerce stores and their email templates.",
+          "Headless and static builds with Nuxt, Vite and Webpack, with GSAP and Lottie motion.",
+          "Third-party integrations such as HubSpot, booking flows and product feeds.",
+          "QA across browsers and devices, site migrations, and maintenance of live sites.",
+        ],
       },
       {
         role: "Junior Web Developer",
-        company: "Straight Login",
+        company: "Straight Login Inc.",
+        url: "https://slogin.io/",
         start: "2023-08",
         end: "2024-03",
         dateLabel: "August 2023–March 2024",
         summary:
-          "Professional web development and project delivery across client engagements.",
+          "Frontend development for client web apps and marketing sites, working with designers and backend developers through delivery.",
+        highlights: [
+          "Next.js and Tailwind CSS builds, including English/Japanese sites with next-intl.",
+          "A Web3 app with wallet connection (wagmi, RainbowKit) on top of a third-party API.",
+          "Headless WordPress content, booking embeds and responsive, accessible UI.",
+        ],
       },
       {
         role: "Frontend Development & QA Intern",
-        company: "Pixel8",
+        company: "Pixel8 Web Solutions & Consultancy Inc.",
+        url: "https://pixel8websolutions.com/",
         start: "2023-03",
         end: "2023-05",
         dateLabel: "March–May 2023",
         summary:
-          "Vue.js, Quasar, interface implementation, and quality assurance.",
+          "Internship on the frontend and QA teams, building interface screens and testing them before release.",
+        highlights: [
+          "Interface implementation in Vue.js and Quasar from design mockups.",
+          "Manual QA: writing test cases, reproducing issues and filing bug reports.",
+        ],
       },
     ],
   },

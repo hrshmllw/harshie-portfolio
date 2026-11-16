@@ -98,24 +98,38 @@ const cursor = computed(() => {
       <rect :x="cursor.x" :y="cursor.y" width="9" height="9" class="cover-cursor" />
     </svg>
 
+    <!-- One stamp across the whole cover; sized off the cover's width. -->
     <div
       v-if="redacted"
-      class="absolute inset-0 flex flex-col justify-center gap-2 px-[8%]"
-      :class="{ 'bg-bg/40': image }"
+      class="nda-stamp-wrap absolute inset-0 grid place-items-center"
+      :class="{ 'bg-bg/30': image }"
       aria-hidden="true"
     >
-      <span class="h-3 w-3/4 bg-black/80" />
-      <span class="h-3 w-1/2 bg-black/80" />
-      <span
-        class="mt-2 inline-flex w-fit -rotate-2 border border-accent-bright px-2 py-1 font-mono text-[0.65rem] uppercase tracking-[0.2em] text-accent-bright"
-      >
-        Under NDA
-      </span>
+      <span class="nda-stamp">Under NDA</span>
     </div>
   </div>
 </template>
 
 <style scoped>
+.nda-stamp-wrap {
+  container-type: inline-size;
+}
+
+.nda-stamp {
+  transform: rotate(-8deg);
+  border: max(2px, 0.6cqw) solid #c4454a;
+  padding: 1.2cqw 3.5cqw;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 9cqw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #c4454a;
+  background: rgb(42 46 49 / 0.55);
+  box-shadow: inset 0 0 0 max(1px, 0.25cqw) rgb(42 46 49 / 0.55);
+}
 .cover-px {
   transition:
     fill 400ms ease,

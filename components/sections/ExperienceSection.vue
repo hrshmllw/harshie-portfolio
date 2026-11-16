@@ -77,8 +77,29 @@ const current = computed(() => site.experience[active.value]);
               <time :datetime="entry.start">{{ entry.dateLabel }}</time>
             </p>
             <h3 class="mt-4 font-display text-2xl font-semibold tracking-tight md:text-3xl">{{ entry.role }}</h3>
-            <p class="mt-1 text-muted">{{ entry.company }}</p>
-            <p class="mt-6 max-w-md leading-relaxed text-muted">{{ entry.summary }}</p>
+            <p class="mt-1">
+              <a
+                :href="entry.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg focus-visible:text-fg"
+              >
+                {{ entry.company }}
+                <Icon
+                  name="lucide:arrow-up-right"
+                  class="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                  aria-hidden="true"
+                />
+                <span class="sr-only">(opens in a new tab)</span>
+              </a>
+            </p>
+            <p class="mt-6 max-w-lg leading-relaxed text-fg/85">{{ entry.summary }}</p>
+            <ul class="mt-5 max-w-lg space-y-2.5 text-sm leading-relaxed text-muted">
+              <li v-for="item in entry.highlights" :key="item" class="flex gap-3">
+                <span class="mt-[0.55em] h-1.5 w-1.5 shrink-0 bg-accent-bright" aria-hidden="true" />
+                <span>{{ item }}</span>
+              </li>
+            </ul>
           </li>
         </ol>
       </div>

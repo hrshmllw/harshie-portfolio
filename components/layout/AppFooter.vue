@@ -8,10 +8,6 @@ const { site } = useAppConfig();
       class="container-x flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between md:py-16"
     >
       <div class="space-y-2">
-        <p class="text-fg">
-          <LayoutAppLogo class="block h-6 w-6" />
-          <span class="sr-only">{{ site.fullName }}</span>
-        </p>
         <p class="text-sm text-muted">
           &copy; 2026 {{ site.shortName }}
         </p>

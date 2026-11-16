@@ -1,41 +1,44 @@
 <script setup lang="ts">
-/** Ticker rows: one slow, draggable ticker per category; icons take their brand colour on hover. */
+/** Ticker rows: one slow, draggable ticker per category; icons show their full-colour logo on hover. */
 const { site } = useAppConfig();
 
-// Brand colours, adjusted where the official one disappears on the dark background.
-const BRAND: Record<string, string> = {
-  "simple-icons:html5": "#E34F26",
-  "simple-icons:css": "#8E5CD9",
-  "simple-icons:javascript": "#F7DF1E",
-  "simple-icons:typescript": "#3178C6",
-  "simple-icons:sass": "#CC6699",
-  "simple-icons:tailwindcss": "#06B6D4",
-  "simple-icons:react": "#61DAFB",
-  "simple-icons:nextdotjs": "#F4F1EC",
-  "simple-icons:vuedotjs": "#4FC08D",
-  "simple-icons:nuxt": "#00DC82",
-  "simple-icons:wordpress": "#3E8EC6",
-  "simple-icons:php": "#777BB4",
-  "simple-icons:woocommerce": "#A46497",
-  "simple-icons:shopify": "#7AB55C",
-  "simple-icons:greensock": "#88CE02",
-  "simple-icons:jquery": "#2A8FD6",
-  "simple-icons:axios": "#7B4DF0",
-  "simple-icons:webpack": "#8DD6F9",
-  "simple-icons:npm": "#CB3837",
-  "simple-icons:git": "#F05032",
-  "simple-icons:figma": "#F24E1E",
-  "simple-icons:eslint": "#7C6BE0",
-  "simple-icons:prettier": "#F7B93E",
-  "simple-icons:jest": "#C21325",
-  "simple-icons:mocha": "#A47B5C",
+// Full-colour logos shown on hover, from the gilbarbara/logos set (Devicon for
+// jQuery, whose `logos` version is a wordmark). Axios has no full-colour mark,
+// so its single-colour icon takes the official purple instead.
+const LOGO: Record<string, string> = {
+  "simple-icons:html5": "logos:html-5",
+  "simple-icons:css": "logos:css-3",
+  "simple-icons:javascript": "logos:javascript",
+  "simple-icons:typescript": "logos:typescript-icon",
+  "simple-icons:sass": "logos:sass",
+  "simple-icons:tailwindcss": "logos:tailwindcss-icon",
+  "simple-icons:react": "logos:react",
+  "simple-icons:nextdotjs": "logos:nextjs-icon",
+  "simple-icons:vuedotjs": "logos:vue",
+  "simple-icons:nuxt": "logos:nuxt-icon",
+  "simple-icons:wordpress": "logos:wordpress-icon",
+  "simple-icons:php": "logos:php",
+  "simple-icons:woocommerce": "logos:woocommerce-icon",
+  "simple-icons:shopify": "logos:shopify",
+  "simple-icons:greensock": "logos:greensock-icon",
+  "simple-icons:jquery": "devicon:jquery",
+  "simple-icons:webpack": "logos:webpack",
+  "simple-icons:npm": "logos:npm-icon",
+  "simple-icons:git": "logos:git-icon",
+  "simple-icons:figma": "logos:figma",
+  "simple-icons:eslint": "logos:eslint",
+  "simple-icons:prettier": "logos:prettier",
+  "simple-icons:jest": "logos:jest",
+  "simple-icons:mocha": "logos:mocha",
 };
+const BRAND: Record<string, string> = { "simple-icons:axios": "#5A29E4" };
 
 const rows = computed(() =>
   site.technologies.map((group) => ({
     category: group.category,
     items: group.items.map((item) => ({
       ...item,
+      logo: LOGO[item.icon],
       brand: BRAND[item.icon] ?? "#C4454A",
     })),
   })),

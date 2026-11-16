@@ -4,7 +4,6 @@
  * dot matrix. Lit pixels fly in from scattered offsets the first time it
  * scrolls into view; empty cells paint maroon on hover.
  */
-withDefaults(defineProps<{ caption?: boolean }>(), { caption: true });
 
 // Lit cells of the 6×6 "ej" grid; "col,row".
 const LIT = new Set([
@@ -60,13 +59,6 @@ const settled = useRevealOnce(root, 0.35);
         :style="{ '--dx': cell.dx, '--dy': cell.dy, '--d': cell.delay }"
       />
     </svg>
-    <p
-      v-if="caption"
-      class="mt-6 flex justify-between font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted"
-    >
-      <span>ej &middot; 6&times;6</span>
-      <span>Hover the empty cells</span>
-    </p>
   </div>
 </template>
 

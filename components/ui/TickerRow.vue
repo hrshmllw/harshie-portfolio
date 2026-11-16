@@ -6,7 +6,7 @@
  *   the page), with momentum on release. ←/→ nudge it when the row is focused.
  * - Reduced motion: no drift, one static wrapped list.
  */
-type TickerItem = { name: string; icon: string; brand: string };
+type TickerItem = { name: string; icon: string; logo?: string; brand?: string };
 
 const props = withDefaults(
   defineProps<{ category: string; items: TickerItem[]; reverse?: boolean }>(),
@@ -164,9 +164,8 @@ const onKey = (event: KeyboardEvent) => {
             v-for="item in items"
             :key="item.name"
             class="tick-item flex items-center gap-4 pr-10 font-display text-3xl font-semibold tracking-tight text-fg md:gap-5 md:pr-14 md:text-5xl"
-            :style="{ '--brand': item.brand }"
           >
-            <Icon :name="item.icon" class="tick-icon h-[0.7em] w-[0.7em]" />
+            <UiTechMark :icon="item.icon" :logo="item.logo" :brand="item.brand" />
             <span class="whitespace-nowrap">{{ item.name }}</span>
             <span class="ml-6 h-2 w-2 shrink-0 bg-accent-bright md:ml-9" />
           </li>
@@ -179,9 +178,8 @@ const onKey = (event: KeyboardEvent) => {
         v-for="item in items"
         :key="item.name"
         class="tick-item flex items-center gap-4 font-display text-3xl font-semibold tracking-tight text-fg md:text-5xl"
-        :style="{ '--brand': item.brand }"
       >
-        <Icon :name="item.icon" class="tick-icon h-[0.7em] w-[0.7em]" />
+        <UiTechMark :icon="item.icon" :logo="item.logo" :brand="item.brand" />
         <span>{{ item.name }}</span>
       </li>
     </ul>
@@ -197,15 +195,6 @@ const onKey = (event: KeyboardEvent) => {
 
 .ticker-row:focus-visible {
   outline-offset: -2px;
-}
-
-.tick-icon {
-  color: #a7a7a7;
-  transition: color 200ms ease;
-}
-
-.tick-item:hover .tick-icon {
-  color: var(--brand);
 }
 
 /* Fallback if JS hasn't hydrated yet under reduced motion: no drift is ever applied. */
