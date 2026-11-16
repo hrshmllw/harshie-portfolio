@@ -181,7 +181,7 @@ onUnmounted(() => {
     >
       <button
         type="button"
-        class="text-fg"
+        class="tap-target text-fg"
         data-intro="nav"
         :aria-label="`${site.fullName}, back to top`"
         @click="handleNavClick('#introduction')"
@@ -250,7 +250,7 @@ onUnmounted(() => {
       <button
         ref="menuButtonRef"
         type="button"
-        class="inline-flex h-9 w-9 items-center justify-center border border-border lg:hidden"
+        class="tap-target inline-flex h-9 w-9 items-center justify-center border border-border lg:hidden"
         data-intro="nav"
         :aria-expanded="isMenuOpen"
         aria-controls="mobile-nav"
@@ -270,22 +270,24 @@ onUnmounted(() => {
       ref="menuRef"
       class="border-t border-border/60 px-6 py-6 lg:hidden"
     >
-      <nav class="flex flex-col items-start gap-4" aria-label="Mobile">
+      <nav class="flex flex-col items-stretch" aria-label="Mobile">
         <button
           v-for="item in site.nav"
           :key="item.href"
           type="button"
-          class="nav-link text-lg"
+          class="nav-link min-h-11 w-full items-center py-2 text-lg"
           :class="{ 'is-active': isActive(item.href) }"
           :aria-current="isActive(item.href) ? 'true' : undefined"
           @click="handleNavClick(item.href)"
         >
-          {{ item.label }}
-          <span class="nav-link-marker" aria-hidden="true" />
+          <span class="relative">
+            {{ item.label }}
+            <span class="nav-link-marker" aria-hidden="true" />
+          </span>
         </button>
         <button
           type="button"
-          class="nav-cta group mt-3 text-lg"
+          class="nav-cta group mt-3 min-h-11 w-full py-2 text-lg"
           @click="handleNavClick('#contact')"
         >
           get in touch
@@ -294,4 +296,26 @@ onUnmounted(() => {
       </nav>
     </div>
   </header>
+
+  <!-- Outside <header>: its backdrop-filter would make a fixed child size to the header. -->
+  <Transition name="menu-backdrop">
+    <div
+      v-if="isMenuOpen"
+      class="fixed inset-0 z-40 bg-black/60 lg:hidden"
+      aria-hidden="true"
+      @click="closeMenu"
+    />
+  </Transition>
 </template>
+
+<style scoped>
+.menu-backdrop-enter-active,
+.menu-backdrop-leave-active {
+  transition: opacity 250ms ease;
+}
+
+.menu-backdrop-enter-from,
+.menu-backdrop-leave-to {
+  opacity: 0;
+}
+</style>

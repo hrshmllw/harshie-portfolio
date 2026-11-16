@@ -20,7 +20,7 @@ const { site } = useAppConfig();
           :href="social.url"
           target="_blank"
           rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg"
+          class="tap-target inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg"
           :aria-label="social.label"
         >
           <Icon :name="social.icon" class="h-4 w-4" />
@@ -28,7 +28,7 @@ const { site } = useAppConfig();
         </a>
         <a
           :href="`mailto:${site.email}`"
-          class="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg"
+          class="tap-target inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-fg"
           aria-label="Email"
         >
           <Icon name="lucide:mail" class="h-4 w-4" />

@@ -91,6 +91,23 @@ watch(
 
 onBeforeUnmount(stop);
 
+// Touch screens have no hover, so a row lights up (full-colour logos) while
+// it crosses a thin band at the middle of the viewport.
+const row = ref<HTMLElement | null>(null);
+const isLit = ref(false);
+let centerObserver: IntersectionObserver | null = null;
+
+onMounted(() => {
+  if (!row.value || !window.matchMedia("(hover: none)").matches) return;
+  centerObserver = new IntersectionObserver(
+    ([entry]) => (isLit.value = entry.isIntersecting),
+    { rootMargin: "-49% 0px -49% 0px" },
+  );
+  centerObserver.observe(row.value);
+});
+
+onBeforeUnmount(() => centerObserver?.disconnect());
+
 const onPointerDown = (event: PointerEvent) => {
   if (event.button !== 0 || !viewport.value) return;
   isDragging.value = true;
@@ -130,7 +147,9 @@ const onKey = (event: KeyboardEvent) => {
 
 <template>
   <div
+    ref="row"
     class="ticker-row rule-bottom grid md:grid-cols-[14rem_minmax(0,1fr)]"
+    :class="{ 'is-lit': isLit }"
     data-reveal-item
     tabindex="0"
     :aria-label="`${category}: ${items.map((item) => item.name).join(', ')}`"

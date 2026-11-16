@@ -20,6 +20,8 @@ export default {
           DEFAULT: "#3C0007",
           soft: "#8B2A32",
           bright: "#C4454A",
+          // Small text on bg/surface: 5.4:1 on bg (AA); `bright` is 2.8:1 there
+          light: "#E8888B",
         },
       },
       maxWidth: {

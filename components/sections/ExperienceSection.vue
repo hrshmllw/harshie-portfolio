@@ -62,7 +62,7 @@ const current = computed(() => site.experience[active.value]);
                   :href="current.url"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="company-link group mt-3 inline-flex items-center gap-2 text-lg text-muted transition-colors hover:text-fg focus-visible:text-fg"
+                  class="company-link tap-target group mt-3 inline-flex items-center gap-2 text-lg text-muted transition-colors hover:text-fg focus-visible:text-fg"
                 >
                   <span class="company-name">{{ current.company }}</span>
                   <Icon
@@ -100,7 +100,7 @@ const current = computed(() => site.experience[active.value]);
                 :href="entry.url"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg focus-visible:text-fg lg:hidden"
+                class="tap-target group inline-flex items-center gap-1.5 text-muted transition-colors hover:text-fg focus-visible:text-fg lg:hidden"
               >
                 {{ entry.company }}
                 <Icon

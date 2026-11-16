@@ -3,6 +3,9 @@
 const { site } = useAppConfig();
 const { copied, copy } = useCopyEmail();
 const localTime = useLocalClock();
+
+// The row label and icon already name the network, so show just the handle.
+const handle = (url: string) => url.replace(/\/+$/, "").split("/").pop() ?? url;
 </script>
 
 <template>
@@ -36,6 +39,22 @@ const localTime = useLocalClock();
       </div>
       <p class="sr-only" aria-live="polite">{{ copied ? "Email address copied to clipboard" : "" }}</p>
 
+      <!-- Floating confirmation; visual only (the live region above announces it). -->
+      <Teleport to="body">
+        <Transition name="toast">
+          <div
+            v-if="copied"
+            class="pointer-events-none fixed inset-x-0 bottom-[max(1.5rem,env(safe-area-inset-bottom))] z-[60] flex justify-center px-4"
+            aria-hidden="true"
+          >
+            <p class="flex items-center gap-2 border border-fg/20 bg-bg px-4 py-3 font-mono text-xs uppercase tracking-[0.18em] text-fg shadow-[0_12px_32px_-12px_rgba(0,0,0,0.6)]">
+              <Icon name="lucide:check" class="h-4 w-4 text-accent-light" />
+              Copied
+            </p>
+          </div>
+        </Transition>
+      </Teleport>
+
       <div class="mt-14 grid gap-14 lg:grid-cols-[minmax(0,0.7fr)_minmax(0,1.3fr)] lg:gap-20">
         <div>
           <p data-reveal-text class="max-w-sm text-lg text-fg/80">
@@ -55,9 +74,9 @@ const localTime = useLocalClock();
             <div v-for="social in site.socials" :key="social.url" class="flex items-center justify-between gap-4 border-b border-fg/20 py-4">
               <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-fg/60">{{ social.label }}</dt>
               <dd>
-                <a :href="social.url" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 hover:underline">
+                <a :href="social.url" target="_blank" rel="noopener noreferrer" class="tap-target inline-flex items-center gap-1.5 hover:underline">
                   <Icon :name="social.icon" class="h-4 w-4" aria-hidden="true" />
-                  {{ social.url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "") }}
+                  {{ handle(social.url) }}
                 </a>
               </dd>
             </div>
@@ -78,6 +97,26 @@ const localTime = useLocalClock();
   transform: scaleX(0);
   transform-origin: right;
   transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition:
+    opacity 250ms ease,
+    transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast-enter-from,
+  .toast-leave-to {
+    transform: none;
+  }
 }
 
 .email-line:hover .email-underline,

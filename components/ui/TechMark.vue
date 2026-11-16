@@ -28,15 +28,19 @@ defineProps<{ icon: string; logo?: string; brand?: string }>();
   transition: opacity 200ms ease;
 }
 
-.tick-item:hover .tech-mono {
+/* `.ticker-row.is-lit`: touch screens, row crossing mid-viewport (TickerRow). */
+.tick-item:hover .tech-mono,
+.ticker-row.is-lit .tech-mono {
   color: var(--brand, #a7a7a7);
 }
 
-.tick-item:hover .tech-mark.has-logo .tech-mono {
+.tick-item:hover .tech-mark.has-logo .tech-mono,
+.ticker-row.is-lit .tech-mark.has-logo .tech-mono {
   opacity: 0;
 }
 
-.tick-item:hover .tech-logo {
+.tick-item:hover .tech-logo,
+.ticker-row.is-lit .tech-logo {
   opacity: 1;
 }
 </style>

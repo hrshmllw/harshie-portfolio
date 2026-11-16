@@ -31,7 +31,7 @@ const rows = [
           <h2 id="about-title" data-reveal-heading class="display mt-6">
             Purpose &amp;&nbsp;Performance
           </h2>
-          <div v-if="about" data-reveal-text class="mt-6 max-w-xl space-y-4 text-lg leading-relaxed text-muted">
+          <div v-if="about" data-reveal-text class="mt-6 max-w-xl text-lg leading-relaxed text-muted [&_p+p]:mt-4">
             <ContentRenderer :value="about" />
           </div>
 
@@ -49,7 +49,7 @@ const rows = [
                 :key="row.label"
                 class="spec-row rule-bottom grid gap-y-1 px-5 py-5 sm:grid-cols-[9rem_1fr]"
               >
-                <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-bright sm:pt-1.5">
+                <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-light sm:pt-1.5">
                   {{ row.label }}
                 </dt>
                 <dd class="font-display text-lg font-medium text-fg md:text-xl">
@@ -59,7 +59,7 @@ const rows = [
               </div>
 
               <div class="spec-row rule-bottom grid gap-y-1 px-5 py-5 sm:grid-cols-[9rem_1fr]">
-                <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-bright sm:pt-1.5">
+                <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-light sm:pt-1.5">
                   Status
                 </dt>
                 <dd class="flex items-center gap-3 font-display text-lg font-medium md:text-xl">

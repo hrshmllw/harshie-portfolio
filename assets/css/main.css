@@ -91,15 +91,32 @@
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center border border-accent-soft bg-accent px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent-bright hover:bg-accent-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright;
+    @apply inline-flex min-h-11 items-center justify-center border border-accent-soft bg-accent px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-accent-bright hover:bg-accent-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright;
   }
 
   .btn-inverse {
-    @apply inline-flex items-center justify-center border border-fg bg-fg px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:border-fg/90 hover:bg-fg/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg;
+    @apply inline-flex min-h-11 items-center justify-center border border-fg bg-fg px-5 py-2.5 text-sm font-medium text-accent transition-colors hover:border-fg/90 hover:bg-fg/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg;
+  }
+
+  /* Grows the hit area to at least 44×44 around small links/icons without
+     changing how they look. Uses ::before, so don't combine with
+     classes that draw their own ::before (e.g. .eyebrow-marker). */
+  .tap-target {
+    position: relative;
+  }
+
+  .tap-target::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 44px);
+    height: max(100%, 44px);
+    transform: translate(-50%, -50%);
   }
 
   .btn-ghost {
-    @apply inline-flex items-center justify-center border border-border bg-transparent px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-muted hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright;
+    @apply inline-flex min-h-11 items-center justify-center border border-border bg-transparent px-5 py-2.5 text-sm font-medium text-fg transition-colors hover:border-muted hover:bg-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-bright;
   }
 
   .nav-link {

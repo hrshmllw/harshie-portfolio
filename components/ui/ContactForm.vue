@@ -5,6 +5,30 @@ const { fields, errors, isSubmitting, status, validate, reset, submit } =
 
 const uid = useId();
 const id = (field: string) => `${uid}-${field}`;
+
+// Reset takes two clicks: the first arms it, the second clears the form.
+// It disarms itself after a few seconds or when focus leaves the button.
+const CONFIRM_MS = 4000;
+const confirmingReset = ref(false);
+let confirmTimer: ReturnType<typeof setTimeout> | undefined;
+
+const disarmReset = () => {
+  confirmingReset.value = false;
+  clearTimeout(confirmTimer);
+};
+
+const onReset = () => {
+  if (!confirmingReset.value) {
+    confirmingReset.value = true;
+    clearTimeout(confirmTimer);
+    confirmTimer = setTimeout(disarmReset, CONFIRM_MS);
+    return;
+  }
+  disarmReset();
+  reset();
+};
+
+onBeforeUnmount(() => clearTimeout(confirmTimer));
 </script>
 
 <template>
@@ -81,7 +105,18 @@ const id = (field: string) => `${uid}-${field}`;
       >
         {{ isSubmitting ? "Sending…" : "Send message" }}
       </button>
-      <button type="button" class="btn-ghost" @click="reset">Reset</button>
+      <button
+        type="button"
+        class="btn-ghost"
+        :class="confirmingReset && '!border-fg !bg-fg/10'"
+        @click="onReset"
+        @blur="disarmReset"
+      >
+        {{ confirmingReset ? "Confirm reset" : "Reset" }}
+      </button>
+      <span class="sr-only" aria-live="polite">
+        {{ confirmingReset ? "Press reset again to clear the form" : "" }}
+      </span>
     </div>
 
     <div class="mt-4 min-h-[1.25rem] text-sm" aria-live="polite" role="status">
