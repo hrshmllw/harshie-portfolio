@@ -12,7 +12,9 @@
 import { gsap } from "gsap";
 
 const MIN_MS = 1500; // let the logo finish building
-const MAX_MS = 6000; // never hold the page longer than this
+const MAX_MS = 2500; // never hold the page longer than this
+const COVERS = 1; // only the first cover gates the reveal; the rest load normally
+const WATCHDOG_MS = MAX_MS + 4000; // uncover even if the exit stalls or throws
 
 // Lit cells of the "ej" in stroke order: the e top to bottom, then the j.
 const LIT: [number, number][] = [
@@ -32,6 +34,9 @@ const shown = ref(0);
 const percent = computed(() => String(Math.round(shown.value)).padStart(3, "0"));
 
 onMounted(async () => {
+  // The preloader is running, so the <head> fail-safe can stand down: from
+  // here the watchdog below guarantees the page is uncovered.
+  window.__introDone = true;
   const html = document.documentElement;
   if (!html.classList.contains("is-loading")) {
     preloaded.value = true;
@@ -43,8 +48,32 @@ onMounted(async () => {
   lenis?.stop();
   window.scrollTo(0, 0);
 
-  // Real progress: fonts + each cover image.
-  const images = featured.value.map((p) => p.image).filter(Boolean) as string[];
+  let finished = false;
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    clearTimeout(watchdog);
+    preloaded.value = true;
+    html.classList.remove("is-loading");
+    lenis?.start();
+    // Honour a #section link now that the page can scroll.
+    const hash = window.location.hash;
+    const target = hash.length > 1 ? document.querySelector(hash) : null;
+    if (target) (lenis ? lenis.scrollTo(target as HTMLElement, { immediate: true, offset: -64 }) : target.scrollIntoView());
+  };
+  const watchdog = setTimeout(finish, WATCHDOG_MS);
+
+  try {
+    await run(html, motion, finish);
+  } catch (err) {
+    console.error(err);
+    finish();
+  }
+});
+
+async function run(html: HTMLElement, motion: boolean, finish: () => void) {
+  // Real progress: fonts + the first cover image.
+  const images = (featured.value.map((p) => p.image).filter(Boolean) as string[]).slice(0, COVERS);
   const tasks: Promise<unknown>[] = [
     document.fonts?.ready ?? Promise.resolve(),
     ...images.map((src) => preloadCover(src)),
@@ -78,15 +107,6 @@ onMounted(async () => {
     onUpdate: () => (shown.value = counter.v),
   });
 
-  const finish = () => {
-    html.classList.remove("is-loading");
-    lenis?.start();
-    // Honour a #section link now that the page can scroll.
-    const hash = window.location.hash;
-    const target = hash.length > 1 ? document.querySelector(hash) : null;
-    if (target) (lenis ? lenis.scrollTo(target as HTMLElement, { immediate: true, offset: -64 }) : target.scrollIntoView());
-  };
-
   const el = root.value;
   if (!el || !motion) {
     preloaded.value = true;
@@ -109,7 +129,7 @@ onMounted(async () => {
       preloaded.value = true;
     }, 0.6)
     .to(el, { autoAlpha: 0, duration: 0.35, ease: "power1.out" }, 0.62);
-});
+}
 </script>
 
 <template>

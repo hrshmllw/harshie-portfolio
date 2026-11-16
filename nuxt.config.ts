@@ -52,8 +52,8 @@ export default defineNuxtConfig({
       // - `is-loading`: shows the preloader and locks scroll until it finishes.
       //   Scroll restoration is manual so a reload starts at the top, where the
       //   entry sequence plays.
-      // Fail-safe: if the app never boots, drop both after 10s so nothing
-      // stays hidden.
+      // Fail-safe: if the preloader never mounts (`__introDone`), drop both
+      // after 10s so nothing stays hidden. Once mounted, it has its own watchdog.
       script: [
         {
           innerHTML: [

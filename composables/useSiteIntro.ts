@@ -18,7 +18,10 @@ const gridDraw = ref(motionOn() ? 0 : 1);
 
 declare global {
   interface Window {
-    /** Set once the app has booted; the <head> fail-safe checks it. */
+    /**
+     * Set once the preloader has mounted (it then guarantees its own exit via
+     * a watchdog); until then the <head> fail-safe may uncover the page.
+     */
     __introDone?: boolean;
   }
 }

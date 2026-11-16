@@ -58,7 +58,7 @@ export function useEntryAnimations() {
     // A heading's blinking cursor (its opacity is CSS-animated) waits, hidden,
     // until the letters are in.
     const cursors = kind === "heading" ? [...el.querySelectorAll<HTMLElement>(".hero-cursor")] : [];
-    gsap.set(cursors, { visibility: "hidden" });
+    if (cursors.length) gsap.set(cursors, { visibility: "hidden" });
     if (kind === "heading") {
       made.push(new SplitText(el, { type: "words,chars" }));
       targets = made[0].chars;
@@ -79,7 +79,7 @@ export function useEntryAnimations() {
   };
 
   const cleanup = (el: HTMLElement, made: SplitText[], cursors: HTMLElement[]) => {
-    gsap.set(cursors, { clearProps: "visibility" });
+    if (cursors.length) gsap.set(cursors, { clearProps: "visibility" });
     made.forEach((split) => {
       split.revert();
       splits.delete(split);
@@ -189,7 +189,6 @@ export function useEntryAnimations() {
   };
 
   onMounted(async () => {
-    window.__introDone = true;
     if (!motionOn()) {
       gridDraw.value = 1;
       return;
