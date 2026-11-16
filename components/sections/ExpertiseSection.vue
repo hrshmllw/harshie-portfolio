@@ -46,22 +46,22 @@ const rows = computed(() =>
 </script>
 
 <template>
-  <section id="expertise" class="border-t border-border" aria-labelledby="expertise-title">
+  <section id="expertise" class="rule-top" aria-labelledby="expertise-title">
     <div class="container-x section-pad pb-0 md:pb-0">
       <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div class="max-w-2xl">
-          <p class="eyebrow eyebrow-marker">Expertise</p>
-          <h2 id="expertise-title" class="section-title mt-4">
+          <p data-reveal-item class="eyebrow eyebrow-marker">Expertise</p>
+          <h2 id="expertise-title" data-reveal-heading class="section-title mt-4">
             Technologies &amp;&nbsp;Tools
           </h2>
         </div>
-        <p class="hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted md:block">
+        <p data-reveal-item class="hidden font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted md:block">
           Drag to scroll
         </p>
       </div>
     </div>
 
-    <div class="mt-14 border-t border-border pb-20 md:pb-28">
+    <div class="rule-top mt-14 pb-20 md:pb-28">
       <UiTickerRow
         v-for="(row, index) in rows"
         :key="row.category"

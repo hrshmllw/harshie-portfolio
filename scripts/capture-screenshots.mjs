@@ -6,9 +6,11 @@
  *   node scripts/capture-screenshots.mjs ten-mixer  # just these slugs
  *   SHOT_WAIT=20000 node scripts/…                  # wait longer (preloaders)
  *
- * Uses the local Chrome in headless mode, then sharp to save a 1440×900 JPG
- * to public/images/projects/<slug>.jpg. Projects marked `confidential: true`
- * are pixelated here, so the readable screenshot never ships.
+ * Uses the local Chrome in headless mode at 1440×900, then sharp writes:
+ *   - public projects: <slug>.webp (1440w) and <slug>-800.webp
+ *   - `confidential: true` projects: <slug>.png at 56×35 (pixelated here, so
+ *     the readable screenshot never ships)
+ * to public/images/projects/. Set the project's `image:` to match.
  */
 import { execFileSync } from "node:child_process";
 import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, mkdirSync } from "node:fs";
@@ -93,16 +95,20 @@ for (const project of projects) {
       { stdio: "ignore", timeout: WAIT_MS + 90_000 },
     );
 
-    let image = sharp(raw).resize(WIDTH, HEIGHT, { fit: "cover", position: "top" });
+    const image = sharp(raw).resize(WIDTH, HEIGHT, { fit: "cover", position: "top" });
 
     if (project.confidential) {
-      const small = await image
+      // Ship only the pixel grid itself (56×35); the site upscales it with
+      // `image-rendering: pixelated`, so the readable shot never leaves here.
+      await image
         .resize(PIXEL_COLS, Math.round((PIXEL_COLS * HEIGHT) / WIDTH), { fit: "fill" })
-        .toBuffer();
-      image = sharp(small).resize(WIDTH, HEIGHT, { kernel: "nearest", fit: "fill" });
+        .png({ compressionLevel: 9 })
+        .toFile(join(OUT, `${project.slug}.png`));
+    } else {
+      const buffer = await image.toBuffer();
+      await sharp(buffer).webp({ quality: 78 }).toFile(join(OUT, `${project.slug}.webp`));
+      await sharp(buffer).resize(800).webp({ quality: 78 }).toFile(join(OUT, `${project.slug}-800.webp`));
     }
-
-    await image.jpeg({ quality: 80, mozjpeg: true }).toFile(join(OUT, `${project.slug}.jpg`));
     console.log(project.confidential ? "saved (pixelated)" : "saved");
   } catch (error) {
     console.log(`failed: ${error.message}`);

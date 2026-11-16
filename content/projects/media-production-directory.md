@@ -5,9 +5,9 @@ tags:
   - Vue
   - Nuxt 3
 liveUrl: https://productionbook.com.au/
-featured: false
+featured: true
 confidential: true
-order: 7
+order: 8
 year: 2024
-image: /images/projects/media-production-directory.jpg
+image: /images/projects/media-production-directory.png
 ---

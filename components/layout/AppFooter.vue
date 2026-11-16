@@ -3,17 +3,17 @@ const { site } = useAppConfig();
 </script>
 
 <template>
-  <footer class="relative flex min-h-[70svh] flex-col border-t border-border md:min-h-[100svh]">
+  <footer class="rule-top relative flex min-h-[70svh] flex-col md:min-h-[100svh]">
     <div
-      class="container-x flex flex-col gap-6 py-12 md:flex-row md:items-center md:justify-between md:py-16"
+      class="container-x flex flex-col gap-6 pb-12 pt-28 md:flex-row md:items-center md:justify-between md:pb-16 md:pt-32"
     >
-      <div class="space-y-2">
+      <div data-reveal-item class="space-y-2">
         <p class="text-sm text-muted">
           &copy; 2026 {{ site.shortName }}
         </p>
       </div>
 
-      <div class="flex flex-wrap items-center gap-5">
+      <div data-reveal-item class="flex flex-wrap items-center gap-5">
         <a
           v-for="social in site.socials"
           :key="social.url"
@@ -39,10 +39,10 @@ const { site } = useAppConfig();
 
     <div class="relative min-h-[50svh] flex-1 overflow-hidden md:min-h-0">
       <p
-        class="pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2 select-none text-center font-display text-[18vw] font-semibold leading-none tracking-tight text-fg/[0.04] md:text-[14vw]"
+        class="pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2 select-none text-center font-display text-[16vw] font-semibold lowercase leading-none tracking-tight text-fg/[0.04] md:text-[15vw]"
         aria-hidden="true"
       >
-        MACAWILI
+        ejmacawili
       </p>
       <CanvasFooterWave class="absolute inset-0 z-10" />
     </div>

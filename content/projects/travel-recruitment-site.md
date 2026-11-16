@@ -8,9 +8,9 @@ tags:
   - GSAP
   - Lottie
 liveUrl: https://join.travelmanagers.com.au/
-image: /images/projects/travel-recruitment-site.jpg
-featured: false
+image: /images/projects/travel-recruitment-site.png
+featured: true
 confidential: true
-order: 25
+order: 5
 year: 2026
 ---

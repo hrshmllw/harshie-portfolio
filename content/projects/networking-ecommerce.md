@@ -6,7 +6,7 @@ tags:
 liveUrl: https://linksys.com/
 featured: false
 confidential: true
-order: 9
+order: 14
 year: 2024
-image: /images/projects/networking-ecommerce.jpg
+image: /images/projects/networking-ecommerce.png
 ---

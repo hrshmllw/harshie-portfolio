@@ -12,7 +12,7 @@ tags:
 liveUrl: https://tenmixer.com
 featured: true
 confidential: false
-order: 3
+order: 1
 year: 2024
-image: /images/projects/ten-mixer.jpg
+image: /images/projects/ten-mixer.webp
 ---

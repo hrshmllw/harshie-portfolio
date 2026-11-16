@@ -8,9 +8,9 @@ tags:
   - SCSS
   - Webpack
 liveUrl: https://hyperhq.com/
-image: /images/projects/startup-studio-site.jpg
+image: /images/projects/startup-studio-site.png
 featured: false
 confidential: true
-order: 14
+order: 13
 year: 2025
 ---

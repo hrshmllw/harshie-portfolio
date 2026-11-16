@@ -15,6 +15,8 @@ const props = withDefaults(
   { redacted: false, active: false },
 );
 
+const sources = computed(() => (props.image ? coverSources(props.image) : null));
+
 const COLS = 16;
 const ROWS = 10;
 const CELL = 10;
@@ -67,14 +69,16 @@ const cursor = computed(() => {
 <template>
   <div class="cover relative overflow-hidden bg-[#25292c]" :class="{ 'is-active': active }">
     <img
-      v-if="image"
-      :src="image"
+      v-if="sources"
+      :src="sources.src"
+      :srcset="sources.srcset"
+      :sizes="sources.sizes"
       :alt="alt ?? ''"
-      width="1440"
-      height="900"
-      loading="lazy"
+      :width="sources.width"
+      :height="sources.height"
       decoding="async"
       class="block h-full w-full object-cover object-top"
+      :class="{ 'is-pixelated': sources.pixelated }"
     />
     <svg
       v-else
@@ -111,6 +115,10 @@ const cursor = computed(() => {
 </template>
 
 <style scoped>
+.is-pixelated {
+  image-rendering: pixelated;
+}
+
 .nda-stamp-wrap {
   container-type: inline-size;
 }

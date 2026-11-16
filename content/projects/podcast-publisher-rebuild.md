@@ -6,10 +6,11 @@ tags:
   - PHP
   - Tailwind
   - Vite
+  - GSAP
 liveUrl: https://undeceptions.com/
-image: /images/projects/podcast-publisher-rebuild.jpg
-featured: false
+image: /images/projects/podcast-publisher-rebuild.png
+featured: true
 confidential: true
-order: 26
+order: 2
 year: 2026
 ---

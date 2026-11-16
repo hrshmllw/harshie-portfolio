@@ -182,6 +182,7 @@ onUnmounted(() => {
       <button
         type="button"
         class="text-fg"
+        data-intro="nav"
         :aria-label="`${site.fullName}, back to top`"
         @click="handleNavClick('#introduction')"
         @pointerenter="onLogoPointerEnter"
@@ -198,6 +199,7 @@ onUnmounted(() => {
           :key="item.href"
           type="button"
           class="nav-link"
+          data-intro="nav"
           :class="{ 'is-active': isActive(item.href) }"
           :aria-current="isActive(item.href) ? 'true' : undefined"
           @click="handleNavClick(item.href)"
@@ -219,10 +221,11 @@ onUnmounted(() => {
           </span>
           <span class="nav-link-marker" aria-hidden="true" />
         </button>
-        <span class="h-4 w-px bg-border" aria-hidden="true" />
+        <span class="h-4 w-px bg-border" data-intro="nav" aria-hidden="true" />
         <button
           type="button"
           class="nav-cta group"
+          data-intro="nav"
           @click="handleNavClick('#contact')"
           @pointerenter="onNavPointerEnter"
           @pointerleave="onNavPointerLeave"
@@ -248,6 +251,7 @@ onUnmounted(() => {
         ref="menuButtonRef"
         type="button"
         class="inline-flex h-9 w-9 items-center justify-center border border-border lg:hidden"
+        data-intro="nav"
         :aria-expanded="isMenuOpen"
         aria-controls="mobile-nav"
         aria-label="Toggle menu"

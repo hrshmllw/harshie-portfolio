@@ -8,9 +8,9 @@ tags:
   - GSAP
   - Lottie
 liveUrl: https://corporatetravelspecialists.com.au/
-image: /images/projects/corporate-travel-site.jpg
-featured: false
+image: /images/projects/corporate-travel-site.png
+featured: true
 confidential: true
-order: 24
+order: 3
 year: 2025
 ---

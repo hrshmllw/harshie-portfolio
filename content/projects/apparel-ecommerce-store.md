@@ -8,9 +8,9 @@ tags:
   - GSAP
   - Vite
 liveUrl: https://herdcollective.com.au/
-image: /images/projects/apparel-ecommerce-store.jpg
-featured: false
+image: /images/projects/apparel-ecommerce-store.png
+featured: true
 confidential: true
-order: 22
+order: 6
 year: 2025
 ---

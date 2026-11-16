@@ -7,9 +7,9 @@ tags:
   - ACF
   - SCSS
 liveUrl: https://www.theblueleaf.com/
-image: /images/projects/events-venue-site.jpg
+image: /images/projects/events-venue-site.png
 featured: false
 confidential: true
-order: 23
+order: 11
 year: 2025
 ---

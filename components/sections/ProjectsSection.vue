@@ -1,42 +1,42 @@
 <script setup lang="ts">
-/** Stacking cards: each project pins and stacks over the last, led by its screenshot. */
-const { showAll, displayed, hasMore, total, featuredCount, slug, toggleAll } = await useProjects();
-
-const list = ref<{ $el: HTMLElement } | null>(null);
+/**
+ * Stacking cards: each selected project pins and stacks over the last, led by
+ * its screenshot. Ends with a call to action that scrolls to Contact.
+ */
+const { featured, slug } = await useProjects();
+const { scrollToSection } = useActiveSection();
 
 const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?: string }) =>
   project.confidential ? "Client work · NDA" : project.liveUrl ? "Live" : project.githubUrl ? "Repository" : "";
 </script>
 
 <template>
-  <section id="work" class="border-t border-border" aria-labelledby="work-title">
+  <section id="work" class="rule-top" aria-labelledby="work-title">
     <div class="container-x section-pad">
       <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
         <div class="max-w-2xl">
-          <p class="eyebrow eyebrow-marker">Work</p>
-          <h2 id="work-title" class="section-title mt-4">Selected work</h2>
+          <p data-reveal-item class="eyebrow eyebrow-marker">Work</p>
+          <h2 id="work-title" data-reveal-heading class="section-title mt-4">Selected work</h2>
         </div>
-        <p class="max-w-sm text-sm text-muted">
+        <p data-reveal-text class="max-w-sm text-sm text-muted">
           Client engagements and personal builds. Work under NDA is shown
           pixelated and without public&nbsp;links.
         </p>
       </div>
 
-      <TransitionGroup ref="list" tag="ol" name="card" class="project-list mt-14">
+      <ol class="mt-14">
         <li
-          v-for="(project, index) in displayed"
+          v-for="(project, index) in featured"
           :key="project.id"
-          class="stack-card sticky mb-8 border border-border last:mb-0"
+          data-reveal-item
+          class="stack-card sticky mb-8 border border-border"
           :class="index % 2 === 0 ? 'bg-surface' : 'bg-bg'"
-          :style="{
-            top: `calc(5.5rem + ${Math.min(index, 5)}rem)`,
-            '--stagger': `${Math.max(index - featuredCount, 0) * 70}ms`,
-          }"
+          :style="{ top: `calc(5.5rem + ${Math.min(index, 5)}rem)` }"
         >
           <div class="flex items-center justify-between gap-4 border-b border-border px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted md:px-8">
             <span>
               <span class="text-accent-bright">{{ String(index + 1).padStart(2, "0") }}</span>
-              / {{ String(displayed.length).padStart(2, "0") }}
+              / {{ String(featured.length).padStart(2, "0") }}
             </span>
             <span :class="project.confidential ? 'text-accent-bright' : ''">{{ status(project) }}</span>
             <span class="hidden sm:inline">{{ project.year }}</span>
@@ -90,17 +90,34 @@ const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?:
             </div>
           </div>
         </li>
-      </TransitionGroup>
+      </ol>
 
-      <button
-        v-if="hasMore"
-        type="button"
-        class="btn-ghost mt-10"
-        :aria-expanded="showAll"
-        @click="toggleAll(list?.$el)"
+      <!-- Closing card: the stack ends on a way to get in touch. -->
+      <div
+        data-reveal-item
+        class="relative mt-8 grid gap-8 border border-border bg-bg p-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:p-10"
       >
-        {{ showAll ? "Show featured only" : `Show all ${total} projects` }}
-      </button>
+        <div>
+          <p class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-bright">
+            Next step
+          </p>
+          <p class="mt-4 font-display text-4xl font-semibold leading-[1.02] tracking-tight md:text-6xl">
+            Interested in what you&nbsp;see?
+          </p>
+          <p class="mt-5 max-w-lg leading-relaxed text-muted">
+            These are ten of the builds I'm proudest of. Have a role or a
+            project in mind? I'd love to hear from&nbsp;you.
+          </p>
+        </div>
+        <a href="#contact" class="btn-primary group w-fit" @click.prevent="scrollToSection('#contact')">
+          Get in touch
+          <Icon
+            name="lucide:arrow-down-right"
+            class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5"
+            aria-hidden="true"
+          />
+        </a>
+      </div>
     </div>
   </section>
 </template>
@@ -108,29 +125,5 @@ const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?:
 <style scoped>
 .stack-card {
   box-shadow: 0 -24px 48px -24px rgba(0, 0, 0, 0.5);
-}
-
-/* Revealing more cards must not drag the page to keep the button in place. */
-.project-list {
-  overflow-anchor: none;
-}
-
-.card-enter-active {
-  transition:
-    opacity 600ms ease var(--stagger),
-    transform 700ms cubic-bezier(0.22, 1, 0.36, 1) var(--stagger);
-}
-
-.card-enter-from {
-  opacity: 0;
-  transform: translateY(48px);
-}
-
-.card-leave-active {
-  transition: opacity 250ms ease;
-}
-
-.card-leave-to {
-  opacity: 0;
 }
 </style>

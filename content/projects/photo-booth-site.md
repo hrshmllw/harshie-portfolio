@@ -7,9 +7,9 @@ tags:
   - JavaScript
   - Webpack
 liveUrl: https://www.kliko.fun/
-image: /images/projects/photo-booth-site.jpg
+image: /images/projects/photo-booth-site.png
 featured: false
 confidential: true
-order: 20
+order: 17
 year: 2025
 ---

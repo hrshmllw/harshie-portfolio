@@ -12,5 +12,5 @@ featured: true
 confidential: false
 order: 4
 year: 2024
-image: /images/projects/d-line-pictures.jpg
+image: /images/projects/d-line-pictures.webp
 ---

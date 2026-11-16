@@ -14,7 +14,8 @@ defineProps<{ icon: string; logo?: string; brand?: string }>();
   </span>
 </template>
 
-<style scoped>
+<style>
+/* Unscoped: the hover comes from the parent `.tick-item` (TickerRow). */
 .tech-mono {
   color: #a7a7a7;
   transition:
@@ -27,15 +28,15 @@ defineProps<{ icon: string; logo?: string; brand?: string }>();
   transition: opacity 200ms ease;
 }
 
-:global(.tick-item:hover) .tech-mono {
+.tick-item:hover .tech-mono {
   color: var(--brand, #a7a7a7);
 }
 
-:global(.tick-item:hover) .tech-mark.has-logo .tech-mono {
+.tick-item:hover .tech-mark.has-logo .tech-mono {
   opacity: 0;
 }
 
-:global(.tick-item:hover) .tech-logo {
+.tick-item:hover .tech-logo {
   opacity: 1;
 }
 </style>

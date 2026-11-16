@@ -130,7 +130,8 @@ const onKey = (event: KeyboardEvent) => {
 
 <template>
   <div
-    class="ticker-row grid border-b border-border md:grid-cols-[14rem_minmax(0,1fr)]"
+    class="ticker-row rule-bottom grid md:grid-cols-[14rem_minmax(0,1fr)]"
+    data-reveal-item
     tabindex="0"
     :aria-label="`${category}: ${items.map((item) => item.name).join(', ')}`"
     @keydown="onKey"

@@ -7,9 +7,9 @@ tags:
   - GSAP
   - SCSS
 liveUrl: https://emmaslate.com/
-image: /images/projects/ecommerce-publishing.jpg
+image: /images/projects/ecommerce-publishing.png
 featured: true
 confidential: true
-order: 6
+order: 10
 year: 2024
 ---

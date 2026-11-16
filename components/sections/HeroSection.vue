@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const { site } = useAppConfig();
-const { shouldAnimate } = useMotionPreference();
 </script>
 
 <template>
@@ -15,24 +14,12 @@ const { shouldAnimate } = useMotionPreference();
     />
 
     <div class="container-x relative z-10 pt-24 pb-16">
-      <div>
-        <p
-          v-motion
-          :initial="shouldAnimate ? { opacity: 0, y: 12 } : false"
-          :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-          :transition="{ duration: 500 }"
-          class="eyebrow eyebrow-marker"
-        >
+      <div data-intro="hero">
+        <p data-reveal-item class="eyebrow eyebrow-marker">
           {{ site.role }}
         </p>
 
-        <h1
-          v-motion
-          :initial="shouldAnimate ? { opacity: 0, y: 24 } : false"
-          :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-          :transition="{ duration: 600, delay: 80 }"
-          class="hero-display mt-6"
-        >
+        <h1 data-reveal-heading class="hero-display mt-6">
           <span class="block">Bringing</span>
           <span class="block">Your designs</span>
           <span class="block"
@@ -41,10 +28,7 @@ const { shouldAnimate } = useMotionPreference();
         </h1>
 
         <ul
-          v-motion
-          :initial="shouldAnimate ? { opacity: 0, y: 16 } : false"
-          :enter="shouldAnimate ? { opacity: 1, y: 0 } : false"
-          :transition="{ duration: 500, delay: 160 }"
+          data-reveal-item
           class="hero-tags mt-8"
           aria-label="Expertise areas"
         >

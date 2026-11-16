@@ -1,7 +1,6 @@
 <script setup lang="ts">
 /** Portrait spec: the dot-matrix "ej" as the visual, the spec sheet beside it. */
 const { site } = useAppConfig();
-const { shouldAnimate } = useMotionPreference();
 
 const { data: about } = await useAsyncData("about", () =>
   queryCollection("about").first(),
@@ -20,7 +19,7 @@ const rows = [
 </script>
 
 <template>
-  <section id="about" class="border-t border-border" aria-labelledby="about-title">
+  <section id="about" class="rule-top" aria-labelledby="about-title">
     <div class="container-x section-pad">
       <div class="grid items-start gap-14 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-20">
         <div class="mx-auto w-full max-w-[22rem] sm:max-w-[26rem] lg:sticky lg:top-28 lg:mx-0 lg:max-w-none">
@@ -28,21 +27,15 @@ const rows = [
         </div>
 
         <div>
-          <p class="eyebrow eyebrow-marker">About</p>
-          <h2 id="about-title" class="display mt-6">
+          <p data-reveal-item class="eyebrow eyebrow-marker">About</p>
+          <h2 id="about-title" data-reveal-heading class="display mt-6">
             Purpose &amp;&nbsp;Performance
           </h2>
-          <div v-if="about" class="mt-6 max-w-xl space-y-4 text-lg leading-relaxed text-muted">
+          <div v-if="about" data-reveal-text class="mt-6 max-w-xl space-y-4 text-lg leading-relaxed text-muted">
             <ContentRenderer :value="about" />
           </div>
 
-          <div
-            v-motion
-            :initial="shouldAnimate ? { opacity: 0, y: 20 } : false"
-            :visibleOnce="shouldAnimate ? { opacity: 1, y: 0 } : false"
-            :transition="{ duration: 500 }"
-            class="mt-12 border border-border"
-          >
+          <div data-reveal-item class="mt-12 border border-border">
             <div
               class="flex items-center justify-between border-b border-border px-5 py-3 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted"
             >
@@ -54,7 +47,7 @@ const rows = [
               <div
                 v-for="row in rows"
                 :key="row.label"
-                class="spec-row grid gap-y-1 border-b border-border px-5 py-5 sm:grid-cols-[9rem_1fr]"
+                class="spec-row rule-bottom grid gap-y-1 px-5 py-5 sm:grid-cols-[9rem_1fr]"
               >
                 <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-bright sm:pt-1.5">
                   {{ row.label }}
@@ -65,7 +58,7 @@ const rows = [
                 </dd>
               </div>
 
-              <div class="spec-row grid gap-y-1 border-b border-border px-5 py-5 sm:grid-cols-[9rem_1fr]">
+              <div class="spec-row rule-bottom grid gap-y-1 px-5 py-5 sm:grid-cols-[9rem_1fr]">
                 <dt class="font-mono text-[0.7rem] uppercase tracking-[0.18em] text-accent-bright sm:pt-1.5">
                   Status
                 </dt>

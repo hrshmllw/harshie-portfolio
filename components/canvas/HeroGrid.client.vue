@@ -3,6 +3,88 @@ import type { CanvasDrawContext } from "~/composables/useCanvasLoop";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const { morph, corePos, setGlowAvailable } = useGlowMorph();
+const { gridDraw } = useSiteIntro();
+
+/** Fraction of the intro the line starts are spread across. */
+const DRAW_SPREAD = 0.62;
+/** Length of the bright "pen" tip on a line being drawn (px). */
+const TIP = 90;
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+/**
+ * Intro: each line draws itself with a bright tip. Rows and columns start in
+ * a sweep from the top-left, and neighbouring lines run in opposite
+ * directions, so it reads as lines being drawn rather than one wipe.
+ */
+const drawIntroGrid = (
+	ctx: CanvasRenderingContext2D,
+	cols: number,
+	rows: number,
+	cell: number,
+	progress: number,
+) => {
+	const fullW = cols * cell;
+	const fullH = rows * cell;
+	const local = (index: number, count: number) => {
+		const delay = (index / Math.max(1, count)) * DRAW_SPREAD;
+		return easeOutCubic(Math.min(1, Math.max(0, (progress - delay) / (1 - DRAW_SPREAD))));
+	};
+
+	type Line = { x1: number; y1: number; x2: number; y2: number; t: number };
+	const lines: Line[] = [];
+	for (let row = 0; row <= rows; row++) {
+		const t = local(row, rows);
+		if (t <= 0) continue;
+		const y = row * cell;
+		lines.push(row % 2 === 0
+			? { x1: 0, y1: y, x2: fullW * t, y2: y, t }
+			: { x1: fullW, y1: y, x2: fullW * (1 - t), y2: y, t });
+	}
+	for (let col = 0; col <= cols; col++) {
+		const t = local(col, cols);
+		if (t <= 0) continue;
+		const x = col * cell;
+		lines.push(col % 2 === 0
+			? { x1: x, y1: 0, x2: x, y2: fullH * t, t }
+			: { x1: x, y1: fullH, x2: x, y2: fullH * (1 - t), t });
+	}
+
+	// Drawn part, in the grid's resting style.
+	const stroke = (width: number, alpha: number, cap: CanvasLineCap) => {
+		ctx.beginPath();
+		for (const l of lines) {
+			ctx.moveTo(l.x1, l.y1);
+			ctx.lineTo(l.x2, l.y2);
+		}
+		ctx.lineCap = cap;
+		ctx.lineWidth = width;
+		ctx.strokeStyle = `rgba(${NEUTRAL.r}, ${NEUTRAL.g}, ${NEUTRAL.b}, ${alpha})`;
+		ctx.stroke();
+	};
+	stroke(2.6, 0.035, "round");
+	stroke(1, 0.1, "butt");
+
+	// Bright tip on lines still drawing, fading as each one completes.
+	ctx.lineCap = "round";
+	ctx.lineWidth = 1.25;
+	for (const l of lines) {
+		if (l.t >= 1) continue;
+		const len = Math.hypot(l.x2 - l.x1, l.y2 - l.y1);
+		if (len < 1) continue;
+		const k = Math.min(1, TIP / len);
+		const tx = l.x2 - (l.x2 - l.x1) * k;
+		const ty = l.y2 - (l.y2 - l.y1) * k;
+		const gradient = ctx.createLinearGradient(tx, ty, l.x2, l.y2);
+		const alpha = 0.55 * (1 - l.t * l.t);
+		gradient.addColorStop(0, `rgba(${NEUTRAL.r}, ${NEUTRAL.g}, ${NEUTRAL.b}, 0)`);
+		gradient.addColorStop(1, `rgba(${NEUTRAL.r}, ${NEUTRAL.g}, ${NEUTRAL.b}, ${alpha})`);
+		ctx.beginPath();
+		ctx.moveTo(tx, ty);
+		ctx.lineTo(l.x2, l.y2);
+		ctx.strokeStyle = gradient;
+		ctx.stroke();
+	}
+};
 
 const SPRING = 12;
 /** Larger sigma = softer, less circular light falloff */
@@ -143,6 +225,20 @@ const draw = ({
 	gridOffsetY = smoothScroll * PARALLAX_SHIFT;
 	ctx.save();
 	ctx.translate(0, gridOffsetY);
+
+	const drawProgress = gridDraw.value;
+	if (drawProgress < 1) {
+		const introCell = width < 640 ? 48 : width < 1024 ? 40 : 36;
+		drawIntroGrid(
+			ctx,
+			Math.ceil(width / introCell) + 1,
+			Math.ceil(height / introCell) + 1,
+			introCell,
+			drawProgress,
+		);
+		ctx.restore();
+		return;
+	}
 
 	const morphValue = morph.value;
 	const e = easeInCubic(morphValue);

@@ -223,3 +223,65 @@
     display: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Entry animations: initial states, applied before first paint.
+   `:root.motion` is set by the inline <head> script (not under reduced motion,
+   and removed by its fail-safe if the app never boots). The reveal composable
+   (useEntryAnimations) takes over from exactly these values.
+   ------------------------------------------------------------------------- */
+:root.is-loading,
+:root.is-loading body {
+  overflow: hidden;
+}
+
+/* The preloader (SitePreloader.vue) only exists while <html> is loading. */
+.site-preloader {
+  display: none;
+}
+
+:root.is-loading .site-preloader {
+  display: grid;
+}
+
+/* Grid lines that draw in from the left. Use instead of border-t / border-b. */
+.rule-top,
+.rule-bottom {
+  position: relative;
+}
+
+.rule-top::before,
+.rule-bottom::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: theme("colors.border");
+  transform: scaleX(var(--rule, 1));
+  transform-origin: left;
+  pointer-events: none;
+}
+
+.rule-top::before {
+  top: 0;
+}
+
+.rule-bottom::after {
+  bottom: 0;
+}
+
+:root.motion .rule-top:not([data-drawn]),
+:root.motion .rule-bottom:not([data-drawn]) {
+  --rule: 0;
+}
+
+/* Hidden until the reveal hands over (it sets visible + the tween's `from`
+   in the same tick, so nothing flashes). `data-revealed` / `data-drawn` mark
+   finished elements, so clearing the inline styles doesn't re-hide them. */
+:root.motion [data-intro]:not([data-revealed]),
+:root.motion [data-reveal-heading]:not([data-revealed]),
+:root.motion [data-reveal-text]:not([data-revealed]),
+:root.motion [data-reveal-item]:not([data-revealed]) {
+  visibility: hidden;
+}

@@ -8,7 +8,7 @@ tags:
 liveUrl: https://casinoconsult.pro
 featured: true
 confidential: false
-order: 5
+order: 7
 year: 2024
-image: /images/projects/casino-consult-pro.jpg
+image: /images/projects/casino-consult-pro.webp
 ---

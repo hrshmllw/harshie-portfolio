@@ -7,7 +7,7 @@ tags:
 liveUrl: https://taurusfunds.com.au/
 featured: false
 confidential: true
-order: 11
+order: 16
 year: 2023
-image: /images/projects/financial-services.jpg
+image: /images/projects/financial-services.png
 ---
