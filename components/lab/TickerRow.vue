@@ -66,6 +66,7 @@ const start = () => {
 };
 
 const stop = () => {
+  if (!frame) return;
   cancelAnimationFrame(frame);
   frame = 0;
 };
