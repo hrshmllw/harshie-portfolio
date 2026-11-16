@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Explicit import: a running dev server may not pick up new utils/ files for auto-import.
+import { splitLastWord } from "~/utils/splitLastWord";
 /** Scrollytelling: a sticky panel swaps the big period + role as each entry scrolls past. */
 const { site } = useAppConfig();
 

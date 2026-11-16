@@ -1,4 +1,6 @@
 <script setup lang="ts">
+// Explicit import: a running dev server may not pick up new utils/ files for auto-import.
+import { splitLastWord } from "~/utils/splitLastWord";
 /**
  * Stacking cards: each selected project pins and stacks over the last, led by
  * its screenshot. Ends with a call to action that scrolls to Contact.
