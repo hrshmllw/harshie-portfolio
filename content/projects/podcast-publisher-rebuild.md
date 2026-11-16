@@ -6,6 +6,8 @@ tags:
   - PHP
   - Tailwind
   - Vite
+liveUrl: https://undeceptions.com/
+image: /images/projects/podcast-publisher-rebuild.jpg
 featured: false
 confidential: true
 order: 26

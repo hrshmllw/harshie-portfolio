@@ -7,6 +7,7 @@ tags:
   - Tailwind
   - GSAP
 liveUrl: https://thisweekinvideogames.com/
+image: /images/projects/video-game-news.jpg
 featured: false
 confidential: true
 order: 8

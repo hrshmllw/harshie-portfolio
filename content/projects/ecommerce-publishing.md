@@ -6,7 +6,8 @@ tags:
   - WooCommerce
   - GSAP
   - SCSS
-liveUrl: https://tabula-rasa.propdev.xyz/
+liveUrl: https://emmaslate.com/
+image: /images/projects/ecommerce-publishing.jpg
 featured: true
 confidential: true
 order: 6

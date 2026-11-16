@@ -7,6 +7,8 @@ tags:
   - WordPress
   - GSAP
   - Lottie
+liveUrl: https://corporatetravelspecialists.com.au/
+image: /images/projects/corporate-travel-site.jpg
 featured: false
 confidential: true
 order: 24
