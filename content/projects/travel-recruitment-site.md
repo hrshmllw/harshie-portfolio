@@ -1,6 +1,6 @@
 ---
 title: Travel Advisor Recruitment Site
-description: Recruitment site for a travel network that helps experienced advisors run their own businesses: pinned scroll sections, Lottie animation, legacy URL redirects and cache-aware deployment.
+description: "Recruitment site for a travel network that helps experienced advisors run their own businesses: pinned scroll sections, Lottie animation, legacy URL redirects and cache-aware deployment."
 tags:
   - WordPress
   - ACF

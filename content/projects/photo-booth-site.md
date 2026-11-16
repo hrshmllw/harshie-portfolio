@@ -1,6 +1,6 @@
 ---
 title: Photo Booth Hire Website
-description: Static marketing site for an event photo booth business: package comparison tables, add-on carousels, and a promo landing page with its own sign-up result and terms pages.
+description: "Static marketing site for an event photo booth business: package comparison tables, add-on carousels, and a promo landing page with its own sign-up result and terms pages."
 tags:
   - HTML
   - SCSS

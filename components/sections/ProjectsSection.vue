@@ -5,7 +5,7 @@ const { showAll, displayed, hasMore, total, featuredCount, slug, toggleAll } = a
 const list = ref<{ $el: HTMLElement } | null>(null);
 
 const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?: string }) =>
-  project.confidential ? "Client work · NDA" : project.liveUrl ? "Live" : project.githubUrl ? "Repository" : "Archived";
+  project.confidential ? "Client work · NDA" : project.liveUrl ? "Live" : project.githubUrl ? "Repository" : "";
 </script>
 
 <template>
