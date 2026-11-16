@@ -19,7 +19,11 @@ const { site } = useAppConfig();
           {{ site.role }}
         </p>
 
-        <h1 data-reveal-heading class="hero-display mt-6">
+        <!-- 11vw: largest size where "Your designs" still fits on one line at 320–390px -->
+        <h1
+          data-reveal-heading
+          class="hero-display mt-6 text-[clamp(2.25rem,11vw,9.5rem)]"
+        >
           <span class="block">Bringing</span>
           <span class="block">Your designs</span>
           <span class="block"
@@ -33,12 +37,11 @@ const { site } = useAppConfig();
           aria-label="Expertise areas"
         >
           <li
-            v-for="(tag, index) in site.expertiseTags"
+            v-for="tag in site.expertiseTags"
             :key="tag"
             class="flex items-center gap-3"
           >
             <span
-              v-if="index > 0"
               class="select-none text-accent-soft"
               aria-hidden="true"
             >

@@ -1,6 +1,6 @@
 ---
 title: Corporate Travel Agency Website
-description: "Headless build for a corporate travel agency: WordPress as the CMS and a Nuxt 3 front end with GSAP and Lottie motion."
+description: Headless website for a corporate travel agency, with a decoupled front end, editor-managed content and motion throughout.
 tags:
   - Nuxt 3
   - TypeScript

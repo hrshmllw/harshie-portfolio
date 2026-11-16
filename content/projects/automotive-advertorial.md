@@ -1,6 +1,6 @@
 ---
 title: Automotive Advertorial Campaign
-description: Branded web articles on a major business news outlet. Lightweight static build with GSAP-enhanced storytelling.
+description: Branded web articles on a major business news outlet, built as lightweight static pages with scroll-driven storytelling.
 tags:
   - JavaScript
   - GSAP

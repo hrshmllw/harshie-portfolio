@@ -1,6 +1,6 @@
 ---
 title: Startup Studio Website
-description: Custom WordPress theme for a startup studio that takes first-time founders from idea to launch, with ACF-driven page sections and an embedded booking flow that pre-fills the visitor's details.
+description: Custom theme for a startup studio that takes first-time founders from idea to launch, with editor-managed page sections and an embedded booking flow that pre-fills the visitor's details.
 tags:
   - WordPress
   - PHP

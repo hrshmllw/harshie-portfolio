@@ -1,6 +1,6 @@
 ---
 title: Pet Insurance Website
-description: WordPress site for a pet insurer, covering breeder and owner flows, consent and SMS opt-out pages, and performance work that cut blocking time by deferring third-party scripts.
+description: Website for a pet insurer, covering breeder and owner flows, consent and SMS opt-out pages, and performance work that cut blocking time by deferring third-party scripts.
 tags:
   - WordPress
   - PHP

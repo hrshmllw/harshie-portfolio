@@ -1,6 +1,6 @@
 ---
 title: Video Game News Portal
-description: Video game news site with reviews and industry insights. WordPress/PHP with Tailwind styling and GSAP animations.
+description: Video game news site with reviews and industry insights, set in custom editorial layouts with animated details.
 tags:
   - WordPress
   - PHP

@@ -8,6 +8,14 @@ const { scrollToSection } = useActiveSection();
 
 const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?: string }) =>
   project.confidential ? "Client work · NDA" : project.liveUrl ? "Live" : project.githubUrl ? "Repository" : "";
+
+// NDA work never links out.
+const link = (project: { confidential?: boolean; liveUrl?: string; githubUrl?: string }) =>
+  project.confidential ? undefined : project.liveUrl || project.githubUrl || undefined;
+
+// The last word and the new-tab icon stay together so the icon never wraps alone.
+const titleHead = (title: string) => title.slice(0, title.lastIndexOf(" ") + 1);
+const titleTail = (title: string) => title.slice(title.lastIndexOf(" ") + 1);
 </script>
 
 <template>
@@ -60,25 +68,32 @@ const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?:
               />
             </component>
 
-            <div class="flex flex-col">
+            <div class="flex min-w-0 flex-col">
               <h3 class="font-display text-3xl font-semibold leading-[1.05] tracking-tight md:text-4xl">
-                {{ project.title }}
+                <a
+                  v-if="link(project)"
+                  :href="link(project)"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="decoration-accent-bright decoration-2 underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
+                >
+                  {{ titleHead(project.title) }}<span class="whitespace-nowrap">{{ titleTail(project.title) }}<Icon
+                    name="lucide:arrow-up-right"
+                    class="ml-1.5 inline-block h-[0.7em] w-[0.7em] align-baseline text-accent-bright md:hidden"
+                    aria-hidden="true"
+                  /></span>
+                  <span class="sr-only"> (opens in a new tab)</span>
+                </a>
+                <template v-else>{{ project.title }}</template>
               </h3>
               <p class="mt-4 leading-relaxed text-muted">{{ project.description }}</p>
 
-              <ul class="mt-6 flex flex-wrap gap-2" aria-label="Technologies">
-                <li
-                  v-for="tag in project.tags"
-                  :key="tag"
-                  class="border border-border px-2 py-1 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-muted"
-                >
-                  {{ tag }}
-                </li>
-              </ul>
+              <UiTagRow :tags="project.tags ?? []" class="mt-6" />
 
+              <!-- Desktop only: on mobile the linked title carries the new-tab icon. -->
               <div
-                v-if="!project.confidential && (project.liveUrl || project.githubUrl)"
-                class="mt-auto flex flex-wrap gap-3 pt-8"
+                v-if="link(project)"
+                class="mt-auto hidden flex-wrap gap-3 pt-8 md:flex"
               >
                 <a v-if="project.liveUrl" :href="project.liveUrl" target="_blank" rel="noopener noreferrer" class="btn-primary text-xs">
                   Visit site <Icon name="lucide:arrow-up-right" class="ml-1.5 h-4 w-4" aria-hidden="true" />

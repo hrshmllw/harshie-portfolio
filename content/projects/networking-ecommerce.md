@@ -1,6 +1,6 @@
 ---
 title: Networking Products E-commerce Site
-description: E-commerce platform for networking hardware showcasing products and support, built and maintained on Shopify.
+description: E-commerce platform for networking hardware, showcasing products and support content.
 tags:
   - Shopify
 liveUrl: https://linksys.com/

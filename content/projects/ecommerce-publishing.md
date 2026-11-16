@@ -1,6 +1,6 @@
 ---
 title: E-commerce Publishing Platform
-description: Online bookstore for an independent bestselling author. WordPress and WooCommerce with GSAP-driven interactions.
+description: Online bookstore for an independent bestselling author, with smooth animated interactions.
 tags:
   - WordPress
   - WooCommerce

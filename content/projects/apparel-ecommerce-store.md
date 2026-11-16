@@ -1,6 +1,6 @@
 ---
 title: Apparel E-commerce Store
-description: "WooCommerce store for an apparel label: runway looks, access-code drops, account pages, scroll-reveal motion, a product catalogue feed for ads, and the brand's email templates."
+description: "Online store for an apparel label: runway looks, access-code drops, account pages, scroll-reveal motion, a product catalogue feed for ads, and the brand's email templates."
 tags:
   - WordPress
   - WooCommerce

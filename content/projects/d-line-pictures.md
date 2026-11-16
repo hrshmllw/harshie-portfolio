@@ -1,6 +1,6 @@
 ---
 title: D-Line Pictures Portfolio
-description: Bilingual (English/Japanese) VFX company portfolio with project showcase and inquiry contact form. Headless WordPress CMS with a Next.js frontend.
+description: Bilingual (English/Japanese) VFX company portfolio with a project showcase and an inquiry form, all managed through a headless CMS.
 tags:
   - Next.js
   - Tailwind

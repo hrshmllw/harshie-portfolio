@@ -1,6 +1,6 @@
 ---
 title: Media Production Directory
-description: AU-based film, TV, and media industry directory. Revamped with Vue/Nuxt 3 for modern design, better UX, and improved performance.
+description: Directory for the Australian film, TV and media industry, rebuilt with a modern design, better UX and faster performance.
 tags:
   - Vue
   - Nuxt 3
