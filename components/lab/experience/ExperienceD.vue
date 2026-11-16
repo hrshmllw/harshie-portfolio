@@ -35,9 +35,10 @@ const current = computed(() => site.experience[active.value]);
       <p class="eyebrow eyebrow-marker">Experience</p>
       <h2 id="experience-d-title" class="section-title mt-4">Professional Experience</h2>
 
-      <div class="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-20">
-        <!-- Sticky readout (desktop only; mobile reads the list) -->
-        <div class="hidden lg:block">
+      <div class="mt-14 grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-20">
+        <!-- Sticky readout on the right (desktop only; mobile reads the list).
+             Right, so it doesn't echo About's sticky matrix on the left. -->
+        <div class="hidden lg:order-2 lg:block">
           <div class="sticky top-28 border border-border p-10" aria-hidden="true">
             <div class="flex items-center justify-between font-mono text-[0.7rem] uppercase tracking-[0.18em] text-muted">
               <span>{{ String(active + 1).padStart(2, "0") }} / {{ String(site.experience.length).padStart(2, "0") }}</span>

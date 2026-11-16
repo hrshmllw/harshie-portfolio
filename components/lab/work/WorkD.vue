@@ -71,18 +71,16 @@ const status = (project: { confidential?: boolean; liveUrl?: string; githubUrl?:
                 </li>
               </ul>
 
-              <div class="mt-auto flex flex-wrap gap-3 pt-8">
-                <template v-if="!project.confidential">
-                  <a v-if="project.liveUrl" :href="project.liveUrl" target="_blank" rel="noopener noreferrer" class="btn-primary text-xs">
-                    Visit site <Icon name="lucide:arrow-up-right" class="ml-1.5 h-4 w-4" aria-hidden="true" />
-                  </a>
-                  <a v-if="project.githubUrl" :href="project.githubUrl" target="_blank" rel="noopener noreferrer" class="btn-ghost text-xs">
-                    Repository
-                  </a>
-                </template>
-                <p v-else class="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-muted">
-                  Details available on request
-                </p>
+              <div
+                v-if="!project.confidential && (project.liveUrl || project.githubUrl)"
+                class="mt-auto flex flex-wrap gap-3 pt-8"
+              >
+                <a v-if="project.liveUrl" :href="project.liveUrl" target="_blank" rel="noopener noreferrer" class="btn-primary text-xs">
+                  Visit site <Icon name="lucide:arrow-up-right" class="ml-1.5 h-4 w-4" aria-hidden="true" />
+                </a>
+                <a v-if="project.githubUrl" :href="project.githubUrl" target="_blank" rel="noopener noreferrer" class="btn-ghost text-xs">
+                  Repository
+                </a>
               </div>
             </div>
           </div>
